@@ -1,0 +1,899 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+	<link rel='stylesheet' href='../css/bootstrap.css'/>
+    <title>Energy Analyzer</title>
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+	
+	<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+    <script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    
+    <script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+	<script type="text/javascript" src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
+   <script src="http://code.highcharts.com/highcharts.js"></script>
+   <script src="http://code.highcharts.com/highcharts-more.js"></script>
+   <script src="http://code.highcharts.com/modules/exporting.js"></script>
+   <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+	<script type="text/javascript" src="../js/bootstrap.js"></script>
+
+	
+	<!-- Bootstrap core CSS -->
+    <link href="../NewStyling/css/bootstrap.css" rel="stylesheet">
+
+    <!-- Add custom CSS here -->
+    <link href="../NewStyling/css/business-casual.css" rel="stylesheet">
+
+
+<style>
+
+.brand: hover
+{
+cursor: pointer;
+ color: #f00;
+
+}
+
+.ask-title-field{
+width:610px;
+}
+
+.edit-field-overlayed{
+color:#888;
+}
+
+.wmd-button-bar{
+height:25px;
+width:660px;
+clear:both;
+background-color:#fff;
+margin-top:10px;
+margin-right:0px;
+margin-bottom:1px;
+margin-left:0px;}
+
+.wmd-button-row{
+position:relative;
+padding:0px;
+height:20px;
+margin:0px;
+}
+.wmd-button{
+width:20px;
+height:20px;
+padding-left:2px;
+padding-right:3px;
+position:absolute;
+display:inline-block;
+list-style:none;
+cursor:pointer;
+}
+label {
+		display: inline-block;
+		margin-bottom: 5px;
+		font-weight: normal;
+		
+	}
+	#container1 {
+    font-family:helvetica, sans-serif;
+    font-size:.7em;
+}
+p {
+    margin:.5em 1em;
+}
+div.overlay {
+			position: absolute;
+			top: 200px;
+			left: 50%;
+			width: 700px;
+			height: 300px;
+			overflow: auto;
+			margin-left: -314px;
+			opacity: 1; filter: alpha(opacity=100);
+			z-index: 1002;
+			border: 1px solid #e3e3e3;
+			-webkit-box-shadow: 0 0 5px #e3e3e3;
+			-moz-box-shadow: 0 0 5px #e3e3e3;
+			box-shadow: 0 0 5px #e3e3e3;
+			background-color: #fff;
+			padding: 20px 30px;
+		}
+
+.discussion .col-lg-4 {
+	text-align:right;
+	
+	}
+	
+	.navbar-brand {
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-weight: 900;
+}
+
+.overrideNavigation .navbar-nav {
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  font-weight: 400;
+}
+
+.overrideNavigation .navbar {
+  border-radius: 0;
+}
+
+.overrideNavigation .navbar-header {
+  display: none;
+}
+
+.overrideNavigation .navbar {
+  min-height: 0;
+}
+
+.overrideNavigation .navbar-default {
+  background: #fff;
+  background: rgba(255,255,255,0.9);
+  border: none;
+}
+
+.overrideNavigation .nav>li>a {
+  padding: 35px;
+}
+
+.overrideNavigation .navbar-nav>li>a {
+  line-height: normal;
+}
+
+.overrideNavigation .navbar-nav {
+  float: none;
+  margin: 0 auto;
+  display: table;
+  table-layout: fixed;
+  font-size: 1.25em;
+}
+
+
+</style>
+	
+	
+<script type="text/javascript">
+var monthVal = [];
+	  var chart;
+function populate(s1,s2){
+var s1 = document.getElementById(s1);
+var s2 = document.getElementById(s2);
+s2.innerHTML = "";
+if(s1.value == "January"){
+var optionArray =["December|December"];
+}else if(s1.value == "February"){
+		var optionArray = ["January|January"];
+		}else if(s1.value == "March"){
+		var optionArray = ["February|February"];
+		}else if(s1.value == "April"){
+		var optionArray = ["March|March"];
+		}else if(s1.value == "May"){
+		var optionArray = ["April|April"];
+		}else if(s1.value == "June"){
+		var optionArray = ["May|May"];
+		}else if(s1.value == "July"){
+		var optionArray = ["June|June"];
+		}else if(s1.value == "August"){
+		var optionArray = ["July|July"];
+		}else if(s1.value == "September"){
+		var optionArray = ["August|August"];
+		}else if(s1.value == "October"){
+		var optionArray = ["September|September"];
+		}else if(s1.value == "November"){
+		var optionArray = ["October|October"];
+		}else if(s1.value == "December"){
+		var optionArray = ["November|November"];
+		}
+	
+	for(var option in optionArray){
+		var pair = optionArray[option].split("|");
+		var newOption = document.createElement("option");
+		newOption.value = pair[0];
+		newOption.innerHTML = pair[1];
+		s2.options.add(newOption);
+	}
+	
+	var month=new Array();
+	month[0]="January";
+	month[1]="February";
+	month[2]="March";
+	month[3]="April";
+	month[4]="May";
+	month[5]="June";
+	month[6]="July";
+	month[7]="August";
+	month[8]="September";
+	month[9]="October";
+	month[10]="November";
+	month[11]="December";
+	
+	var shortMonth=new Array();
+	shortMonth[0]="Jan";
+	shortMonth[1]="Feb";
+	shortMonth[2]="Mar";
+	shortMonth[3]="Apr";
+	shortMonth[4]="May";
+	shortMonth[5]="Jun";
+	shortMonth[6]="Jul";
+	shortMonth[7]="Aug";
+	shortMonth[8]="Sept";
+	shortMonth[9]="Oct";
+	shortMonth[10]="Nov";
+	shortMonth[11]="Dec";
+	
+	var selMonthIndex = month.indexOf(s1.value);
+	for (i=1; i<=12; i++)
+	{
+		var lblMonth = document.getElementById("lblmonth_" + i);	
+		lblMonth.innerHTML = month[selMonthIndex] + ': ';
+
+		var txtMonth = document.getElementById("month_" + i);	
+		txtMonth.name = shortMonth[selMonthIndex];
+		
+		selMonthIndex++;
+		if (selMonthIndex == 12)
+			selMonthIndex=0;
+	}
+}
+
+
+
+
+function noGreenButton()
+		{
+			var greenOption = document.getElementById('checkbox1');
+		if (greenOption.checked)
+	{
+			document.getElementById('monthContainer').style.display = 'block';
+		}
+		else
+		{
+		 document.getElementById('monthContainer').style.display = 'none';
+		}
+	}
+
+		
+		function dateContainer()
+		{
+			var greenOption = document.getElementById('checkbox1');
+			if (greenOption.checked)
+			{
+				document.getElementById('optionContainer').style.display = 'block';
+			}
+			else
+			{
+			 document.getElementById('optionContainer').style.display = 'none';
+			}
+		}
+function generate(y1,y2){
+    var y1 = document.getElementById(y1);
+	var y2 = document.getElementById(y2);
+	y2.innerHTML = "";
+	if(y1.value == "2000"){
+		var optionArray = ["2001|2001"];
+	} else if(y1.value == "2001"){
+		var optionArray = ["2002|2002"];
+		}
+	else if(y1.value == "2002"){
+		var optionArray = ["2003|2003"];
+		
+	}else if(y1.value == "2003"){
+		var optionArray = ["2004|2004"];
+	}else if(y1.value == "2004"){
+		var optionArray = ["2005|2005"];
+	}else if(y1.value == "2005"){
+		var optionArray = ["2006|2006"];
+	}else if(y1.value == "2006"){
+		var optionArray = ["2007|2007"];
+	}else if(y1.value == "2007"){
+		var optionArray = ["2008|2008"];
+	}else if(y1.value == "2008"){
+		var optionArray = ["2009|2009"];
+	}else if(y1.value == "2009"){
+		var optionArray = ["2010|2010"];
+	}else if(y1.value == "2010"){
+		var optionArray = ["2011|2011"];
+	}else if(y1.value == "2011"){
+		var optionArray = ["2012|2012"];
+	}else if(y1.value == "2012"){
+		var optionArray = ["2013|2013"];
+	}else if(y1.value == "2013"){
+		var optionArray = ["2014|2014"];
+	}
+	
+	for(var option in optionArray){
+		var pair = optionArray[option].split("|");
+		var newOption = document.createElement("option");
+		newOption.value = pair[0];
+		newOption.innerHTML = pair[1];
+		y2.options.add(newOption);
+	}
+}
+
+	
+	function showChart() {
+			// Create our data table.
+			var monthContainer= document.getElementById('monthContainer');
+			var prog=document.getElementById('col-md-6');
+			monthContainer.style.display="none";
+			//prog.style.display="none";
+			var dat = document.getElementById('dateSelection');
+			dat.style.display="none";
+			var but = document.getElementById('back_button');
+			//but.style.display="none";	
+			var data = new google.visualization.DataTable();
+			data.addColumn('string', 'Month');
+			data.addColumn('number', 'Kilo Watts');
+			data.addRows([
+			  [document.getElementById('month_1').name, parseInt(document.getElementById('month_1').value)],
+			  [document.getElementById('month_2').name, parseInt(document.getElementById('month_2').value)],
+			  [document.getElementById('month_3').name, parseInt(document.getElementById('month_3').value)],
+			  [document.getElementById('month_4').name, parseInt(document.getElementById('month_4').value)],
+			  [document.getElementById('month_5').name, parseInt(document.getElementById('month_5').value)],
+			  [document.getElementById('month_6').name, parseInt(document.getElementById('month_6').value)],
+			  [document.getElementById('month_7').name, parseInt(document.getElementById('month_7').value)],
+			  [document.getElementById('month_8').name, parseInt(document.getElementById('month_8').value)],
+			  [document.getElementById('month_9').name, parseInt(document.getElementById('month_9').value)],
+			  [document.getElementById('month_10').name, parseInt(document.getElementById('month_10').value)],
+			  [document.getElementById('month_11').name, parseInt(document.getElementById('month_11').value)],
+			  [document.getElementById('month_12').name, parseInt(document.getElementById('month_12').value)],
+			]);
+			
+			var calArray =[parseInt(document.getElementById('month_1').value),parseInt(document.getElementById('month_2').value),parseInt(document.getElementById('month_3').value),parseInt(document.getElementById('month_4').value),parseInt(document.getElementById('month_5').value),parseInt(document.getElementById('month_6').value),parseInt(document.getElementById('month_7').value),parseInt(document.getElementById('month_8').value),parseInt(document.getElementById('month_9').value),parseInt(document.getElementById('month_10').value),parseInt(document.getElementById('month_10').value),parseInt(document.getElementById('month_11').value),parseInt(document.getElementById('month_12').value)];				
+			
+			var total=0;
+			for(var i=0;i<calArray.length;i++){
+			total += calArray[i]; 
+			}
+			console.log(total);
+			var sq = parseInt(document.getElementById('textbox2').value);
+			var per = parseInt(document.getElementById('textbox1').value);
+			var x= ((per*sq)/total);
+			
+			
+			var sc = ((x*0.55)*10);
+			if(sc > 10){
+			 var score = 10;
+			}
+			else{
+			var score = sc;
+			}
+			
+			
+			
+			Highcharts.setOptions({
+    chart:{
+	
+        type:'bar',
+        margin:[5,13,35,15],
+        plotBorderWidth: 1,
+        plotBorderColor: '#999',
+    },
+    credits:{enabled:false},
+    exporting:{enabled:false},
+    legend:{enabled:false},
+    title:{text:''},
+    xAxis:{
+        tickLength:0,
+        lineWidth:0,
+        labels: ""      
+    },
+    yAxis:{
+        min:0,
+        tickColor:'#888',
+        tickWidth:0.2,
+        tickLength:0.6,
+        tickInterval:1,
+        minorTickInterval:0.5,
+        minorTickWidth:0.2,
+        minorTickLength:0.4,
+        minorGridLineWidth:0,
+        tickPosition: 'outside',
+        gridLineWidth:0,
+        endOnTick:true,
+        title:{text: ''},
+    },
+    tooltip:{
+	    
+        enabled:true,
+        backgroundColor:'rgba(255, 255, 255, .85)',
+        borderWidth:0,
+        shadow:false,
+        style:{fontSize:'10px',padding:2},
+        formatter:function() {
+           return this.series.name + ": <strong>" + Highcharts.numberFormat(this.y,2) + "</strong>";
+        }
+    },
+    plotOptions:{
+	
+            series: {
+                animation: false,
+				dataLabels: {
+                    enabled: true,
+                    formatter:function() {
+                        return this.series.name + ": <strong>" + Highcharts.numberFormat(this.y,2) + "</strong>";
+                    }
+                }
+				
+            },
+        bar:{
+            },
+			
+        
+        scatter:{
+            marker:{                symbol:'url(http://www.veryicon.com/icon/32/System/Crystal%20Clear%20Actions/Left%20Arrow.png)',
+            },
+           dataLables:{
+		   enabled: true
+		   }
+        }
+    }
+});
+
+
+var chart1 = new Highcharts.Chart({
+    chart:{renderTo:'container1'},
+    xAxis:{max:1},
+    yAxis:{
+        max:10,
+        labels:{y:20,style:{fontSize:'15px'}},    
+        plotBands:[{from:0,to:3.5,color: 'rgba(255,0,0,.5)'},
+                   {from:3.5,to:6.5,color: 'rgba(255,153,0,.35)'},
+                   {from:6.5,to:10,color: 'rgba(0,255,0,0.5)'}]
+    },
+    series:[
+        {name:'Score',type: 'scatter',data:[[0,0]]}]
+});
+$(function () {
+    var renderer = new Highcharts.Renderer(
+        $('#container1')[0], 
+        500,
+        300
+    );
+    
+    renderer.image('http://www.imageurlhost.com/images/rge4bc3vb3vcf2859gv_down.jpg', 0, 0, 30, 30)
+        .add();
+    
+    renderer.image('http://www.imageurlhost.com/images/9qxjafytpu013wtrrbq_up.jpg', 430, 0, 30, 30)
+        .add();
+});
+
+chart1.series[0].points[0].update({x:0,y:score}, true, {duration: 1000});
+			var options = {
+			  title: 'Energy Analyzer Chart',
+			  hAxis: {title: 'Year',  titleTextStyle: {color: '#333'}},
+			  vAxis: {minValue: 0}
+			};
+
+			chart.draw(data, options);
+			
+			document.getElementById('gbutton').style.display = 'block';
+			
+		}
+		
+		function dynamicCharts()
+		{
+		
+		if (document.getElementById('checkbox2').checked)
+		{
+		window.location.href = '45daysDatachart.html'
+		}
+		
+		
+		}
+		
+		
+		function detailedCharts()
+		{
+		
+		
+		window.location.href = 'Graph-Reco.html'
+				
+		
+		}
+		
+		
+		function clearTextbox()
+	 {
+		document.getElementById('checkbox1').checked = false;
+		document.getElementById('checkbox2').checked = false;
+		document.getElementById('month_1').value = "" ;
+		document.getElementById('month_2').value = "" ;
+		document.getElementById('month_3').value = "" ;
+		document.getElementById('month_4').value = "" ;
+		document.getElementById('month_5').value = "" ;
+		document.getElementById('month_6').value = "" ;
+		document.getElementById('month_7').value = "" ;
+		document.getElementById('month_8').value = "" ;
+		document.getElementById('month_9').value = "" ;
+		document.getElementById('month_10').value = "" ;
+		document.getElementById('month_11').value = "" ;
+		document.getElementById('month_12').value = "" ;
+		document.getElementById('textbox1').value = "" ;
+		document.getElementById('textbox2').value = "" ;
+		document.getElementById('textbox3').value = "" ;
+	 }
+		
+		 google.load("visualization", "1", {packages:["corechart"]});
+      google.setOnLoadCallback(drawChart);
+	  //clearTextbox();
+		function drawChart() {
+      
+
+        var options = {
+          title: 'Energy Utilization Chart',
+          hAxis: {title: 'Year',  titleTextStyle: {color: '#333'}},
+          vAxis: {minValue: 0}
+        };
+
+        chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
+			
+        //chart.draw(data, options);
+		
+      }
+	  
+	function generateRecommendations()
+		{
+		var calArray =[parseInt(document.getElementById('month_1').value),parseInt(document.getElementById('month_2').value),parseInt(document.getElementById('month_3').value),parseInt(document.getElementById('month_4').value),parseInt(document.getElementById('month_5').value),parseInt(document.getElementById('month_6').value),parseInt(document.getElementById('month_7').value),parseInt(document.getElementById('month_8').value),parseInt(document.getElementById('month_9').value),parseInt(document.getElementById('month_10').value),parseInt(document.getElementById('month_10').value),parseInt(document.getElementById('month_11').value),parseInt(document.getElementById('month_12').value)];				
+			
+			var total=0;
+			for(var i=0;i<calArray.length;i++){
+			total += calArray[i]; 
+			}
+			console.log(total);
+			var sq = parseInt(document.getElementById('textbox2').value);
+			var per = parseInt(document.getElementById('textbox1').value);
+			var x= ((per*sq)/total);
+			
+			
+			var sc = ((x*0.55)*10);
+			if(sc > 10){
+			 var score = 10;
+			}
+			else{
+			var score = sc;
+			}
+	  if (score >= 0 && score <= 3.5){
+	  document.getElementById('RecommendationWindow1').style.display = 'block';
+	  }
+	  else if(score > 3.5 && score <= 6.5){
+	  document.getElementById('RecommendationWindow2').style.display = 'block';
+	  }
+	  else if(score > 6.5 && score <= 9.9){
+	  document.getElementById('RecommendationWindow3').style.display = 'block';
+	  }
+	  else if(score = 10){
+	  document.getElementById('RecommendationWindow4').style.display = 'block';
+	  }
+	  }  
+
+
+</script>
+    
+   	
+</head>
+
+<body onload="clearTextbox();">
+	
+	
+<div class="brand">E-Smart</div>
+    <div class="address-bar">University of Missouri Kansas City | 5100 Rockhill Road | Kansas City,MO 64110| (816) 235-1000</div>
+<div class="overrideNavigation">
+<nav class="navbar navbar-default" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html">E-Smart</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse navbar-ex1-collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="index.html">Home</a>
+                    </li>
+                    <li><a href="about.html">About</a>
+                    </li>
+                    <li><a href="blog.html">Blog</a>
+                    </li>
+                    <li><a href="contact.html">Contact</a>
+                    </li>
+                </ul>
+            </div>
+			
+			
+			
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+		
+    </nav>
+	</div>
+
+	<div class="container">
+	
+	
+		
+		
+<!--<div class="row" id="discussion">
+         <div class="box">
+           <div class="col-lg-12 text-left">	
+			<div class="collapse navbar-collapse navbar-ex1-collapse">
+                <ul class="nav navbar-nav">
+                   <li><a href="#" onclick="makeVisibleCreateThread();">Create Thread</a>
+                    </li>
+                    <li><a href="#" onclick="viewForums();">View Threads</a>
+                    </li>
+                    <li><a href="#">Post on Thread</a>
+                    </li> 
+                    
+                </ul>
+</div>
+</div>
+</div>   
+</div> -->
+
+
+<div class="row">
+<div class="box">
+<div class="col-lg-12 text-left">
+	
+			
+    <h1 style="clear:both;margin-left:0px">Learn About Energy Analyzer & Yardstick</h1>
+	<div style="clear:both;margin-left:0px">
+    <p>Energy Analyzer generates energy utilization reports for you.You can upload your data files to view your charts. Yardstick lets you know whether
+	you are using more energy than needed for your living space </p>
+	</div>
+    
+</div>
+</div>
+</div>
+   
+   
+   <div class="row" id="discussion">
+         <div class="box">
+           <div class="col-lg-12 text-left">
+   <table>
+						<tr>
+						<tr><td>ZipCode </td><td>  <input id = "textbox3" type="text" name="ZipCode"></td></tr>
+						<tr><td>Conditioned area of the house in Sq Feet </td><td><input id = "textbox2" type="text" name="HouseArea"></td></tr>
+						<td>Number of people living full time in the house &nbsp;&nbsp;&nbsp; </td> <td><input id = "textbox1" type="text"  name="HouseHoldSize"></td></tr>	
+					</table>
+					<br>
+		Please choose the below option to generate your Energy Utilization Graphs <br><br>
+         <input  id = "checkbox1" type="checkbox" onclick ="dateContainer();" name="NotGreenButton" value="NotGB"/>&nbsp&nbspI do not have a Green Button File<br>
+         <input  id = "checkbox2" type="checkbox" onclick ="dynamicCharts();" name="GreenButton" value="GB"/>&nbsp&nbspI have a Green Button File <br>
+		 
+	
+		 
+		 <div id = "optionContainer" style = "display: none">
+   
+   <div id="dateSelection">
+	<table>
+	<tr>
+		<td>
+			<b>Start date&nbsp&nbsp</b>
+		</td>
+		<td>
+			<select id="slct1" name="slct1" onchange="populate(this.id,'slct2')">
+				<option value="">Month</option>
+				<option value="January">January</option>
+				<option value="February">February</option>
+				<option value="March">March</option>
+				<option value="April">April</option>
+				<option value="May">May</option>
+				<option value="June">June</option>
+				<option value="July">July</option>
+				<option value="August">August</option>
+				<option value="September">September</option>
+				<option value="October">October</option>
+				<option value="November">November</option>
+				<option value="December">December</option>
+			</select>
+		</td>
+		<td>
+			<select id="year" name="year" onchange="generate(this.id,'year2')">
+				<option value="">Year</option>
+				<script>
+				var myDate=new Date();
+				var year= myDate.getFullYear();
+				for(var i= 2000; i<year+1; i++){
+				  document.write('<option value="'+i+'">'+i+'</option>');
+				}
+				</script>
+			</select>
+		</td>
+	</tr>
+	<tr>
+		<td><b>End date&nbsp&nbsp</b></td>
+		<td>
+			<select id="slct2" name="slct2">
+				<option value="">Month</option>
+			</select>
+		</td>
+		<td>
+			<select id="year2" name="year2">
+				<option value="">Year</option>
+			</select>
+		</td>
+	</tr>
+	</table>
+</div>
+
+
+<div class="submitButtons">
+<!--	<input id = "back_button" type="button" value="Click! to enter data" onClick="noGreenButton();"><br> -->
+	
+<br>	<a href="#" class="btn btn-large btn-success" onclick="noGreenButton();">Click! to enter data</a>
+	</div>
+	
+	<div id = "monthContainer" style = "display: none">
+	 <legend>Enter the reading for each month in Kilo Watts</legend>
+	  <table>
+		<tr><td><label id="lblmonth_1">January:</label></td><td><input id = "month_1" type="text"  name="January"></td></tr>
+		<tr><td><label id="lblmonth_2">February:</label></td><td><input id = "month_2" type="text" name="February"></td></tr>
+		<tr><td><label id="lblmonth_3">March:</label></td><td><input id = "month_3" type="text" name="March"></td></tr>
+		<tr><td><label id="lblmonth_4">April:</label></td><td><input id = "month_4" type="text" name="April"></td></tr>
+		<tr><td><label id="lblmonth_5">May:</label></td><td><input id = "month_5" type="text" name="May"></td></tr>
+		<tr><td><label id="lblmonth_6">June:</label></td><td><input id = "month_6" type="text" name="June"></td></tr>
+		<tr><td><label id="lblmonth_7">July:</label></td><td><input id = "month_7" type="text" name="July"></td></tr>
+		<tr><td><label id="lblmonth_8">August:</label></td><td><input id = "month_8" type="text" name="August"></td></tr>
+		<tr><td><label id="lblmonth_9">September:</label></td><td><input id = "month_9" type="text" name="September"></td></tr>
+		<tr><td><label id="lblmonth_10">October:</label></td><td><input id = "month_10" type="text" name="October"></td></tr>
+		<tr><td><label id="lblmonth_11">November:</label></td><td><input id = "month_11" type="text" name="November"></td></tr>
+		<tr><td><label id="lblmonth_12">December:</label></td><td><input id = "month_12" type="text" name="December"></td></tr>
+	<!--	<tr><td><input id = "tb7" type="button" value="Show Chart" onClick="showChart();"></td></tr> -->
+		<tr><td> <a href="#" class="btn btn-large btn-success" onClick="showChart();" >Show Chart</a> </td></tr>
+		
+		
+	  </table>
+  </div>
+  
+  <div id="container1" style="height:60px;width:450px;margin: 0 auto;">
+ 
+  </div>
+	<!--<input id="recommendation" style="display:none;" type="button" value="Generate Recommendations" onClick="generateRecommendations();"><br> -->
+	<div id ="gbutton" style="display:none;">
+	<a href="#" class="btn btn-large btn-success"  onclick="generateRecommendations()" >Generate Recommendations</a>
+	
+	<br><br>	 <a href="#" class="btn btn-large btn-success" onclick="detailedCharts();">Detailed Charts</a>
+	
+	
+	
+	
+	</div>
+	
+   <div id="chart_div" style="width: 60%; height: 250px; margin:0 auto;">
+   
+   </div>
+   <div id="RecommendationWindow1" class="overlay" style= "display:none;"  >
+   
+   <ul>
+    <font color = "green">   Save Energy,Save money, Save Planet ! </font><br><br>
+	Your energy score is in the red zone. You are using more energy than needed in your living space. You can save more energy by following below recommendations. <br><br>
+	
+	1. Look for ENERGY STAR air conditioners. They are the most energy efficient models on the market.<br><br>
+
+2. Replacing your old central air conditioner with a new ENERGY STAR qualified model can reduce your cooling costs by 20 percent.<br><br>
+ 
+3. If possible, keep your room air conditioner out of the sun. Room air conditioners work best when kept cool. Installing one in a north-facing wall is usually ideal.<br><br>
+
+4. If you have central air conditioning, keep your thermostat at 78 degrees. You can also save approximately an additional six to seven percent off your cooling costs for each degree above 78.<br><br>
+ 
+5. If your air conditioner does not have a thermostat, adjust it to a lower setting, or combine using it with a window or ceiling fan to cool things down.<br><br>
+
+6. Consider installing a ceiling fan.  During hot weather a ceiling fan will create a cool breeze and keep the air circulating in your home.<br><br>
+ 
+7. Get rid of hot air. Use an exhaust fan to blow hot air out of your kitchen while you’re cooking. The savings on your cooling costs far outweigh    the electricity used by the fan. Also, take lukewarm showers and baths to avoid humid air, which holds more heat.<br><br>
+ 
+8. A dehumidifier can greatly add to your electric bill. Make sure you have the appropriate sized dehumidifier for your home.<br><br>
+
+9. Close blinds, drapes and shades during the hottest part of the day. This keeps the strong sunlight from heating your home.<br><br>
+ 
+10.Use your microwave or countertop appliances for cooking instead of the oven or stove.<br><br>
+
+11.What says summer better than burgers and hot dogs? Instead of using your oven or stove, which can generate heat on an already hot day, fire up the outdoor grill for cooking. You can also use your microwave or other countertop appliances in place of the stove or oven.<br><br>
+ 
+12.Turn your water heater down to 120 degrees Fahrenheit to save money on your electricity bill.  If you have children in the house, this is also a safety measure.<br><br>
+
+13. Open curtains on your south-facing windows during the day to allow sunlight to naturally heat your home, and close them at night to reduce the chill you may feel from cold windows.<br><br>
+ 
+14. Use a heavy-duty, clear plastic sheet on a frame or tape clear plastic film to the inside of your window frames during the cold winter months. Make sure the plastic is sealed tightly to the frame to help reduce infiltration.Install tight-fitting, insulating drapes or shades on windows that feel drafty after weatherizing.<br><br>
+ 
+15. When you are asleep or out of the house, turn your thermostat back 10° to 15° for eight hours and save around 10% a year on your heating and cooling bills.<br><br> 
+
+16. Seal the air leaks around utility cut-throughs for pipes ("plumbing penetrations"), gaps around chimneys and recessed lights in insulated ceilings, and unfinished spaces behind cupboards and closets.<br><br>
+ 
+    Add caulk or weatherstripping to seal air leaks around leaky doors and windows.<br><br>
+	                     
+	
+	
+	</ul>
+	<input id = "tb10" type="button" value="OK" onClick="RecommendationWindow1.style.visibility='hidden'"><br>
+		</div>
+		
+		<div id="RecommendationWindow2" class="overlay" style="display:none;">
+	<ul>
+	  <font color = "green">   Save Energy,Save money, Save Planet ! </font><br><br>
+	Your energy score is in the yellow zone. You can save more energy by following the below recommendations.<br><br>
+
+
+1. Heat your home at 68 degrees or cooler with the thermostat fan switched to auto. To save even more, lower your thermostat to 65 degrees or cooler at night or when you're away from home.<br><br>
+ 
+2. Reduce your water heater temperature from 140 degrees to 120 degrees, which is the recommended temperature setting according to the U.S. Department of Energy, to save about $2 a month.<br><br>
+
+3. Clean or replace the A/C filter regularly to help your unit run more efficiently and trim cooling costs.<br><br>
+ 
+4. Turn off your ceiling fan when you leave the room. A fan that runs all the time costs up to $7 a month.<br><br>
+
+5. Replace old, high-flow showerheads with water-efficient showerheads and save up to $80* a year.<br><br>
+ 
+6. Adjust the water level on your washing machine to match the load size, especially when using hot water. Always use a cold rinse.<br><br>
+
+7. Clean the lint filter in your dryer before every load to dry your clothes faster.<br><br>
+ 
+8. Use the auto sensor function on your dryer to conserve energy by not over-drying your clothes.<br><br>
+
+9. Servicing  your heating system periodically.<br><br>
+
+10.Replace your furnace filter once a month or as needed.<br><br>
+              Save Energy,Save money, Save Planet !
+	</ul>
+	
+	<input id = "tb10" type="button" value="OK" onClick="RecommendationWindow2.style.visibility='hidden'"><br>
+		</div>
+		
+		<div id="RecommendationWindow3" class="overlay" style="display:none;">
+	<ul>
+	 <font color = "green">   Save Energy,Save money, Save Planet ! </font><br><br>
+	Your energy score is in the green zone. You are doing fairly good job with the energy usage. Below are the set of recommendations to save more energy<br><br>
+
+
+1. Lights out: Turn off lights in any room when lights are no longer needed.<br><br>
+
+2. COMPUTERS, PHOTOCOPIERS AND PRINTERS- Turn off computers, monitors, printers and photocopiers when yot in use.<br><br>
+
+3. SPACE HEATERS-Space Heaters consume lot of energy. Consider wearing a sweater to work.<br><br>
+ 
+4. APPLIANCES  Turn off coffee pots and similar appliances when they are not in use.  Radios and TVs should be turned off when out of the office.<br><br>
+
+5. WINDOWS  In winter, drapes or blinds should be open when windows are in direct sunlight or you are using the daylight, and closed otherwise. During summer, close drapes or blinds to prevent direct sunlight from entering the room.<br><br>
+ 
+6.Reduce your water heater temperature from 140 degrees to 120 degrees, which is the recommended temperature setting according to the U.S. Department of Energy, to save about $2 a month.<br><br>
+
+                                   Save Energy,Save money, Save Planet !
+	</ul>
+	
+	<input id = "tb10" type="button" value="OK" onClick="RecommendationWindow3.style.visibility='hidden'"><br>
+		</div>
+		<div id="RecommendationWindow4" class="overlay" style="display:none; text-align:center;bottom:20px;">
+	<ul>
+	Your energy score is in the green zone.<br>
+
+Full points- Good Job saving energy!!.<br><br>
+ <font color = "green">   Save Energy,Save money, Save Planet ! </font><br><br>
+
+
+<a href="http://www.sherv.net/"><img alt="Double Thumbs Up" width=71 height=54 align="center" src="http://www.sherv.net/cm/emoticons/yes/double-thumbs-up-smiley-emoticon.gif"></a>
+	</ul>
+	
+	<input id = "tb10" type="button" value="OK" onClick="RecommendationWindow4.style.visibility='hidden'"><br>
+		</div>
+   
+   </div>
+   
+   
+</div>
+</div>
+</div>
+	</body>
+	
+	

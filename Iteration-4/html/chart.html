@@ -1,0 +1,422 @@
+<html>
+  <head>
+  <style>
+  
+  div.overlay {
+			position: absolute;
+			top: 100px;
+			left: 50%;
+			width: 500px;
+			margin-left: -100px;
+			opacity: 1; filter: alpha(opacity=100);
+			z-index: 1002;
+			border: 1px solid #e3e3e3;
+			-webkit-box-shadow: 0 0 5px #e3e3e3;
+			-moz-box-shadow: 0 0 5px #e3e3e3;
+			box-shadow: 0 0 5px #e3e3e3;
+			background-color: #fff;
+			padding: 20px 30px;
+		}
+ #month_1
+ {
+ 
+ margin-left: 26px;
+ width: 100px;
+}
+ #month_2
+ {
+ margin-left: 21px;
+ width: 100px;
+}
+ #month_3
+ {
+ margin-left: 32px;
+ width: 100px;
+}
+ #month_4
+ {
+ margin-left: 42px;
+ width: 100px;
+}
+ #month_5
+ {
+ margin-left: 44px;
+ width: 100px;
+}
+ #month_6
+ {
+ margin-left: 45px;
+ width: 100px;
+}
+ #month_7
+ {
+ margin-left: 50px;
+ width: 100px;
+}
+ #month_8
+ {
+ margin-left: 31px;
+ width: 100px;
+}
+ #month_9
+ {
+ margin-left: 08px;
+ width: 100px;
+}
+ #month_10
+ {
+ margin-left: 24px;
+ width: 100px;
+}
+ #month_11
+ {
+ margin-left: 09px;
+ width: 100px;
+}
+#month_12
+ {
+ margin-left: 10px;
+ width: 100px;
+}
+#tb7 {
+	border: 3px double #CCCCCC;
+	width: 100px;
+	margin-left: 25px;
+    margin-bottom: 5px;
+}
+#chart_div
+{
+margin-left: 400px;
+margin-top: -590px;
+width: 1000px; 
+height: 500px;
+
+}
+#textbox1 {
+	border: 3px double #CCCCCC;
+	width: 150px;
+	margin-left: 23px
+         }
+		 #textbox2
+		 {
+	border: 3px double #CCCCCC;
+	width: 150px;
+	margin-left: 93px
+         }
+		 #textbox3
+		 {
+	border: 3px double #CCCCCC;
+	width: 150px;
+	margin-left: 61px
+         }
+
+#recommendation
+{
+border: 3px double #CCCCCC;
+width: 200px;
+margin-top: 90px;
+}
+
+#recommendationWindow1
+{
+overflow: auto;
+height: 400px;
+width: 700px;
+color: black;
+}
+
+#recommendationWindow2
+{
+overflow: auto;
+height: 400px;
+width: 700px;
+color: black;
+}
+
+  
+  </style>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+	  var monthVal = [];
+	  var chart;
+	  
+	  function clearTextbox()
+	 {
+		document.getElementById('month_1').value = "" ;
+		document.getElementById('month_2').value = "" ;
+		document.getElementById('month_3').value = "" ;
+		document.getElementById('month_4').value = "" ;
+		document.getElementById('month_5').value = "" ;
+		document.getElementById('month_6').value = "" ;
+		document.getElementById('month_7').value = "" ;
+		document.getElementById('month_8').value = "" ;
+		document.getElementById('month_9').value = "" ;
+		document.getElementById('month_10').value = "" ;
+		document.getElementById('month_11').value = "" ;
+		document.getElementById('month_12').value = "" ;
+		document.getElementById('textbox1').value = "" ;
+		document.getElementById('textbox2').value = "" ;
+		document.getElementById('textbox3').value = "" ;
+		document.getElementById('checkbox1').checked = false;
+		document.getElementById('checkbox2').checked = false;
+	 }
+
+	 google.load("visualization", "1", {packages:["corechart"]});
+      google.setOnLoadCallback(drawChart);
+	  clearTextbox();
+	  
+	  
+      function drawChart() {
+      
+
+        var options = {
+          title: 'Energy Utilization Chart',
+          hAxis: {title: 'Year',  titleTextStyle: {color: '#333'}},
+          vAxis: {minValue: 0}
+        };
+
+        chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
+        //chart.draw(data, options);
+      }
+	  
+
+	
+		function noGreenButton()
+		{
+			var greenOption = document.getElementById('checkbox1');
+			if (greenOption.checked)
+			{
+				document.getElementById('monthContainer').style.display = 'block';
+			}
+			else
+			{
+			 document.getElementById('monthContainer').style.display = 'none';
+			}
+		}
+
+function generateRecommendations()
+		{
+	
+		
+		 if (document.getElementById('month_3').value > "500" ||document.getElementById('month_4').value > '500' || document.getElementById('month_5').value > '500' || document.getElementById('month_6').value >'500' || document.getElementById('month_7').value > '500' || document.getElementById('month_8').value > '500')
+	 {
+		 document.getElementById('recommendationWindow1').style.display = 'block';
+	 }
+		 
+		else  if (document.getElementById('month_1').value > "500" ||document.getElementById('month_2').value > '500' || document.getElementById('month_9').value > '500' || document.getElementById('month_10').value >'500' || document.getElementById('month_11').value > '500' || document.getElementById('month_12').value > '500')
+	
+		 {
+	 document.getElementById('recommendationWindow2').style.display = 'block';
+	}
+	
+//else
+	//{
+	//document.getElementById('recommendationWindow3').style.display = 'block';
+	//}
+		
+		}
+
+
+
+
+
+		function dynamicCharts()
+		{
+		
+		if (document.getElementById('checkbox2').checked)
+		{
+		window.location.href = 'GoogleComboChart.html'
+		}
+		
+		
+		}
+	
+		function showChart() {
+			// Create our data table.
+			var data = new google.visualization.DataTable();
+			data.addColumn('string', 'Month');
+			data.addColumn('number', 'Kilo Watts');
+			data.addRows([
+			  ['Jan', parseInt(document.getElementById('month_1').value)],
+			  ['Feb', parseInt(document.getElementById('month_2').value)],
+			  ['Mar', parseInt(document.getElementById('month_3').value)],
+			  ['April', parseInt(document.getElementById('month_4').value)],
+			  ['May', parseInt(document.getElementById('month_5').value)],
+			  ['June', parseInt(document.getElementById('month_6').value)],
+			  ['July', parseInt(document.getElementById('month_7').value)],
+			  ['Aug', parseInt(document.getElementById('month_8').value)],
+			  ['Sept', parseInt(document.getElementById('month_9').value)],
+			  ['Oct', parseInt(document.getElementById('month_10').value)],
+			  ['Nov', parseInt(document.getElementById('month_11').value)],
+			  ['Dec', parseInt(document.getElementById('month_12').value)],
+			]);
+							
+			var options = {
+			  title: 'Energy Analyzer Chart',
+			  hAxis: {title: 'Year',  titleTextStyle: {color: '#333'}},
+			  vAxis: {minValue: 0}
+			};
+
+			chart.draw(data, options);
+			
+			document.getElementById('recommendation').style.display = 'block';		
+		}
+		
+		
+		
+		function clearRecommendationWindow1() {
+			
+document.getElementById("recommendationWindow1").style.display="none";
+}
+
+
+
+function clearRecommendationWindow2() {
+			
+document.getElementById("recommendationWindow2").style.display="none";
+}
+		
+		
+    </script>
+  </head>
+  <body background ="best.png" onload="clearTextbox();" style="color: white;">
+  <h1>Energy Analyzer </h1>
+  <p>Energy Analyzer allows the user to fill in the details or upload his bill that can be generated in the form of charts. If the energy consumption is high for a particular month. The generated recommendations helps user to cut down his energy consumption </p>
+  <div>
+  <li>
+			Household Size <input id = "textbox1" type="text"  name="HouseHoldSize"><br>
+		</li>
+		<li>
+					City:<input id = "textbox2" type="text" name="HouseArea"><br>
+		</li>
+		<li>
+			ZipCode:   <input id = "textbox3" type="text" name="ZipCode"><br>
+		</li>
+		<br>
+		Please choose the below option to generate your Energy Utilization Graphs <br>
+         <input  id = "checkbox1" type="checkbox" onclick ="noGreenButton();" name="NotGreenButton" value="NotGB"/>I do not have a Green Button File<br>
+         <input  id = "checkbox2" type="checkbox" onclick ="dynamicCharts();" name="GreenButton" value="GB"/>I have a Green Button File <br>
+		 </div>
+		 <div id = "monthContainer" style = "display: none">
+	  <table>
+		<tr><td> <br> <br>
+			January: <input id = "month_1" type="text"  name="January"><br>
+		</td></tr>
+		<tr><td>
+			February:<input id = "month_2" type="text" name="February"><br>
+		</td></tr>
+		<tr><td>
+			March:   <input id = "month_3" type="text" name="March"><br>
+		</td></tr>
+		<tr><td>
+			April:   <input id = "month_4" type="text" name="April"><br>
+		</td></tr>
+		<tr><td>
+			May: <input id = "month_5" type="text" name="May"><br>
+		</td></tr>
+		<tr><td>
+			June: <input id = "month_6" type="text" name="June"><br>
+		</td></tr>
+		<tr><td>
+			July: <input id = "month_7" type="text" name="July"><br>
+		</td></tr>
+		<tr><td>
+			August: <input id = "month_8" type="text" name="August"><br>
+		</td></tr>
+		<tr><td>
+			September: <input id = "month_9" type="text" name="September"><br>
+		</td></tr>
+		<tr><td>
+			October: <input id = "month_10" type="text" name="October"><br>
+		</td></tr>
+		<tr><td>
+			November: <input id = "month_11" type="text" name="November"><br>
+		</td></tr>
+		<tr><td>
+			December: <input id = "month_12" type="text" name="December"><br>
+		</td></tr>
+		<tr><td>
+			<input id = "tb7" type="button" value="Show Chart" onClick="showChart();"><br>
+			
+		</td></tr>
+	  </table>
+  </div>
+  
+
+    <div id="chart_div" style="width: 1000px; height: 500px;"></div>
+	<input id="recommendation" style="display:none;" type="button" value="Generate Recommendations" onClick="generateRecommendations();"><br>
+	
+	<div id="recommendationWindow1" class="overlay" style= "display:none;"  >
+	<ul>
+	Spring/Summer Energy Saving Tips <br><br>
+	As your energy consumption during Spring/Summer is more. Below are few tips to cut down the energy consumption. <br><br>
+	
+	1. Look for ENERGY STAR air conditioners. They are the most energy efficient models on the market.<br>
+    Replacing your old central air conditioner with a new ENERGY STAR qualified model can reduce your cooling     costs by 20 percent.<br><br>
+2. If possible, keep your room air conditioner out of the sun. Room air conditioners work best when kept cool. Installing one in a north-facing wall is usually ideal.<br><br>
+3. If you have central air conditioning, keep your thermostat at 78 degrees. You can also save approximately an additional six to seven percent off your cooling costs for each degree above 78.<br><br>
+4. If your air conditioner does not have a thermostat, adjust it to a lower setting, or combine using it with a window or ceiling fan to cool things down.<br><br>
+5. Consider installing a ceiling fan.  During hot weather a ceiling fan will create a cool breeze and keep the air circulating in your <br><br>
+6. Get rid of hot air. Use an exhaust fan to blow hot air out of your kitchen while you’re cooking. The savings on your cooling costs far outweigh the electricity used by the fan. Also, take lukewarm showers and baths to avoid humid air, which holds more heat.<br><br>
+7. A dehumidifier can greatly add to your electric bill. Make sure you have the appropriate sized dehumidifier for your home.<br><br>
+8. Close blinds, drapes and shades during the hottest part of the day. This keeps the strong sunlight from heating your home.<br><br>
+9. Use your microwave or countertop appliances for cooking instead of the oven or stove.<br><br>
+   What says summer better than burgers and hot dogs? Instead of using your oven or stove, which can generate heat on an already hot day, fire up the outdoor grill for cooking. You can also use your microwave or other countertop appliances in place of the stove or oven.<br><br>
+10. Turn your water heater down to 120 degrees Fahrenheit to save money on your electricity bill.  If you have children in the house, this is also a safety measure.<br><br>
+11. Install ENERGY STAR compact fluorescent light bulbs in your most-used fixtures and lamps. Fluorescent bulbs put out less heat, plus you’ll save $30 to $40 in energy costs over the life of each bulb.<br><br>
+12. Check your heating and cooling system to make sure it is operating at peak efficiency.<br><br>
+    Postpone laundry and dishwashing until nighttime to avoid generating extra heat in your home. Also, consider taking advantage of the warmer air and dry your laundry outside.<br><br>
+13. Dont forget about your own energy. Wearing lighter clothing can help cool you down without turning on the air conditioner. Also, remember to stay hydrated during extreme temperatures.<br><br>
+14. If you have a pool, turn off your filter overnight when the pool is not in use.<br><br>
+	
+	
+	</ul>
+	<input id = "tb7" type="button" value="OK" onClick="clearRecommendationWindow1();"><br>
+		</div>
+		
+		
+		<div id="recommendationWindow2" class="overlay" style="display:none;">
+	<ul>
+	Fall/Winter recommendations <br>
+
+The following tips will save you energy and help your budget during warmer weather.<br><br>
+
+
+1. Take Advantage of Heat from the Sun<br>
+Open curtains on your south-facing windows during the day to allow sunlight to naturally heat your home, and close them at night to reduce the chill you may feel from cold windows.<br><br>
+2. Cover Drafty Windows<br>
+Use a heavy-duty, clear plastic sheet on a frame or tape clear plastic film to the inside of your window frames during the cold winter months. Make sure the plastic is sealed tightly to the frame to help reduce infiltration.<br>
+Install tight-fitting, insulating drapes or shades on windows that feel drafty after weatherizing.<br>
+3. Adjust the Temperature<br>
+When you are home and awake, set your thermostat as low as is comfortable.<br>
+When you are asleep or out of the house, turn your thermostat back 10° to 15° for eight hours and save around 10% a year on your heating and cooling bills. <br>
+4. Find and Seal Leaks<br>
+Seal the air leaks around utility cut-throughs for pipes ("plumbing penetrations"), gaps around chimneys and recessed lights in insulated ceilings, and unfinished spaces behind cupboards and closets.<br>
+Add caulk or weatherstripping to seal air leaks around leaky doors and windows.<br><br>
+5. Maintain Your Heating Systems<br>
+Servicing  your heating system periodically.<br>
+Furnaces: Replace your furnace filter once a month or as needed.<br>
+Wood- and Pellet-Burning Heaters: Clean the flue vent regularly and clean the inside of the appliance with a wire brush periodically to ensure that your home is heated efficiently.<br><br>
+6. Reduce Heat Loss from the Fireplace<br>
+Keep your fireplace damper closed unless a fire is burning. Keeping the damper open is like keeping a window wide open during the winter; it allows warm air to go right up the chimney.<br>
+When you use the fireplace, reduce heat loss by opening dampers in the bottom of the firebox (if provided) or open the nearest window slightly -- approximately 1 inch -- and close doors leading into the room. Lower the thermostat setting to between 50° and 55°F.<br>
+If you never use your fireplace, plug and seal the chimney flue.<br>
+If you do use the fireplace, install tempered glass doors and a heat-air exchange system that blows warmed air back into the room.<br>
+Check the seal on the fireplace flue damper and make it as snug as possible.<br>
+Purchase grates made of C-shaped metal tubes to draw cool room air into the fireplace and circulate warm air back into the room.<br>
+Add caulking around the fireplace hearth.<br>
+7.Lower Your Water Heating Costs<br>
+Water heating can account for 14% to 25% of the energy consumed in your home.<br>
+Turn down the temperature of your water heater to the warm setting (120°F). You'll not only save energy, you'll avoid scalding your hands.<br>
+Lower Your Holiday Lighting Costs<br>
+Use light-emitting diode -- or "LED" -- holiday light strings to reduce the cost of decorating your home for the winter holidays.<br>
+Insulate or increase the amount of insulation in your attic, basement and outside walls. Also cover through-the-wall air conditioners to prevent cold air from leaking into your home.<br><br>
+	
+	</ul>
+	
+	<input id = "tb7" type="button" value="OK" onClick="clearRecommendationWindow2();"><br>
+		</div>
+	
+	
+  </body>
+</html>

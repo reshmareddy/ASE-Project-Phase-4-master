@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+	<link rel='stylesheet' href='../css/bootstrap.css'/>
+    <title>Energy Analyzer</title>
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+	
+	<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+    <script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    
+    <script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+	<script type="text/javascript" src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
+   <script src="http://code.highcharts.com/highcharts.js"></script>
+   <script src="http://code.highcharts.com/highcharts-more.js"></script>
+   <script src="http://code.highcharts.com/modules/exporting.js"></script>
+   <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+	<script type="text/javascript" src="../js/bootstrap.js"></script>
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
+
+	<script src="http://code.highcharts.com/stock/highstock.js"></script>
+	<script src="http://code.highcharts.com/stock/modules/exporting.js"></script>
+	 <script src="js/jquery-1.10.2.js"></script>
+    <script src="js/bootstrap.js"></script>
+	<script type="text/javascript" src="../js/soap.js"></script>
+	<script type="text/javascript" src="../js/soapclient.js"></script>
+	
+	<!-- Bootstrap core CSS -->
+    <link href="../NewStyling/css/bootstrap.css" rel="stylesheet">
+
+    <!-- Add custom CSS here -->
+    <link href="../NewStyling/css/business-casual.css" rel="stylesheet">
+	
+	<style>
+
+.brand: hover
+{
+cursor: pointer;
+ color: #f00;
+
+}
+
+.ask-title-field{
+width:610px;
+}
+
+.edit-field-overlayed{
+color:#888;
+}
+
+.wmd-button-bar{
+height:25px;
+width:660px;
+clear:both;
+background-color:#fff;
+margin-top:10px;
+margin-right:0px;
+margin-bottom:1px;
+margin-left:0px;}
+
+.wmd-button-row{
+position:relative;
+padding:0px;
+height:20px;
+margin:0px;
+}
+.wmd-button{
+width:20px;
+height:20px;
+padding-left:2px;
+padding-right:3px;
+position:absolute;
+display:inline-block;
+list-style:none;
+cursor:pointer;
+}
+label {
+		display: inline-block;
+		margin-bottom: 5px;
+		font-weight: normal;
+		
+	}
+	#container1 {
+    font-family:helvetica, sans-serif;
+    font-size:.7em;
+}
+p {
+    margin:.5em 1em;
+}
+div.overlay {
+			position: absolute;
+			top: 200px;
+			left: 50%;
+			width: 700px;
+			height: 300px;
+			overflow: auto;
+			margin-left: -314px;
+			opacity: 1; filter: alpha(opacity=100);
+			z-index: 1002;
+			border: 1px solid #e3e3e3;
+			-webkit-box-shadow: 0 0 5px #e3e3e3;
+			-moz-box-shadow: 0 0 5px #e3e3e3;
+			box-shadow: 0 0 5px #e3e3e3;
+			background-color: #fff;
+			padding: 20px 30px;
+			font:20px Arial;
+		}
+
+.discussion .col-lg-4 {
+	text-align:right;
+	
+	}
+	
+	.navbar-brand {
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-weight: 900;
+}
+
+.overrideNavigation .navbar-nav {
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  font-weight: 400;
+}
+
+.overrideNavigation .navbar {
+  border-radius: 0;
+}
+
+.overrideNavigation .navbar-header {
+  display: none;
+}
+
+.overrideNavigation .navbar {
+  min-height: 0;
+}
+
+.overrideNavigation .navbar-default {
+  background: #fff;
+  background: rgba(255,255,255,0.9);
+  border: none;
+}
+
+.overrideNavigation .nav>li>a {
+  padding: 35px;
+}
+
+.overrideNavigation .navbar-nav>li>a {
+  line-height: normal;
+}
+
+.overrideNavigation .navbar-nav {
+  float: none;
+  margin: 0 auto;
+  display: table;
+  table-layout: fixed;
+  font-size: 1.25em;
+}
+
+
+</style>
+
+
+		<!-- 2. Add the JavaScript to initialize the chart on document ready -->
+		<script type="text/javascript">
+		
+	$(document).ready(function() 
+	{
+		var userName1 =	localStorage.getItem("userNameMain");
+		
+		document.getElementById("Welcome").innerHTML = "Welcome";
+		document.getElementById("userNameCommunity").value = myMap.Initcap(userName1);
+		document.getElementById("userNameCommunity").innerHTML = myMap.Initcap(userName1);
+	});
+		 var tt = 0;	
+		   var temp=new Array();
+		   var str="";
+		   
+		  var temp1=new Array();
+		   var str1="";
+		   
+		window.onload = function() {
+
+			//Check File API support
+			if (window.File && window.FileList && window.FileReader) {
+			}
+			else {
+				alert("Your browser does not support File API");
+			}
+		}
+		function getFiles() {
+            // Get input element
+            myFileList = document.getElementById("myfiles");
+            // loop through files property, using length to get number of files chosen
+            /*for (var i = 0; i < myFileList.files.length; i++) {
+                // display them in the div
+                document.getElementById("display").innerHTML += "<br/>" + myFileList.files[i].name ;
+            }*/
+        }
+		
+		function getFileContent() {
+		 myFileList = document.getElementById("myfiles");
+			var xmlFile = myFileList.files[0];
+			if (xmlFile) {
+				  var r = new FileReader();
+				  
+				  r.onload = function(e) { 
+					var contents = e.target.result;
+					xmlDoc = $.parseXML( contents );
+					$xml = $( xmlDoc );
+		
+		   
+		  
+
+			
+			
+			// Load the data from the XML file 
+			
+				
+				// Split the lines
+				
+				
+				
+				
+				// push series
+				$xml.find('IntervalBlock').each(function(i, series) {
+				var kiloVal = $(this).find("IntervalReading>value").text();
+						kiloString = kiloVal.substr(0,2);
+						kiloString += '.';
+						kiloString += kiloVal.substr(1,2);
+						
+					
+						var kilowatt = Number(kiloString);
+						var costVal = $(this).find("IntervalReading>cost").text();
+						costString = costVal.substr(0,1);
+						costString += '.';
+						costString += costVal.substr(1,2);
+						var cost = Number(costString);
+						
+					temp.push(kilowatt);
+					temp1.push(cost);
+
+					//temp[tt] = kilowatt; 	
+				//	tt++;
+					if (tt == 0){
+						str = str + temp[tt];
+						str1=str1+temp1[tt];
+					}else{
+						str = str + "," + temp[tt];
+						str1=str1+ "," + temp1[tt];
+					}
+					
+				
+					tt++;
+			
+					
+				
+					
+					
+				
+				});
+				
+			
+				var data= temp;
+				var data1=temp1;
+				dLen = data.length;
+		dLen1 = data1.length;
+		
+
+    for (var i = 0; i <dLen; i++) {
+        data[i] = [Date.UTC(2011, 3, i),data[i]];
+    }
+	for (var j = 0; j <dLen1; j++) {
+        data1[j] = [Date.UTC(2011, 3, j),data1[j]];
+    }
+	
+	
+document.getElementById('recommendation').style.display = 'block';
+
+    var chart = new Highcharts.Chart({
+        chart: {
+            renderTo: 'contain',
+            zoomType: 'x',
+            
+            spacingRight: 20
+        },
+		lang: {
+            graph1: 'go to graph1',
+			home_page: 'Home Page'
+        },
+		
+        title: {
+            text: 'Energy and Cost Analysis per Month',
+                            
+        },
+        subtitle: {
+            text: document.ontouchstart === undefined ?
+                'Click and drag in the plot area to zoom in' :
+                'Drag your finger over the plot to zoom in',
+            
+        },
+		
+        xAxis: {
+            type: 'datetime',
+            dateTimeLabelFormats: {
+                second: '%H:%M:%S',
+                minute: '%H:%M',
+                hour: '%H:%M',
+                day: '%e. %b',
+                week: '%e. %b',
+                month: '%b', //formatted as month only
+                year: '%Y'
+            },
+            labels: {
+                
+                rotation: -45
+            },
+            maxZoom: 24 * 3600 * 1000 * 30, // fourteen days
+            title: {
+                text: 'Enegry and cost Analysis'
+            }
+        },
+        yAxis: {
+            
+                title: {
+                    text: 'Value',
+                    
+                }
+        },
+        tooltip: {
+            shared: true
+           /* formatter: function () {
+                var result = '<b>' + Highcharts.dateFormat('%b %e, %Y', this.x) + '</b>';
+                $.each(this.points, function (i, datum) {
+                    result += '<br />' + datum.y + ' Energy consumed in KW/hr';
+					var result1 = '<b>' + Highcharts.dateFormat('%b %e, %Y', this.x) + '</b>';
+					}
+                $.each(this.points, function (j, datum) {
+                    result1 += '<br />' + datum.y + ' Energy';
+                    
+                       
+                
+                }
+				});
+                return result;
+				return result1;
+            }*/
+        },
+		
+        legend: {
+            enabled: false
+        },
+       
+
+        plotOptions: {
+            area: {
+                fillColor: {
+                    linearGradient: {
+                        x1: 0,
+                        y1: 0,
+                        x2: 0,
+                        y2: 1
+                    },
+                    stops: [
+                        [0, Highcharts.getOptions().colors[0]],
+                        [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+                    ]
+                },
+                
+                lineWidth: 1,
+                marker: {
+                    enabled: true
+                },
+                shadow: false,
+                states: {
+                    hover: {
+                        lineWidth: 1
+                    }
+                },
+                threshold: null
+            }
+        },
+		legend: {
+                layout: 'vertical',
+                align: 'right',
+                verticalAlign: 'middle',
+                borderWidth: 0
+            },
+
+        series: [
+		{
+            type: 'spline',
+            name: 'Cost in $',
+			labels: {
+                    
+                    style: {
+                        color: '#FFFFFF'
+                    }
+                },
+            
+           dataGrouping: {
+                enabled: false
+            },
+            data: data1,
+			color:'#99FF66'
+            
+        },
+		{
+            type: 'area',
+            name: 'Energy in kW/hr',
+              
+            dataGrouping: {
+                enabled: false
+            },
+            data: data
+            
+        }
+		]
+		
+    
+	});			
+		}
+				  
+					r.readAsText(xmlFile);
+				} else { 
+				  alert("Failed to load data file.");
+				}
+        }		
+		
+		
+		 $('.carousel').carousel({
+        interval: 5000
+    })
+			
+		function generateRecommendations(){
+document.getElementById('RecommendationWindow1').style.display = 'block';
+		}		
+		</script>
+		
+		
+		
+	</head> 
+	
+	<body>
+
+    <div class="brand">E-Smart</div>
+    <div class="address-bar">University of Missouri Kansas City | 5100 Rockhill Road | Kansas City,MO 64110| (816) 235-1000</div>
+
+   <div class="overrideNavigation">
+<nav class="navbar navbar-default" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html">E-Smart</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse navbar-ex1-collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="index.html">Home</a>
+                    </li>
+                    <li><a href="about.html">About</a>
+                    </li>
+                    <li><a href="blog.html">Blog</a>
+                    </li>
+                    <li><a href="contact.html">Contact</a>
+                    </li>
+                </ul>
+            </div>
+			
+			
+			
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+		
+    </nav>
+	</div>
+	
+	
+	
+	
+	
+	
+
+    <div class="container">
+
+  <!--      <div class="row">
+            <div class="box">
+                <div class="col-lg-12 text-center">
+                    <div id="carousel-example-generic" class="carousel slide">
+                        
+
+	<head>-->
+	<div style="float:right;width:300px;">
+			<div style="float:left;margin:5px;font:12px Arial bold;" id="Welcome"></div>
+			<div style="float:left;margin:5px;font:12px Arial bold;" id="userNameCommunity"></div>
+			</div>
+	<div class="row">
+<div class="box">
+<div class="col-lg-12 text-left">
+	
+			
+    <h1 style="clear:both;margin-left:0px">Learn About Energy Analyzer</h1>
+	<div style="clear:both;margin-left:0px">
+    <p>Making your home more energy efficient with Energy Analyzer, can help you to reduce high energy bills, by giving a day to day energy and cost details for whole year.Set of recommendations are also available for the users</p>
+	</div>
+    
+</div>
+</div>
+</div>
+
+
+<div class="row" id="discussion">
+         <div class="box">
+           <div class="col-lg-12 text-left">
+   
+	
+		
+		
+	<div class="address-bar" style = "color: #000000; ">	
+
+ <label id="font1"> Please select your bill and click upload
+	
+	<br/><input type="file" id="myfiles" onchange="getFiles();" /></label>
+	
+	</label>
+	
+	 <a href="#" class="btn btn-large btn-success" onclick="getFileContent();">Upload!</a>
+	<div style="width:10%;margin: 0 auto">
+	
+	<!--<input type="submit" id="upload" value="Upload" onclick="getFileContent();"/> -->
+	</div>
+
+	<input id="recommendation" class="btn btn-large btn-success" style="display:none;" type="button" value="Generate Recommendations" onClick="generateRecommendations();"><br>
+	
+	<div id="RecommendationWindow1" class="overlay" style= "font:12px Arial bold;display:none;">
+	<ul>
+	
+	You are using more energy than needed lin your living space. You can save more energy by following below recommendations. <br><br>
+	
+	1. Look for ENERGY STAR air conditioners. They are the most energy efficient models on the market.<br><br>
+
+2. Replacing your old central air conditioner with a new ENERGY STAR qualified model can reduce your cooling costs by 20 percent.<br><br>
+ 
+3. If possible, keep your room air conditioner out of the sun. Room air conditioners work best when kept cool. Installing one in a north-facing wall is usually ideal.<br><br>
+
+4. If you have central air conditioning, keep your thermostat at 78 degrees. You can also save approximately an additional six to seven percent off your cooling costs for each degree above 78.<br><br>
+ 
+5. If your air conditioner does not have a thermostat, adjust it to a lower setting, or combine using it with a window or ceiling fan to cool things down.<br><br>
+
+6. Consider installing a ceiling fan.  During hot weather a ceiling fan will create a cool breeze and keep the air circulating in your home.<br><br>
+ 
+7. Get rid of hot air. Use an exhaust fan to blow hot air out of your kitchen while you’re cooking. The savings on your cooling costs far outweigh    the electricity used by the fan. Also, take lukewarm showers and baths to avoid humid air, which holds more heat.<br><br>
+ 
+8. A dehumidifier can greatly add to your electric bill. Make sure you have the appropriate sized dehumidifier for your home.<br><br>
+
+9. Close blinds, drapes and shades during the hottest part of the day. This keeps the strong sunlight from heating your home.<br><br>
+ 
+10.Use your microwave or countertop appliances for cooking instead of the oven or stove.<br><br>
+
+11.What says summer better than burgers and hot dogs? Instead of using your oven or stove, which can generate heat on an already hot day, fire up the outdoor grill for cooking. You can also use your microwave or other countertop appliances in place of the stove or oven.<br><br>
+ 
+12.Turn your water heater down to 120 degrees Fahrenheit to save money on your electricity bill.  If you have children in the house, this is also a safety measure.<br><br>
+
+13. Open curtains on your south-facing windows during the day to allow sunlight to naturally heat your home, and close them at night to reduce the chill you may feel from cold windows.<br><br>
+ 
+14. Use a heavy-duty, clear plastic sheet on a frame or tape clear plastic film to the inside of your window frames during the cold winter months. Make sure the plastic is sealed tightly to the frame to help reduce infiltration.Install tight-fitting, insulating drapes or shades on windows that feel drafty after weatherizing.<br><br>
+ 
+15. When you are asleep or out of the house, turn your thermostat back 10° to 15° for eight hours and save around 10% a year on your heating and cooling bills.<br><br> 
+
+16. Seal the air leaks around utility cut-throughs for pipes ("plumbing penetrations"), gaps around chimneys and recessed lights in insulated ceilings, and unfinished spaces behind cupboards and closets.<br><br>
+ 
+    Add caulk or weatherstripping to seal air leaks around leaky doors and windows.<br><br>
+	
+	
+	</ul>
+	<input id = "tb10" type="button" value="OK" onClick="RecommendationWindow1.style.visibility='hidden'"><br>
+		</div>
+	
+	<div>
+		<div id="contain"  style="width:70%;margin: 0 auto"></div>
+
+
+    </div>
+	
+	
+	</div>
+	
+    <!-- /.container -->
+
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    
+
+</body>
+
+</html>

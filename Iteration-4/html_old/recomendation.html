@@ -1,0 +1,403 @@
+<!DOCTYPE html> 
+<html> 
+<head>
+<div id="" style ="width:50%;margin:0 auto">
+
+  <script src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
+	
+    <link href='http://fonts.googleapis.com/css?family=Droid+Serif|Lobster+Two' rel='stylesheet' type='text/css'>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript"></script>
+    <link rel='stylesheet' href='../css/myStyleSheet-upd.css' />
+	
+	<link rel='stylesheet' href='../css/bootstrap.css'/>
+	<script type="text/javascript" src="../js/bootstrap.js"></script>
+	<!-- Bootstrap core CSS -->
+    <link href="../NewStyling/css/bootstrap.css" rel="stylesheet">
+
+    <!-- Add custom CSS here -->
+    <link href="../NewStyling/css/business-casual.css" rel="stylesheet">
+
+
+<style type='text/css'>
+ .container {
+    width:100%;
+    border:1px solid #d3d3d3;
+}
+.container div {
+    width:100%;
+}
+
+        
+
+.container .header {
+    background-color:#BDCEFF;
+    padding: 2px;
+    cursor: pointer;
+    font-weight: bold;
+}
+.container .content {
+    display: none;
+    padding : 5px;
+}
+.contain {
+    width:100%;
+    border:1px solid #BDCEFF;
+}
+.contain div {
+    width:100%;
+}
+.contain .head {
+    background-color:#BDCEFF;
+    padding: 2px;
+    cursor: pointer;
+    font-weight: bold;
+}
+.contain .content {
+    display: none;
+    padding : 5px;
+}
+.con {
+    width:100%;
+    border:1px solid #BDCEFF;
+}
+.con div {
+    width:100%;
+}
+.con .hea {
+    background-color:#BDCEFF;
+    padding: 2px;
+    cursor: pointer;
+    font-weight: bold;
+}
+.con .content {
+    display: none;
+    padding : 5px;
+}
+.contain2 {
+    width:100%;
+    border:1px solid #BDCEFF;
+}
+.contain2 div {
+    width:100%;
+}
+.contain2 .he {
+    background-color:#BDCEFF;
+    padding: 2px;
+    cursor: pointer;
+    font-weight: bold;
+}
+.contain2 .content {
+    display: none;
+    padding : 5px;
+}
+.contain3 {
+    width:100%;
+    border:1px solid #BDCEFF;
+}
+.contain3 div {
+    width:100%;
+}
+.contain3 .he2 {
+    background-color:#BDCEFF;
+    padding: 2px;
+    cursor: pointer;
+    font-weight: bold;
+}
+.contain3 .content {
+    display: none;
+    padding : 5px;
+}
+.contain4 {
+    width:100%;
+    border:1px solid #BDCEFF;
+}
+.contain4 div {
+    width:100%;
+}
+.contain4 .he3 {
+    background-color:#BDCEFF;
+    padding: 2px;
+    cursor: pointer;
+    font-weight: bold;
+}
+.contain4 .content {
+    display: none;
+    padding : 5px;
+}
+.contain5 {
+    width:100%;
+    border:1px solid #BDCEFF;
+}
+.contain5 div {
+    width:100%;
+}
+.contain5 .he4 {
+    background-color:#BDCEFF;
+    padding: 2px;
+    cursor: pointer;
+    font-weight: bold;
+}
+.contain5 .content {
+    display: none;
+    padding : 5px;
+}
+
+</style>
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
+	<script type="text/javascript" src="http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.js"></script>
+	<script type="text/javascript">
+	$(".header").click(function () {
+
+    $header = $(this);
+    //getting the next element
+    $content = $header.next();
+    //open up the content needed - toggle the slide- if visible, slide up, if not slidedown.
+    $content.slideToggle(500, function () {
+        //execute this after slideToggle is done
+        //change text of header based on visibility of content div
+        $header.text(function () {
+            //change text based on condition
+            return $content.is(":visible") ? "Heater and cooling" : "Heater and cooling";
+        });
+    });
+
+});
+$(".head").click(function () {
+
+    $header = $(this);
+    //getting the next element
+    $content = $header.next();
+    //open up the content needed - toggle the slide- if visible, slide up, if not slidedown.
+    $content.slideToggle(500, function () {
+        //execute this after slideToggle is done
+        //change text of header based on visibility of content div
+        $header.text(function () {
+            //change text based on condition
+            return $content.is(":visible") ? "Refrigerator" : "Refrigerator";
+        });
+    });
+
+});
+
+$(".hea").click(function () {
+
+    $header = $(this);
+    //getting the next element
+    $content = $header.next();
+    //open up the content needed - toggle the slide- if visible, slide up, if not slidedown.
+    $content.slideToggle(500, function () {
+        //execute this after slideToggle is done
+        //change text of header based on visibility of content div
+        $header.text(function () {
+            //change text based on condition
+            return $content.is(":visible") ? "Washer/Dryer" : "Washer/Dryer";
+        });
+    });
+
+});
+
+$(".he").click(function () {
+
+    $header = $(this);
+    //getting the next element
+    $content = $header.next();
+    //open up the content needed - toggle the slide- if visible, slide up, if not slidedown.
+    $content.slideToggle(500, function () {
+        //execute this after slideToggle is done
+        //change text of header based on visibility of content div
+        $header.text(function () {
+            //change text based on condition
+            return $content.is(":visible") ? "Dishwasher/Microwave" : "Dishwasher/Microwave";
+        });
+    });
+
+});
+
+$(".he2").click(function () {
+
+    $header = $(this);
+    //getting the next element
+    $content = $header.next();
+    //open up the content needed - toggle the slide- if visible, slide up, if not slidedown.
+    $content.slideToggle(500, function () {
+        //execute this after slideToggle is done
+        //change text of header based on visibility of content div
+        $header.text(function () {
+            //change text based on condition
+            return $content.is(":visible") ? "Water Heaters" : "Water Heaters";
+        });
+    });
+
+});
+
+$(".he3").click(function () {
+
+    $header = $(this);
+    //getting the next element
+    $content = $header.next();
+    //open up the content needed - toggle the slide- if visible, slide up, if not slidedown.
+    $content.slideToggle(500, function () {
+        //execute this after slideToggle is done
+        //change text of header based on visibility of content div
+        $header.text(function () {
+            //change text based on condition
+            return $content.is(":visible") ? "Lighting" : "Lighting";
+        });
+    });
+
+});
+$(".he4").click(function () {
+
+    $header = $(this);
+    //getting the next element
+    $content = $header.next();
+    //open up the content needed - toggle the slide- if visible, slide up, if not slidedown.
+    $content.slideToggle(500, function () {
+        //execute this after slideToggle is done
+        //change text of header based on visibility of content div
+        $header.text(function () {
+            //change text based on condition
+            return $content.is(":visible") ? "Electronics" : "Electronics";
+        });
+    });
+
+});
+</script>
+<body>
+
+<div class="brand">RECOMMENDATIONS</div>
+ 
+		
+<div id="row">
+         <div class="box">
+           <div class="col-lg-12 text-left">	
+
+   
+<br/>
+<div class="contain">
+    <div class="head"><span>Refrigerator</span>
+    </div>
+    
+    <div class="content">
+        <img src="http://www.imageurlhost.com/images/2dd9i20evrtuq1yd7heq_refrigerator.png" alt="Smiley face" width="150" height="150" style="float:right">
+        <ul>
+            <li> Allow air circulation behind the fridge.</li>
+                <li>How cold is your refrigerator?<br> Having it too cold can be a waste of energy. 
+It is recommended that the temperature for the refrigerator is 37 to 40 degrees Fahrenheit, and that the freezer is 0 to 5 degrees Fahrenheit.
+                    </br> </li>
+            
+            <li>Dusty condenser coils cause your refrigerator to work harder, leading to higher bills, and a shorter life for the fridge. </li>
+            <br/>
+            <li>Clean them with a vacuum, duster, or a cleaner every three months to ensure it is running efficiently. If you have pets clean it every month.</li>
+            
+        </ul>
+    </div>
+    
+</div>
+<br/>
+<div class="con">
+    <div class="hea"><span>Washer/Dryer</span>
+        
+</div> 
+    <div class="content">
+        <img src="http://www.imageurlhost.com/images/7jku2zq9g3h1uc0ij84h_washer.png" alt="Smiley face" width="150" height="150" style="float:right">
+        <ul>
+            <li>Is the lint screen on your dryer clean? A clogged lint screen makes the dryer use more energy. </li>
+            <br/>
+            <li>Dry one load right after the other. This will reduce warm-up and drying times.</li>
+            <br/>
+            <li>Wash your laundry with cold water whenever possible. To save water, try to wash full loads or, if you must wash a partial load, reduce the level of water appropriately.</li>
+            <br/>
+            <li>Hot water heating accounts for about 90 percent of the energy your machine uses to wash clothes - only 10 percent goes to electricity used by the washer motor.</li>
+            <br/>
+            <li>Depending on the clothes and local water quality (hardness), many homeowners can effectively do laundry exclusively with cold water, using cold water laundry detergents.</li>
+            <br/>
+            <li>Switching to cold water can save the average household more than $40 annually (with an electric water heater) and more than $30 annually (with a gas water heater).</li><br/>
+        </ul>
+    </div>
+</div>
+<br/>
+<div class="contain2">
+    <div class="he"><span>Dishwasher/Microwave</span>
+    </div>
+    
+    <div class="content">
+        <img src="http://www.imageurlhost.com/images/fjlknorujsv2dfd9u_microwave.png" alt="Smiley face" width="150" height="150" style="float:right">
+        
+        <ul>
+            <li>Rinsing dishes can use up to 20 gallons of water before the dishes are even loaded. Save yourself the rinsing-just scrape food off dishes. ENERGY STAR qualified dishwashers and today's detergents are designed to do the cleaning so you don't have to.</li><br/>
+            <li>If your dirty dishes sit overnight, use your dishwasher's rinse feature. It uses a fraction of the water needed to hand rinse.</li><br/>
+            <li>Dishwashers use about the same amount of energy and water regardless of the number of dishes inside, so run full loads whenever possible.</li><br/>
+            <li>Select the no-heat drying option. It gives good drying results with less energy.</li>
+            <p><li><b>Microwave</b><br/>
+Use your microwave or toaster oven to reheat or cook small portions. You can reduce cooking energy by as much as 80 percent when using your microwave for small portions. This also helps save on a/c costs in summer, since less heat is generated when compared to using your stove or oven.
+</li></p>
+        </ul>
+    </div>
+    
+</div>
+<br/>
+<div class="contain3">
+    <div class="he2"><span>Water Heaters</span>
+    </div>
+    
+    <div class="content">
+        <img src="http://www.imageurlhost.com/images/u8m55ymjmjbgs8oky09i_hotwater.png" alt="Smiley face" width="150" height="150" style="float:right">
+        <ul>
+            <li>Set your water heater thermostat to 120 F or lower. Savings resulting from turning down your water heater temperature are based on two components: reduced standby losses (heat lost from water heater into surrounding basement area); and consumption (from water demand or use in your home).</li><br/>
+            <li>Set too high, or at 140 degrees F, your water heater can waste anywhere from $36 to $61 annually in standby heat losses and more than $400 in demand losses.</li><br/>
+            <li>Set at 120 degrees F, you will save energy and money.</li>
+           
+        </ul>
+    </div>
+    
+</div>
+<br/>
+<div class="contain4">
+    <div class="he3"><span>Lighting</span>
+    </div>
+    
+    <div class="content">
+        <img src="http://www.imageurlhost.com/images/600odc775c5w2105nyy_light.png" alt="Smiley face" width="150" height="150" style="float:right">
+        <ul>
+            <li>Replacing your five most frequently used light fixtures or the bulbs in them with ENERGY STAR qualified lights can save $70 a year in energy costs.</li><br/>
+            <li>ENERGY STAR qualified compact fluorescent light bulbs (CFLs) provide high-quality light output, use less energy and last up to 10 times longer than standard incandescent light bulbs, saving money on energy bills and replacement costs.</li><br/>
+            <li>Replace one light at home with an ENERGY STAR qualified one</li>
+            
+        </ul>
+    </div>
+    
+</div>
+<br/>
+<div class="contain5">
+    <div class="he4"><span>Electronics</span>
+    </div>
+    
+    <div class="content">
+        <img src="http://www.imageurlhost.com/images/80dn5cqk4c4xjvidgzlh_electronics.png" alt="Smiley face" width="150" height="150" style="float:right">
+        <ul>
+            <li><p><b>Computers</b><br/>
+There is a common misconception that screen savers reduce energy use by monitors; they do not. Automatic switching to sleep mode or manually turning monitors off is always the better energy-saving strategy.
+
+                </p></li>
+            <li><p><b>Televisions, DVD Players</b><br/>
+Plug home electronics, such as TVs and DVD players, into power strips; turn the power strips off when the equipment is not in use (TVs and DVDs in standby mode still use several watts of power).
+</p></li>
+            <li><p><b>Battery Chargers</b><br/>
+Studies have shown that using rechargeable batteries for products like cordless phones and PDAs is more cost effective than throwaway batteries. If you must use throwaways, check with your trash removal company about safe disposal options.
+Unplug battery chargers when the batteries are fully charged or the chargers are not in use.
+</p></li>
+            
+        </ul>
+    </div>
+    
+</div>
+<br/>
+</div>
+</div>
+</div>
+
+</body>
+</html>
+	

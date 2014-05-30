@@ -1,0 +1,377 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>Highcharts</title>
+		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.css">
+		
+
+	
+	<style type='text/css'>
+	#contain {
+    background: url(http://www.imageurlhost.com/images/zrrxkx0fok8zzuppci5d_best.png) 
+	repeat;
+	
+}
+
+
+</style>
+	<script type="text/javascript" src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
+	<script type="text/javascript" src="http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.js"></script>
+	<script src="http://code.highcharts.com/stock/highstock.js"></script>
+	<script src="http://code.highcharts.com/stock/modules/exporting.js"></script>
+	
+		
+		
+		<!-- 1. Add these JavaScript inclusions in the head of your page -->
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+		
+		
+		<!-- 2. Add the JavaScript to initialize the chart on document ready -->
+		<script type="text/javascript">
+		
+ 
+		 var tt = 0;	
+		   var temp=new Array();
+		   var str="";
+		   
+		  var temp1=new Array();
+		   var str1="";
+		   
+		window.onload = function() {
+
+			//Check File API support
+			if (window.File && window.FileList && window.FileReader) {
+			}
+			else {
+				alert("Your browser does not support File API");
+			}
+		}
+		function getFiles() {
+            // Get input element
+            myFileList = document.getElementById("myfiles");
+            // loop through files property, using length to get number of files chosen
+            /*for (var i = 0; i < myFileList.files.length; i++) {
+                // display them in the div
+                document.getElementById("display").innerHTML += "<br/>" + myFileList.files[i].name ;
+            }*/
+        }
+		
+		function getFileContent() {
+		 myFileList = document.getElementById("myfiles");
+			var xmlFile = myFileList.files[0];
+			if (xmlFile) {
+				  var r = new FileReader();
+				  
+				  r.onload = function(e) { 
+					var contents = e.target.result;
+					xmlDoc = $.parseXML( contents );
+					$xml = $( xmlDoc );
+		
+		   
+		  
+
+			
+			
+			// Load the data from the XML file 
+			
+				
+				// Split the lines
+				
+				
+				
+				
+				// push series
+				$xml.find('IntervalBlock').each(function(i, series) {
+				var kiloVal = $(this).find("IntervalReading>value").text();
+						kiloString = kiloVal.substr(0,2);
+						kiloString += '.';
+						kiloString += kiloVal.substr(1,2);
+						
+					
+						var kilowatt = Number(kiloString);
+						var costVal = $(this).find("IntervalReading>cost").text();
+						costString = costVal.substr(0,1);
+						costString += '.';
+						costString += costVal.substr(1,2);
+						var cost = Number(costString);
+						
+					temp.push(kilowatt);
+					temp1.push(cost);
+
+					//temp[tt] = kilowatt; 	
+				//	tt++;
+					if (tt == 0){
+						str = str + temp[tt];
+						str1=str1+temp1[tt];
+					}else{
+						str = str + "," + temp[tt];
+						str1=str1+ "," + temp1[tt];
+					}
+					
+				
+					tt++;
+			
+					
+				
+					
+					
+				
+				});
+				
+			
+				var data= temp;
+				var data1=temp1;
+				dLen = data.length;
+		dLen1 = data1.length;
+		
+
+    for (var i = 0; i <dLen; i++) {
+        data[i] = [Date.UTC(2011, 3, i),data[i]];
+    }
+	for (var j = 0; j <dLen1; j++) {
+        data1[j] = [Date.UTC(2011, 3, j),data1[j]];
+    }
+	
+	
+
+
+    var chart = new Highcharts.Chart({
+        chart: {
+            renderTo: 'contain',
+            zoomType: 'x',
+            backgroundColor: 'transparent',
+            spacingRight: 20
+        },
+		lang: {
+            graph1: 'go to graph1',
+			home_page: 'Home Page'
+        },
+		
+        title: {
+            text: 'Energy and Cost Analysis per Month',
+                            style: {
+                        color: '#FFFFFF'
+                    }
+        },
+        subtitle: {
+            text: document.ontouchstart === undefined ?
+                'Click and drag in the plot area to zoom in' :
+                'Drag your finger over the plot to zoom in',
+            style: {
+                        color: '#FFFFFF'
+                    }
+        },
+		
+        xAxis: {
+            type: 'datetime',
+            dateTimeLabelFormats: {
+                second: '%H:%M:%S',
+                minute: '%H:%M',
+                hour: '%H:%M',
+                day: '%e. %b',
+                week: '%e. %b',
+                month: '%b', //formatted as month only
+                year: '%Y'
+            },
+            labels: {
+                style: {
+                    fontFamily: 'Tahoma',
+                    color: '#FFFFFF'
+
+                },
+                rotation: -45
+            },
+            maxZoom: 24 * 3600 * 1000 * 30, // fourteen days
+            title: {
+                text: 'Enegry and cost Analysis'
+            }
+        },
+        yAxis: {
+            labels: {
+                    
+                    style: {
+                        color: '#FFFFFF'
+                    }
+                },
+                title: {
+                    text: 'Value',
+                    style: {
+                        color: '#FFFFFF'
+                    }
+                }
+        },
+        tooltip: {
+            shared: true
+           /* formatter: function () {
+                var result = '<b>' + Highcharts.dateFormat('%b %e, %Y', this.x) + '</b>';
+                $.each(this.points, function (i, datum) {
+                    result += '<br />' + datum.y + ' Energy consumed in KW/hr';
+					var result1 = '<b>' + Highcharts.dateFormat('%b %e, %Y', this.x) + '</b>';
+					}
+                $.each(this.points, function (j, datum) {
+                    result1 += '<br />' + datum.y + ' Energy';
+                    
+                       
+                
+                }
+				});
+                return result;
+				return result1;
+            }*/
+        },
+		
+        legend: {
+            enabled: false
+        },
+       exporting: {
+        buttons: {
+            testButton: {
+                symbol: 'url(http://cdn1.iconfinder.com/data/icons/fatcow/16/chart_bar.png)',
+                x: -42,
+                symbolFill: '#B5C9DF',
+                hoverSymbolFill: '#779ABF',
+				
+               _titleKey: 'graph1',
+                onclick: function() {
+                   window.location.href='GoogleComboChart.html'
+                }
+            },
+			customButton: {
+                symbol: 'url(http://www.imageurlhost.com/images/xqngiin83hsao32gjw7_hom.png)',
+                x: -80,
+                symbolFill: '#B5C9DF',
+                hoverSymbolFill: '#779ABF',
+                _titleKey: 'home_page',
+                onclick: function() {
+                   window.location.href='homepage.html'
+                }
+            },
+			customButton1: {
+                text: 'Generate Recommedations',
+                y: 355,
+				
+                
+                onclick: function() {
+				 	 alert( 
+        'RECOMMENDATIONS TO SAVE ENERGY\n\n'
+        + "\t• Seal the air leaks around utility cut-throughs for pipes , gaps around chimneys and recessed lights in insulated ceilings, and unfinished spaces behind cupboards and closets.1\n"
+        + '\t• Turn down the temperature of your water heater to the warm setting (120°F). You Will not only save energy, you Will avoid scalding your hands. \n'
+        + '\t• Use a heavy-duty, clear plastic sheet on a frame or tape clear plastic film to the inside of your window frames during the cold winter months.\n'
+		+ '\t•When you are home and awake, set your thermostat as low as is comfortable.\n'
+		+ '\t•When you are asleep or out of the house, turn your thermostat back 10° to 15° for eight hours and save around 10% a year on your heating and cooling bills.\n\n'
+        + '\t▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬ஜ۩۞۩ஜ▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬'
+        
+    ); 
+				
+			
+       
+                  
+                }
+            },
+			
+			 printButton: {
+            enabled: false
+        },
+        exportButton: {
+            enabled: false
+        }
+        }
+    },
+
+
+        plotOptions: {
+            area: {
+                fillColor: {
+                    linearGradient: {
+                        x1: 0,
+                        y1: 0,
+                        x2: 0,
+                        y2: 1
+                    },
+                    stops: [
+                        [0, Highcharts.getOptions().colors[0]],
+                        [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+                    ]
+                },
+                
+                lineWidth: 1,
+                marker: {
+                    enabled: true
+                },
+                shadow: false,
+                states: {
+                    hover: {
+                        lineWidth: 1
+                    }
+                },
+                threshold: null
+            }
+        },
+		legend: {
+                layout: 'vertical',
+                align: 'right',
+                verticalAlign: 'middle',
+                borderWidth: 0
+            },
+
+        series: [
+		{
+            type: 'spline',
+            name: 'Cost in $',
+			labels: {
+                    
+                    style: {
+                        color: '#FFFFFF'
+                    }
+                },
+            
+           dataGrouping: {
+                enabled: false
+            },
+            data: data1,
+			color:'#FFCC66'
+            
+        },
+		{
+            type: 'area',
+            name: 'Energy in kW/hr',
+              
+            dataGrouping: {
+                enabled: false
+            },
+            data: data
+            
+        }
+		]
+		
+    });			
+		}
+				  
+					r.readAsText(xmlFile);
+				} else { 
+				  alert("Failed to load data file.");
+				}
+        }		
+			
+			
+			
+		</script>
+		
+		
+	</head> 
+<body background ="www.imageurlhost.com/images/zrrxkx0fok8zzuppci5d_best.png">
+ <label id="font1"> Please select your bill and click upload
+	<input type="file" id="myfiles" onchange="getFiles();" /></label>
+	<div style="width:10%;margin: 10 auto">
+	<input type="submit" id="upload" value="Upload" onclick="getFileContent();" />
+	</div>
+	</label>
+	
+	
+	<div>
+		<div id="contain"  style="width:50%;margin: 0 auto"></div>
+	
+</body>
+</html>

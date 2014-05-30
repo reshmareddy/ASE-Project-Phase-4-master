@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <h1 id="hed"> Find My Neighbourhood </h1>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    
+    <style>
+	#hed {
+	color:#FFFFFF;
+	}
+      html, body, #map-canvas {
+        height: 90%;
+		width:80%;
+        margin: 0px;
+        padding: 0px
+      }
+      #panel {
+        position: Left;
+        top: 0px;
+        left: 0%;
+        margin-left: 0px;
+        z-index: 5;
+        background-color: #b87333;
+        padding: 5px;
+		width:79%;
+		}
+		#button1
+		{
+			cursor:pointer; 
+			padding:5px 25px; 
+			background:#b87333; 
+			border:1px solid #33842a; 
+			/*style the text*/
+			color:#000000;
+			font-size:1.1em;
+		}
+		
+		
+	
+		
+		#directions-panel
+		{
+		position: Right;
+		height: 100%;
+        margin-left: 807px;
+		margin-top: -487px;
+        width: 390px;
+        overflow: auto;
+		background:#FFFFFF;
+		font-colour:#FFFFFF;
+		display: none;
+		}
+		
+				
+       
+      
+    </style>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+    <script>
+var directionsDisplay;
+var directionsService = new google.maps.DirectionsService();
+
+
+
+
+
+function initialize() {
+
+  directionsDisplay = new google.maps.DirectionsRenderer();
+  var currentLocation = new google.maps.LatLng(39.033669, -94.576278);
+  var mapOptions = {
+    zoom:9,
+    center: currentLocation
+  }
+ var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+  directionsDisplay.setMap(map);
+   directionsDisplay.setPanel(document.getElementById('directions-panel'));
+  
+  var markerPos = new google.maps.LatLng(39.033669, -94.576278);
+var marker = new google.maps.Marker({ position: markerPos,icon: {
+      path: google.maps.SymbolPath.CIRCLE,
+      scale: 10
+    }, map: map, title: "I am here" });
+
+ var markerPos1 = new google.maps.LatLng(39.245999, -94.575199);
+var marker = new google.maps.Marker({ position: markerPos1, map: map, title: "Neighbourhood 1" });
+
+ var markerPos2 = new google.maps.LatLng(39.054374, -94.594523);
+var marker = new google.maps.Marker({ position: markerPos2, map: map, title: "Neighbourhood 2" });
+
+ var markerPos3 = new google.maps.LatLng(39.099727, -94.578567);
+var marker = new google.maps.Marker({ position: markerPos3, map: map, title: "Neighbourhood 3" });
+}
+
+function calcRoute() {
+  var start = document.getElementById('start').value;
+  var end = document.getElementById('end').value;
+  var request = {
+      origin:start,
+      destination:end,
+      travelMode: google.maps.TravelMode.DRIVING
+  };
+  directionsService.route(request, function(response, status) {
+    if (status == google.maps.DirectionsStatus.OK) {
+      directionsDisplay.setDirections(response);
+	  document.getElementById('directions-panel').style.display = 'block';
+    }
+  });
+}
+
+google.maps.event.addDomListener(window, 'load', initialize);
+
+    </script>
+  </head>
+  <body body background ="best.png">
+    <div id="panel">
+    <b>Start: </b>
+    <select id="start" onchange="calcRoute();">
+	  <option value="UMKC Kansas City">My Location</option>
+      <option value="401 Northeast Barry Road, Kansas City, MO 64155">Neighbourhood 1</option>
+      <option value="Mill Street Station, 4001 Mill Street, Kansas City, MO 64111, USA">Neighbourhood 2</option>
+      
+      <option value="stark pharmacy Kansas City">Neighbourhood 3</option>
+      
+    </select>
+    <b>End: </b>
+    <select id="end" onchange="calcRoute();">
+       <option value="401 Northeast Barry Road, Kansas City, MO 64155, USA">Neighbourhood 1</option>
+      <option value="Mill Street Station, 4001 Mill Street, Kansas City, MO 64111, USA">Neighbourhood 2</option>
+      
+      <option value="stark pharmacy Kansas City">Neighbourhood 3</option>
+	  <option value="UMKC Kansas City">My Location</option>
+      
+    </select>
+    </div>
+    <div id="map-canvas"></div>
+	<div id="directions-panel"></div>
+
+	<
+	<p style="font-family:arial;color:white;font-size:20px;">
+	
+	<br>
+	Neighbourhood 1 :
+	<br>
+	Average Cost = 300,000$
+	<br>
+	Annual Maintenance Cost = 3000$
+	<br>
+	Average monthly energy usage per household = 604.13 Kilowatts
+	<br>
+	</br>
+	<br>
+	Neighbourhood 2 :
+	<br>
+	Average Cost = 280,000$
+	<br>
+	Annual Maintenance Cost = 3100$
+	<br>
+	Average monthly energy usage per household = 703.78 Kilowatts
+	</br>
+	<br>
+	Neighbourhood 3 :
+	<br>
+	Average Cost: 350,000$
+	<br>
+	Annual Maintenance Cost = 4000$ 
+	<br>
+	Average Energy usage per household = 627.15 Kilowatts
+	</br>
+	</p>
+<button id="button1" onclick="window.location.href='homepage.html'">Home</button>
+  </body>
+</html>

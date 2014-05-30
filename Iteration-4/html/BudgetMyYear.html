@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+ <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Budget My Year</title>
+	<!--old-->
+	
+   
+     <script src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
+	
+    <link href='http://fonts.googleapis.com/css?family=Droid+Serif|Lobster+Two' rel='stylesheet' type='text/css'>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript"></script>
+    <link rel='stylesheet' href='../css/myStyleSheet-upd.css' />
+	
+	<link rel='stylesheet' href='../css/bootstrap.css'/>
+	<script type="text/javascript" src="../js/bootstrap.js"></script>
+	<!-- Bootstrap core CSS -->
+    <link href="../NewStyling/css/bootstrap.css" rel="stylesheet">
+
+    <!-- Add custom CSS here -->
+    <link href="../NewStyling/css/business-casual.css" rel="stylesheet">
+
+	<script type="text/javascript" src="../js/soap.js"></script>
+	<script type="text/javascript" src="../js/soapclient.js"></script>
+	
+   <style>
+    .budget .col-lg-4 {
+	text-align:right;
+	
+	}
+	.budget input[type="text"], .budget input[type="date"], .budget [type="number"] {
+	text-align:left;
+	height:30px;
+	width:220px;
+	margin-top:10px;
+	}
+	
+.navbar-brand {
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-weight: 900;
+}	
+.overrideNavigation .navbar-nav {
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  font-weight: 400;
+}
+
+.overrideNavigation .navbar {
+  border-radius: 0;
+}
+
+.overrideNavigation .navbar-header {
+  display: none;
+}
+
+.overrideNavigation .navbar {
+  min-height: 0;
+}
+
+.overrideNavigation .navbar-default {
+  background: #fff;
+  background: rgba(255,255,255,0.9);
+  border: none;
+}
+
+.overrideNavigation .nav>li>a {
+  padding: 35px;
+}
+
+.overrideNavigation .navbar-nav>li>a {
+  line-height: normal;
+}
+
+.overrideNavigation .navbar-nav {
+  float: none;
+  margin: 0 auto;
+  display: table;
+  table-layout: fixed;
+  font-size: 1.25em;
+}
+   
+   
+   </style>
+	
+
+    <script>
+	
+	$(document).ready(function() 
+	{
+		var userName1 =	localStorage.getItem("userNameMain");
+		
+		document.getElementById("Welcome").innerHTML = "Welcome";
+		document.getElementById("userNameCommunity").value = myMap.Initcap(userName1);
+		document.getElementById("userNameCommunity").innerHTML = myMap.Initcap(userName1);
+	});
+	
+        function makeVisible() {
+
+            var surveyType = document.getElementById("surveyType");
+
+            surveyType.style.display = "block";
+
+        }
+
+        function saveForm() {
+
+
+
+            var budget = document.getElementById("budget");
+            budget.innerHTML = "Do you want to see the annual estimated Budget? ";
+
+            var recommendations = document.getElementById("recommendations");
+            recommendations.innerHTML = "Do you wish to see the recommendation generated based on survey? ";
+
+
+        }
+		
+		
+
+        function populateAppliance(appliance) {
+        appliance.modelNumber = $(appliance).find('#model_number')[0].value;
+        appliance.dailyUsage = $(appliance).find('#daily_usage')[0].value;
+        appliance.name = $(appliance).find("[name='appliance'] option:selected")[0].text;
+		switch(appliance.name){
+		case 'TV':appliance.unitPrice = 1;break;
+		case 'Refrigerator':appliance.unitPrice = 1;break;
+		case 'Water Heating':appliance.unitPrice = 2;break;
+		case 'AC':appliance.unitPrice = 2;break;
+		case 'Washing Machine':appliance.unitPrice = 9;break;
+		case 'Dish Washer':appliance.unitPrice = 7;break;
+		}
+		appliance.annualPrice = appliance.unitPrice * appliance.dailyUsage * 365;
+		if(isNaN(parseInt(appliance.annualPrice))){
+		appliance.annualPrice = 0;
+		}
+		}
+		
+		
+		function computeBudget() { 
+        var appliances = [];
+        var annualPrice=0;
+        var applianceNamePrice = [];
+		applianceNamePrice.push('Appliance');
+		applianceNamePrice.push('Expense');
+		appliances.push(applianceNamePrice);
+		var appliance1 = document.getElementById('appliance1');
+		populateAppliance(appliance1);
+		if(appliance1.annualPrice > 0){
+		annualPrice+=appliance1.annualPrice;
+		var applianceNamePrice = [];
+		applianceNamePrice.push(appliance1.name);
+		applianceNamePrice.push(appliance1.annualPrice);
+		appliances.push(applianceNamePrice);
+		}
+		var appliance2 = document.getElementById('appliance2');
+		populateAppliance(appliance2);
+		if(appliance2.annualPrice > 0){
+		annualPrice+=appliance2.annualPrice;
+		var applianceNamePrice = [];
+		applianceNamePrice.push(appliance2.name);
+		applianceNamePrice.push(appliance2.annualPrice);
+		appliances.push(applianceNamePrice);
+		}
+		var appliance3 = document.getElementById('appliance3');
+		populateAppliance(appliance3);
+		if(appliance3.annualPrice > 0){
+		annualPrice+=appliance3.annualPrice;
+		var applianceNamePrice = [];
+		applianceNamePrice.push(appliance3.name);
+		applianceNamePrice.push(appliance3.annualPrice);
+		appliances.push(applianceNamePrice);
+		}
+		
+            
+		        
+
+		var showBudget = document.getElementById("showBudget");
+            var annualPrice1 = document.getElementById("annualPrice");
+			annualPrice1.innerHTML = annualPrice;
+            showBudget.style.display = "block";
+			drawChart(appliances);
+        }
+		
+		function mandatory(pageId,nextPageId){
+		//alert("k");
+		$("#"+pageId).find('#addAppliance')[0].href='#';
+		var dailyUsage = $("#"+pageId).find('#daily_usage')[0].value;
+        var name = $("#"+pageId).find("[name='appliance'] option:selected")[0].text;
+		var mandatoryInfo=$("#"+pageId).find("#mandatoryInfo")[0];
+		
+		if(dailyUsage && name && name!='Select'){
+		mandatoryInfo.style.display="none";
+		
+		$("#"+pageId).find('#addAppliance')[0].href="#"+nextPageId;
+		$("#"+pageId).find('#submit')[0].href="#"+nextPageId;
+		
+		}
+		else
+		{
+		$("#"+pageId).find('#addAppliance')[0].href='#';
+		$("#"+pageId).find('#submit')[0].href='#';
+		
+		mandatoryInfo.style.display="block";
+		mandatoryInfo.innerHTML="Please fill all the fields marked *";
+			
+		}
+		}
+		
+        function showTip() {
+
+            var showTip = document.getElementById("showTip");
+            showTip.style.display = "block";
+
+        }
+
+
+        google.load("visualization", "1", {
+            packages: ["corechart"]
+        });
+         //google.setOnLoadCallback(drawChart);
+        function drawChart(appliances) {
+            var data = google.visualization.arrayToDataTable(appliances);
+
+            var options = {
+                title: '    Appliance Contribution to Budget',
+				backgroundColor: 'transparent',
+                //hAxis: {title: 'Appliance', titleTextStyle: {color: 'red'}}
+            };
+
+            var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+            chart.draw(data, options);
+        }
+		
+	function changeVisibility(pageold,pagenew){
+		
+		var pageold=document.getElementById(pageold);
+		pageold.style.display="none";
+		var pagenew=document.getElementById(pagenew);
+		pagenew.style.display="block";
+		
+		}
+		
+		
+		
+    </script>
+
+</head>
+
+<body class="budget">
+
+<div class="brand">E-Smart</div>
+     <div class="address-bar">University of Missouri Kansas City | 5100 Rockhill Road | Kansas City,MO 64110| (816) 235-1000</div>
+<div class="overrideNavigation">
+<nav class="navbar navbar-default" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html">E-Smart</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse navbar-ex1-collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="index.html">Home</a>
+                    </li>
+                    <li><a href="about.html">About</a>
+                    </li>
+                    <li><a href="blog.html">Blog</a>
+                    </li>
+                    <li><a href="contact.html">Contact</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+	</div>
+
+  <div class="container" id="surveypage" data-role="page">  
+  <div style="float:right;width:300px;">
+			<div style="float:left;margin:5px;font:12px Arial bold;" id="Welcome"></div>
+			<div style="float:left;margin:5px;font:12px Arial bold;" id="userNameCommunity"></div>
+			</div>
+	<div class="row">
+         <div class="box">
+		 
+           <div class="col-lg-12 text-center">
+	
+			<div>
+
+				
+        <div data-role="content">
+
+            <center>
+                <div>Please take the Survey to better understand your utilization</div>
+            </center>
+
+        </div>
+
+	
+        <div id="surveyType">
+            <div>
+                <a href="#pageone" rel="external" data-transition="flip">
+                    <img src="http://icons.iconarchive.com/icons/custom-icon-design/pretty-office-4/128/family-icon.png" style="padding-top:70px" class="image-container ui-li-icon" alt="Family Info" rel="external" onclick="changeVisibility('surveypage','pageone');">
+                </a>
+
+            </div>
+            <div class>
+                <a href="#pagetwo" rel="external" data-transition="flip">
+                    <img src="http://icons.iconarchive.com/icons/visualpharm/icons8-metro-style/128/House-and-Appliances-Coffe-maker-icon.png" style="padding-top:70px" class="image-container ui-li-icon" alt="Family Info" rel="external" onclick="changeVisibility('surveypage','pageone');">
+                </a>
+
+            </div>
+			<span style="float:left;clear:both;margin-left:30px;font:15px Arial bold;color:blue;padding-top:10px"><Strong> Household Information Survey</Strong></span>
+            <span style="float:left;margin-left:170px;font:15px Arial bold;color:blue;padding-top:10px"><Strong> Appliance Information Survey</Strong></span>
+          
+
+        </div>
+    </div>
+	</div>
+	</div>
+	</div>
+</div>
+
+
+  <div class="container" id="pageone" data-role="page" style="display:none">  
+	<div class="row">
+         <div class="box">
+           <div class="col-lg-12 text-center">
+
+    <div >
+  
+        <form id="householdInfo" name="user_form">
+            <div>
+                <table style="float:left;color:brown;font:15px Arial bold;margin-left:60px">
+
+				
+                    <tr class="row">
+                        <td class="col-lg-4">
+                            State Code:
+                        </td>
+                        <td class="col-lg-4">
+                            <select id="stateCode" name="stateCode" size="1">
+                                <option value="AL">AL</option>
+                                <option value="AK">AK</option>
+                                <option value="AZ">AZ</option>
+                                <option value="AR">AR</option>
+                                <option value="CA">CA</option>
+                                <option value="CO">CO</option>
+                                <option value="CT">CT</option>
+                                <option value="DE">DE</option>
+                                <option value="DC">DC</option>
+                                <option value="FL">FL</option>
+                                <option value="GA">GA</option>
+                                <option value="HI">HI</option>
+                                <option value="ID">ID</option>
+                                <option value="IL">IL</option>
+                                <option value="IN">IN</option>
+                                <option value="IA">IA</option>
+                                <option value="KS">KS</option>
+                                <option value="KY">KY</option>
+                                <option value="LA">LA</option>
+                                <option value="ME">ME</option>
+                                <option value="MD">MD</option>
+                                <option value="MA">MA</option>
+                                <option value="MI">MI</option>
+                                <option value="MN">MN</option>
+                                <option value="MS">MS</option>
+                                <option value="MO">MO</option>
+                                <option value="MT">MT</option>
+                                <option value="NE">NE</option>
+                                <option value="NV">NV</option>
+                                <option value="NH">NH</option>
+                                <option value="NJ">NJ</option>
+                                <option value="NM">NM</option>
+                                <option value="NY">NY</option>
+                                <option value="NC">NC</option>
+                                <option value="ND">ND</option>
+                                <option value="OH">OH</option>
+                                <option value="OK">OK</option>
+                                <option value="OR">OR</option>
+                                <option value="PA">PA</option>
+                                <option value="RI">RI</option>
+                                <option value="SC">SC</option>
+                                <option value="SD">SD</option>
+                                <option value="TN">TN</option>
+                                <option value="TX">TX</option>
+                                <option value="UT">UT</option>
+                                <option value="VT">VT</option>
+                                <option value="VA">VA</option>
+                                <option value="WA">WA</option>
+                                <option value="WV">WV</option>
+                                <option value="WI">WI</option>
+                                <option value="WY">WY</option>
+                            </select>
+                        </td>
+						
+						
+                    </tr>
+                    <br/>
+					<br/>
+					<br/>
+                    
+                    <tr class="row">
+                        <td class="col-lg-4">
+                            Zip Code:
+                        </td>
+                        <td class="col-lg-4">
+                            <input id="zipCode" type="text" name="zipCode" size="5" maxlength="5" value="" />
+                        </td>
+                    </tr>
+
+                    <tr class="row">
+                        <td class="col-lg-4">
+                            Household Size:
+                        </td>
+                        <td class="col-lg-4">
+                            <input id="householdSize" type="text" name="householdSize" size="5" maxlength="5" value="" />
+                        </td>
+
+                    </tr>
+
+                    <tr class="row">
+                        <td class="col-lg-4">
+                            Year your house was built?
+                        </td>
+                        <td class="col-lg-4">
+                            <input id="year" type="date" name="year" size="5" maxlength="5" value="" />
+                        </td>
+
+                    </tr>
+
+                    <tr class="row">
+                        <td class="col-lg-4">
+                            How do you heat your house?
+                        </td>
+                        
+                        <td class="col-lg-4">
+                            <select id="heating" name="heating" style="margin-bottom:10px">
+
+                                <option value="">Select</option>
+                                <option value="heat1">Electric Furnace</option>
+                                <option value="heat2">Gas Furnace</option>
+                                <option value="heat3">Oil Furnace</option>
+                                <option value="heat4">Wall Heater</option>
+                                <option value="heat5">Gas Oil/Boiler</option>
+                                <option value="heat6">Heat Pump</option>
+
+                        </td>
+
+                    </tr>
+
+                    <tr class="row">
+                        <td class="col-lg-4">
+                            How do you cool your house?
+                        </td>
+                        <br/>
+                        <td class="col-lg-4">
+                            <select id="cooling" name="cooling" style="margin-bottom:10px">
+
+                                <option value="">Select</option>
+                                <option value="cool1">No Air Conditioning</option>
+                                <option value="cool2">Central Air Conditioner</option>
+                                <option value="cool3">Heat Pump</option>
+                                <option value="cool4">Window AC unit</option>
+
+                        </td>
+
+                    </tr>
+
+                    <tr class="row">
+                        <td class="col-lg-4">
+                            What type of Water Heater do you use?
+                        </td>
+                        <br/>
+                        <td class="col-lg-4">
+                            <select id="cooling" name="cooling" style="margin-bottom:10px">
+
+                                <option value="">Select</option>
+                                <option value="water1">Electric Water Heater</option>
+                                <option value="water2">gas Water Heater</option>
+                                <option value="water3">Instantaneous</option>
+
+
+                        </td>
+
+                    </tr>
+
+
+                    <tr class="row">
+                        <td  colspan="2" class="col-lg-4" >
+
+                            <a href="#pagetwo" data-role="button" class="ui-btn-active" size="0" onclick="changeVisibility('pageone','pagetwo');">Next</a>
+                            </li>
+
+							
+                        </td>
+                    </tr>
+
+                </table>
+
+            </div>
+
+
+        </form>
+    </div>
+	
+	</div>
+	</div>
+	</div>
+	</div>
+
+	<div class="container" id="pagetwo" data-role="page" style="display:none">  
+	<div class="row">
+         <div class="box">
+           <div class="col-lg-12 text-center">
+    <div >
+              
+       
+
+        <form id="appliance1" name="user_form">
+		
+		
+            <div>
+                <table style="float:left;color:brown;font:15px Arial bold;margin-left:60px">
+				<tr class="row">
+				<td colspan="2">
+				<div id="mandatoryInfo" style="display:none;font-size:140%;font-weight:bold;padding-bottom:10px;float:left;left-margin:80px;color:red;" > </div>
+				</td>
+				</tr>
+				
+                    <tr class="row">
+                        <td class="col-lg-4">Appliance:*</td>
+                        <td class="col-lg-4">
+                            <select name='appliance' >
+
+                                <option value="">Select</option>
+                                <option value="Refrigerator">Refrigerator</option>
+                                <option value="Microwave">Microwave</option>
+                                <option value="Television">Television</option>
+                                <option value="AC">AC</option>
+                                <option value="Heater">Heater</option>
+                                <option value="Cooktop">Cooktop</option>
+                                <option value="Dishwasher">Dishwasher</option>
+                                <option value="WashingMachine">Washing Machine</option>
+                                <option value="Dryer">Dryer</option>
+
+                        </td>
+
+                    </tr>
+                    <tr class="row">
+                        <td class="col-lg-4">
+                            Model Number:
+                        </td>
+                        <td class="col-lg-4">
+                            <input id="model_number" type="text" name="model_number" value="" />
+                        </td>
+                    </tr>
+                    <tr class="row">
+                        <td class="col-lg-4">
+                            Usage in hrs:*
+                        </td>
+
+                        <td class="col-lg-4">
+                            <input id="daily_usage" type="number" name="daily_usage" size="2" maxlength="2" value="" />
+                        </td>
+                    </tr>
+                    <tr class="row">
+                        <td colspan="2">
+                            * Add all Your Appliances to get Accurate Usage Estimate
+                        </td>
+                        <br/>
+                        <br/>
+                    </tr>
+                    <br>
+                    <br>
+                    <tr class="row">
+                     <td class="col-lg-4">
+					</td>
+					<td class="col-lg-4">
+                    <span style="float:left;padding-top:30px">
+					<a href = "#pageone" data-role = "button" class = "ui-btn-active" >Back</a></li>
+					</span>
+                    <span style="float:left;padding-top:30px; margin-left:15px;">
+					<!--<a href="#pagethree" id='addAppliance' onclick="mandatory('pagetwo','pagethree');" data-role = "button" class = "ui-btn-active" >Add Appliance</a></li>-->
+					<a href="#pagethree" id='addAppliance' onclick="changeVisibility('pagetwo','pagethree');" data-role = "button" class = "ui-btn-active" >Add Appliance</a></li>
+					</span>
+					</td>
+                    </tr>
+                    <tr class="row">
+					 <td class="col-lg-4">
+					</td>
+					 <td class="col-lg-4">
+                            <span style="float:left;padding-top:20px">
+					<!--<a href = "#pagefive" id ="submit" data-role = "button" class = "ui-btn-active" onclick="mandatory('pagetwo','pagefive');">Submit</a></li>-->
+					<a href = "#pagefive" id ="submit" data-role = "button" class = "ui-btn-active" onclick="changeVisibility('pagetwo','pagefive');">Submit</a></li>
+					</span>
+
+                        </td>
+                    </tr>
+
+
+
+                </table>
+
+            </div>
+
+
+        </form>
+    </div>
+	</div>
+	</div>
+	</div>
+	</div>
+
+	<div class="container"  id="pagethree" data-role="page" style="display:none">  
+	<div class="row">
+         <div class="box">
+           <div class="col-lg-12 text-center">
+    <div>
+        
+      	
+        <form id="appliance2" name="user_form">
+            <div>
+                <table style="float:left;color:brown;font:15px Arial bold;margin-left:60px">
+				<tr>
+				<td colspan="2">
+				<div id="mandatoryInfo" style="display:none;font-size:140%;font-weight:bold;padding-bottom:10px;float:left;left-margin:80px;color:red;" > </div>
+				</td>
+				</tr>
+                    <tr class="row">
+                        <td class="col-lg-4">Appliance:*</td>
+                        <td class="col-lg-4">
+                            <select name='appliance'>
+
+                                <option value="">Select</option>
+                                <option value="Refrigerator">Refrigerator</option>
+                                <option value="Microwave">Microwave</option>
+                                <option value="Television">Television</option>
+                                <option value="AC">AC</option>
+                                <option value="Heater">Heater</option>
+                                <option value="Cooktop">Cooktop</option>
+                                <option value="Dishwasher">Dishwasher</option>
+                                <option value="WashingMachine">Washing Machine</option>
+                                <option value="Dryer">Dryer</option>
+
+                        </td>
+
+                    </tr>
+                    <tr class="row">
+                        <td class="col-lg-4">
+                            Model Number:
+                        </td>
+                        <td class="col-lg-4">
+                            <input id="model_number" type="text" name="model_number" value="" />
+                        </td>
+                    </tr>
+                    <tr class="row">
+                        <td class="col-lg-4">
+                            Usage in hrs:*
+                        </td>
+
+                        <td class="col-lg-4">
+                            <input id="daily_usage" type="number" name="daily_usage" size="2" maxlength="2" value="" />
+                        </td>
+                    </tr>
+                    <tr class="row">
+                        <td colspan="2">
+                            * Add all Your Appliances to get Accurate Usage Estimate
+                        </td>
+                        <br/>
+                        <br/>
+                    </tr>
+                    <br>
+                    <br>
+                    <tr class="row">
+                        
+						  <td class="col-lg-4">
+						</td>
+						<td class="col-lg-4">
+                            <span style="float:left;padding-top:30px">
+					<a href = "#pagetwo" data-role = "button" class = "ui-btn-active" >Back</a></li>
+					</span>
+
+                            <span style="float:left;padding-top:30px; margin-left:15px;">
+					<!--<a href = "#pagefour" id ="addAppliance"  data-role = "button" class = "ui-btn-active" onclick="mandatory('pagethree','pagefour');"  >Add Appliance</a></li>-->
+					<a href = "#pagefour" id ="addAppliance"  data-role = "button" class = "ui-btn-active" onclick="changeVisibility('pagethree','pagefour');"  >Add Appliance</a></li>
+					</span>
+					</td>
+                    </tr>
+					
+                    <tr class="row">
+                         <td class="col-lg-4">
+					</td>
+					<td class="col-lg-4">
+                            <span style="float:left;padding-top:20px">
+					<!--<a href = "#pagefive" id ="submit" data-role = "button" class = "ui-btn-active" onclick="mandatory('pagethree','pagefive');" >Submit</a></li>-->
+					<a href = "#pagefive" id ="submit" data-role = "button" class = "ui-btn-active" onclick="changeVisibility('pagethree','pagefive');" >Submit</a></li>
+					</span>
+                        </td>
+                    </tr>
+
+
+
+                </table>
+
+            </div>
+
+
+        </form>
+    </div>
+	</div>
+	</div>
+	</div>
+	</div>
+
+	<div class="container" id="pagefour" data-role="page" style="display:none">  
+	<div class="row">
+         <div class="box">
+           <div class="col-lg-12 text-center">
+    <div >
+        
+      
+        <form id="appliance3" name="user_form">
+            <div>
+                <table style="float:left;color:brown;font:15px Arial bold;margin-left:60px">
+				<tr class="row">
+				<td colspan="2">
+				<div id="mandatoryInfo" style="display:none;font-size:140%;font-weight:bold;padding-bottom:10px;float:left;left-margin:80px;color:red;" > </div>
+				</td>
+				</tr>
+                   <tr class="row">
+                        <td class="col-lg-4">Appliance:*</td>
+                        <td class="col-lg-4">
+                            <select name='appliance'>
+
+                                <option value="">Select</option>
+                                <option value="Refrigerator">Refrigerator</option>
+                                <option value="Microwave">Microwave</option>
+                                <option value="Television">Television</option>
+                                <option value="AC">AC</option>
+                                <option value="Heater">Heater</option>
+                                <option value="Cooktop">Cooktop</option>
+                                <option value="Dishwasher">Dishwasher</option>
+                                <option value="WashingMachine">Washing Machine</option>
+                                <option value="Dryer">Dryer</option>
+
+                        </td>
+
+                    </tr>
+                    <tr class="row">
+                        <td class="col-lg-4">
+                            Model Number:
+                        </td>
+                        <td class="col-lg-4">
+                            <input id="model_number" type="text" name="model_number" value="" />
+                        </td>
+                    </tr>
+                    <tr class="row">
+                        <td class="col-lg-4">
+                            Usage in hrs:*
+                        </td>
+
+                        <td class="col-lg-4">
+                            <input id="daily_usage" type="number" name="daily_usage" size="2" maxlength="2" value="" />
+                        </td>
+                    </tr>
+                    <tr class="row">
+                        <td colspan="2">
+                            * Add all Your Appliances to get Accurate Usage Estimate
+                        </td>
+                        <br/>
+                        <br/>
+                    </tr>
+                    <br>
+                    <br>
+                    <tr class="row">
+                     <td class="col-lg-4">
+					</td>
+					<td class="col-lg-4">
+                            <span style="float:left;padding-top:30px">
+					<a href = "#pagefour" data-role = "button" class = "ui-btn-active" >Back</a></li>
+					</span>
+
+                            <span style="float:left;padding-top:30px;margin-left:15px;">
+					<!--<a href = "#pagefive"  id ="addAppliance" data-role = "button" class = "ui-btn-active" onclick="mandatory('pagefour','pagefive');"  >Add Appliance</a></li>-->
+					<a href = "#pagefive"  id ="addAppliance" data-role = "button" class = "ui-btn-active" onclick="changeVisibility('pagefour','pagefive');"  >Add Appliance</a></li>
+					</span>
+
+
+                        </td>
+                    </tr>
+                    <tr class="row">
+					 <td class="col-lg-4">
+					</td>
+					<td class="col-lg-4">
+                            <span style="float:left;padding-top:20px">
+					<!--<a href = "#pagefive" id ="submit" data-role = "button" class = "ui-btn-active" onclick="mandatory('pagefour','pagefive');" >Submit</a></li>-->
+					<a href = "#pagefive" id ="submit" data-role = "button" class = "ui-btn-active" onclick="changeVisibility('pagefour','pagefive');" >Submit</a></li>
+					</span>
+
+                        </td>
+                    </tr>
+
+
+
+                </table>
+
+            </div>
+
+
+        </form>
+    </div>
+	</div>
+	</div>
+	</div>
+	</div>
+	
+	
+	<div class="container" id="pagefive" data-role="page" style="display:none">  
+	<div class="row">
+         <div class="box">
+           <div class="col-lg-12 text-center">
+    <div >
+
+        <div style="padding-top:50px;float:left;margin-left:50px;color:blue;font:20px Arial bold">
+
+
+            <div id="budget"></div>
+
+            <a href="#" style="float:left;height:50px" data-role="button" style="font:10px Arial bold" class="ui-btn-active" data-transition="pop" onclick="computeBudget(); return false;">Generate Budget</a>
+            <br/>
+            <br/>
+
+            <div id="showBudget" style="display:none;padding-top:20px;clear:both;float:left;color:red;font:20px Arial bold">
+                <div>The Annual estimated budget is $<span id='annualPrice'>7236</span></div>
+                <br/>
+                <div id="chart_div" style="height:400px;width:700px"></div>
+                <br/>
+            </div>
+            <br/>
+            <br/>
+
+
+
+            <div id="recommendations" style="padding-top:0px;"></div>
+
+
+
+            <a href="recomendation.html" rel="external" style="float:left;" data-role="button" class="ui-btn-active" data-transition="pop" >Generate Recommendations</a>
+
+            <div id="tips" style="padding-top:70px;">
+                <br/>
+                <br/>
+                <a href="" style="float:left;" data-role="button" class="ui-btn-active" onclick="showTip(); return false;" data-transition="pop">Tip Of the Day</a>
+                <br/>
+                <br/>
+                <div id="showTip" style="display:none;">
+                    <iframe height="300" style="float:left;padding-top:20px;" align="middle" scrolling="no" frameborder="0" src="http://www.energystar.gov/index.cfm?c=tipofday.daily_tips"></iframe>
+                </div>
+            </div>
+
+
+
+            <br/>
+            <br/>
+
+        </div>
+    </div>
+</div>
+</div>
+</div>
+</div>
+
+</body>

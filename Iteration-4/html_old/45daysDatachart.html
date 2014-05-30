@@ -1,0 +1,471 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+	<link rel='stylesheet' href='../css/bootstrap.css'/>
+    <title>45 days chart</title>
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+	
+	<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+    <script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+	<script type="text/javascript" src="../js/bootstrap.js"></script>
+	<script type="text/javascript" src="../js/soapclient.js"></script>
+    <script type="text/javascript" src="../js/webServices.js"></script>
+	<script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
+   <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+	<script type="text/javascript" src="../js/soap.js"></script>
+	<script type="text/javascript" src="../js/soapclient.js"></script>
+	<!-- Bootstrap core CSS -->
+    <link href="../NewStyling/css/bootstrap.css" rel="stylesheet">
+
+    <!-- Add custom CSS here -->
+    <link href="../NewStyling/css/business-casual.css" rel="stylesheet">
+
+
+<style>
+
+#header{	
+			background: none;
+			padding-left: 120px;
+		}
+
+		#header2
+		{
+			float: center;
+			text-align:center;
+		}
+		
+		#button1
+		{
+			cursor:pointer; 
+			padding:5px 25px; 
+			background:#b87333; 
+			border:1px solid #33842a; 
+			/*style the text*/
+			color:#000000;
+			font-size:1.1em;
+		}
+		
+	
+	label {
+		display: inline-block;
+		margin-bottom: 5px;
+		font-weight: normal;
+	}
+
+.ask-title-field{
+width:610px;
+}
+
+.edit-field-overlayed{
+color:#888;
+}
+
+.wmd-button-bar{
+height:25px;
+width:660px;
+clear:both;
+background-color:#fff;
+margin-top:10px;
+margin-right:0px;
+margin-bottom:1px;
+margin-left:0px;}
+
+.wmd-button-row{
+position:relative;
+padding:0px;
+height:20px;
+margin:0px;
+}
+.wmd-button{
+width:20px;
+height:20px;
+padding-left:2px;
+padding-right:3px;
+position:absolute;
+display:inline-block;
+list-style:none;
+cursor:pointer;
+}
+
+.discussion .col-lg-4 {
+	text-align:right;
+	
+	}
+	
+	.navbar-brand {
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-weight: 900;
+}
+
+.overrideNavigation .navbar-nav {
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  font-weight: 400;
+}
+
+.overrideNavigation .navbar {
+  border-radius: 0;
+}
+
+.overrideNavigation .navbar-header {
+  display: none;
+}
+
+.overrideNavigation .navbar {
+  min-height: 0;
+}
+
+.overrideNavigation .navbar-default {
+  background: #fff;
+  background: rgba(255,255,255,0.9);
+  border: none;
+}
+
+.overrideNavigation .nav>li>a {
+  padding: 35px;
+}
+
+.overrideNavigation .navbar-nav>li>a {
+  line-height: normal;
+}
+
+.overrideNavigation .navbar-nav {
+  float: none;
+  margin: 0 auto;
+  display: table;
+  table-layout: fixed;
+  font-size: 1.25em;
+}
+
+
+</style>
+	
+	
+<script type="text/javascript">
+	// load google chart api
+		google.load('visualization', '1', {packages: ['corechart']});
+		var data;
+		var data2;
+		
+		window.onload = function() {
+
+			//Check File API support
+			if (window.File && window.FileList && window.FileReader) {
+			}
+			else {
+				alert("Your browser does not support File API");
+			}
+		}
+		
+        function getFiles() {
+            // Get input element
+            myFileList = document.getElementById("myfiles");
+            // loop through files property, using length to get number of files chosen
+            /*for (var i = 0; i < myFileList.files.length; i++) {
+                // display them in the div
+                document.getElementById("display").innerHTML += "<br/>" + myFileList.files[i].name ;
+            }*/
+        }
+
+        function getFileContent() {
+            // Get input element
+            myFileList = document.getElementById("myfiles");
+			var xmlFile = myFileList.files[0];
+			data = new google.visualization.DataTable();
+			data.addColumn('date', 'Month');
+			//data.addColumn('number', 'Cost');
+			data.addColumn('number','Kilowatts');
+			data.addColumn('number', 'Temperature');
+
+			data2 = new google.visualization.DataTable();
+			data2.addColumn('date', 'Month');
+			data2.addColumn('number', 'Cost');
+		//	data2.addColumn({type:'string', role:'annotationText'});
+          //  data2.addColumn({type:'string', role:'tooltip'});
+			 if (xmlFile) {
+				  var r = new FileReader();
+				  
+				  r.onload = function(e) { 
+					var contents = e.target.result;
+					xmlDoc = $.parseXML( contents );
+					$xml = $( xmlDoc );
+					
+					$xml.find("IntervalBlock").each(function(){
+					
+					 var kiloVal = $(this).find("IntervalReading>value").text();
+						kiloString = kiloVal.substr(0,2);
+						kiloString += '.';
+						kiloString += kiloVal.substr(1,2);
+						var kilowatt = Number(kiloString);
+						
+				        var costVal = $(this).find("IntervalReading>cost").text();
+						costString = costVal.substr(0,1);
+						costString += '.';
+						costString += costVal.substr(1,2);
+						var cost = Number(costString);
+						
+						var timePeriodStart = $(this).find("IntervalReading>timePeriod>start").text();
+						var timePeriodStart = new Date(timePeriodStart*1000).toISOString();
+						var timePeriodStartDate = new Date(timePeriodStart);
+						var temperatureData = getTemperature(timePeriodStartDate);
+						
+						console.log("Cost string: " + costString + " - Cost: " + cost);
+						//console.log("timePeriodStart: " + timePeriodStartDate);
+						//console.log("temperature:" + temperatureData + " " + timePeriodStartDate );						
+						
+						data.addRow([timePeriodStartDate, kilowatt, temperatureData]);//for chart1
+						data2.addRow([timePeriodStartDate, cost]);//for chart2
+					});					
+					
+					//alert(data.getNumberOfRows());
+					drawGoogleCharts();
+				  }
+				  
+					r.readAsText(xmlFile);
+				} else { 
+				  alert("Failed to load data file.");
+				}
+        }
+		
+		
+		$(document).ready(function() 
+	{
+		var userName1 =	localStorage.getItem("userNameMain");
+		
+		document.getElementById("Welcome").innerHTML = "Welcome";
+		document.getElementById("userNameCommunity").value = userName1;
+		document.getElementById("userNameCommunity").innerHTML = userName1;
+	});
+	
+	
+		function getTemperature(timePeriod) {
+			var month = timePeriod.getMonth();
+			var t;
+			
+			  /*$.ajax({
+					  url : "http://api.wunderground.com/api/ef305cf8b574a3b9/history_20120319/q/KS/Olathe.json",
+					  dataType : "jsonp",
+					  success : function(parsed_json) {
+					  var location = parsed_json['location']['city'];
+					  var temp_f = parsed_json['current_observation']['temp_f'];
+					  alert("Current temperature in " + location + " is: " + temp_f);
+					  }
+				  });*/
+
+			if (month == 0 || month == 1 || month == 11) 
+			{
+				t = Math.floor((Math.random()*35)+0);
+			}
+			if (month == 2|| month == 3 || month == 4)
+			{
+				t = Math.floor((Math.random()*35)+40); 
+			}
+			
+		   if (month == 5|| month == 6 || month == 7)
+			{
+				t = Math.floor((Math.random()*25)+75);
+			}
+			if (month == 8|| month == 9 || month == 10)
+			{
+				t = Math.floor((Math.random()*25)+50);
+			}
+			
+			return t;
+		}
+		
+		function drawGoogleCharts() {
+			//alert(data);
+			//alert(fileContent);
+			drawVisualization();
+			drawVisualization2();
+			google.setOnLoadCallback(drawVisualization);
+			google.setOnLoadCallback(drawVisualization2);
+		}
+		
+       function drawVisualization() {
+       
+		var options = {
+		 title : 'Energy Utilization chart',
+        vAxis: {0:  {format: '#,###', color: 'red'}, 1: {format: '#%'} },
+        hAxis: { title: " Energy Consumption time period "},
+		
+        series: {
+				0:{  type: "bars", targetAxisIndex: 0, color: '#76A7FA' },
+				1: { type: "scatter", targetAxisIndex: 1, color: '#b87333'}
+			}
+		}
+		
+		var formatter = new google.visualization.NumberFormat({fractionDigits:2});
+		formatter.format(data, 1);
+
+        var chart = new google.visualization.ComboChart(document.getElementById('chart_div'));
+        chart.draw(data, options);	
+        is3D: true;		
+      }
+	  
+       function drawVisualization2() {
+      
+       var options2 = {
+		 title : 'Monthly Cost Difference',
+		 isStacked: true,
+   
+		vAxis: {title: "Cost in Dollars"},
+		hAxis: {title: "Energy Consumption time period"},
+		   
+		series: {
+				0:{ targetAxisIndex: 0, color: '#e0440e' }
+            }
+        };
+		
+        var chart2 = new google.visualization.ScatterChart(document.getElementById('chart2_div'));
+        chart2.draw(data2, options2);
+		is3D: true;
+      }
+	  
+	  
+
+
+</script>
+    
+   	
+</head>
+<!--<body onload='twitter.createTweets();'>-->
+<body>
+	
+	
+<div class="brand">E-Smart</div>
+    <div class="address-bar">University of Missouri Kansas City | 5100 Rockhill Road | Kansas City,MO 64110| (816) 235-1000</div>
+<div class="overrideNavigation">
+<nav class="navbar navbar-default" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html">E-Smart</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse navbar-ex1-collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="index.html">Home</a>
+                    </li>
+                    <li><a href="about.html">About</a>
+                    </li>
+                    <li><a href="blog.html">Blog</a>
+                    </li>
+                    <li><a href="contact.html">Contact</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+	</div>
+
+	<div class="container">
+	
+	
+	<div class="row">
+<div class="box">
+<div class="col-lg-12 text-left">
+
+<div style="float:right;width:300px;">
+				<div style="float:left;margin:5px;font:12px Arial bold;" id="Welcome"></div>
+				<div style="float:left;margin:5px;font:12px Arial bold;" id="userNameCommunity"></div>
+				</div>
+	
+			
+    <h1 style="clear:both;margin-left:0px">Learn About Energy Analyzer Charts</h1>
+	<div style="clear:both;margin-left:0px">
+    <p>Energy Analyser generates charts for the green button data .You can see energy utilization charts and cost charts for 45 days of data. Detailed Charts will take you to another chart where you can see charts for annual data</p>
+	</div>
+    
+</div>
+</div>
+</div>
+	
+	
+		
+		
+	
+<!--<div class="collapse navbar-collapse navbar-ex1-collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="#" onclick="makeVisibleCreateThread();">Create Thread</a>
+                    </li>
+                    <li><a href="#" onclick="viewForums();">View Threads</a>
+                    </li>
+                    <li><a href="#">Post on Thread</a>
+                    </li>
+                    
+                </ul>
+            </div> -->
+			
+			
+			<div class="row" id="discussion">
+         <div class="box">
+           <div class="col-lg-12 text-left">
+
+		   
+
+   <!-- <h1 style="clear:both;margin-left:0px;font:40px Arial bold">Need advice on your high utility bill?</h1>
+	<div style="clear:both;margin-left:0px">
+    <p>This discussion forum is dedicated to helping users save money on their utility bills. 
+	You can post your questions, help others with tips and recommendations.</p> -->
+	<div class="address-bar" style = "color: #000000; ">
+	<label id="font1"> Please select your bill and click upload
+<input type="file" id="myfiles" onchange="getFiles();" />
+	<!--<a href="#" class="btn btn-large btn-success" type="file" id="myfiles" onclick="getFiles();">Upload!</a> -->
+	 </label>
+	<!--<input type="submit" id="upload" value="Upload" onclick="getFileContent();" /></label> -->
+	 <a href="#" class="btn btn-large btn-success" onclick="getFileContent();">Upload!</a>
+	</div>
+	
+
+	
+	
+	
+	
+	
+	
+	
+  <!--  <a href="#" class="btn btn-large btn-success" onclick="makeVisibleCreateThread();">Get Started</a> -->
+</div>
+</div>
+</div>
+        
+<div class="row" id="discussion" >
+          <div class="box" >
+           <div class="col-lg-12 text-left">
+	<div id="chart_div" style="padding-top:50px; position: relative; left: 60px; padding-bottom:50px; width: 1000px; height: 700px;"></div>
+	</div>
+	</div>
+	</div>
+	
+	
+	<div class="row" id="discussion">
+         <div class="box" >
+           <div class="col-lg-12 text-left">
+<div id="chart2_div" style="padding-top:20px;position: relative; left: 60px; padding-bottom:70px; width:1000px; height: 700px;"></div>
+
+</div>
+	</div>
+	</div>	
+
+</div>
+
+	
+	</body>
+	
+	

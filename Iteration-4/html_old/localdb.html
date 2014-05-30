@@ -1,0 +1,24 @@
+
+<script type="text/javascript" src="../js/soap.js"></script>
+	<script type="text/javascript" src="../js/soapclient.js"></script>
+
+
+
+
+$(document).ready(function() 
+	{
+		var userName1 =	localStorage.getItem("userNameMain");
+		
+		document.getElementById("Welcome").innerHTML = "Welcome";
+		document.getElementById("userNameCommunity").value = userName1;
+		document.getElementById("userNameCommunity").innerHTML = userName1;
+	});
+		
+
+
+
+
+<div style="float:right;width:300px;">
+				<div style="float:left;margin:5px;font:12px Arial bold;" id="Welcome"></div>
+				<div style="float:left;margin:5px;font:12px Arial bold;" id="userNameCommunity"></div>
+				</div>

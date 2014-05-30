@@ -1,0 +1,44 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoapService", "SoapService\SoapService.csproj", "{C771F3A7-732F-4972-9899-5471C30B84E1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{79C82B34-474C-4E1F-8A30-93385C7A3283}"
+	ProjectSection(SolutionItems) = preProject
+		Local.testsettings = Local.testsettings
+		SoapService.vsmdi = SoapService.vsmdi
+		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestWebService", "TestWebService\TestWebService.csproj", "{5469F56C-37D0-41A9-9D82-3E090F356935}"
+	ProjectSection(ProjectDependencies) = postProject
+		{C771F3A7-732F-4972-9899-5471C30B84E1} = {C771F3A7-732F-4972-9899-5471C30B84E1}
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{DDAAE6E7-2759-4C40-B7D1-3C628C25AB02}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\packages.config = .nuget\packages.config
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = SoapService.vsmdi
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C771F3A7-732F-4972-9899-5471C30B84E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C771F3A7-732F-4972-9899-5471C30B84E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C771F3A7-732F-4972-9899-5471C30B84E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C771F3A7-732F-4972-9899-5471C30B84E1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5469F56C-37D0-41A9-9D82-3E090F356935}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5469F56C-37D0-41A9-9D82-3E090F356935}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5469F56C-37D0-41A9-9D82-3E090F356935}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5469F56C-37D0-41A9-9D82-3E090F356935}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

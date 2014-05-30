@@ -1,0 +1,468 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://tempuri.org/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:element name="getLocation">
+        <s:complexType />
+      </s:element>
+      <s:element name="getLocationResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getLocationResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetAddress1">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetAddress1Response">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetAddress1Result" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetAddress2">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetAddress2Response">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetAddress2Result" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="queryTable">
+        <s:complexType />
+      </s:element>
+      <s:element name="queryTableResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="queryTableResult" type="tns:ArrayOfReview" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfReview">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Review" nillable="true" type="tns:Review" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Review">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Age" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="City" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ReviewText" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="InsertReview">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="name" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="age" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="city" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="reviewText" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="InsertReviewResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="InsertReviewResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RemoveReview">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="reviewName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RemoveReviewResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="RemoveReviewResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getCityNotes">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="City" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getCityNotesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getCityNotesResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="StoreRoute">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="data" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="StoreRouteResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="StoreRouteResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetRoutes">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetRoutesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetRoutesResult" type="tns:ArrayOfRouteInfo" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfRouteInfo">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="RouteInfo" nillable="true" type="tns:RouteInfo" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="RouteInfo">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="RouteName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="RouteMode" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Description" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="IsFree" type="s:boolean" />
+          <s:element minOccurs="0" maxOccurs="1" name="ImageUrl" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="MarkerList" type="tns:ArrayOfPosition" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfPosition">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Position" nillable="true" type="tns:Position" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Position">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Lat" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Lng" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Title" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Description" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ImageUrl" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="SearchRoutes">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="routename" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SearchRoutesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SearchRoutesResult" type="tns:ArrayOfRouteInfo" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="getLocationSoapIn">
+    <wsdl:part name="parameters" element="tns:getLocation" />
+  </wsdl:message>
+  <wsdl:message name="getLocationSoapOut">
+    <wsdl:part name="parameters" element="tns:getLocationResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetAddress1SoapIn">
+    <wsdl:part name="parameters" element="tns:GetAddress1" />
+  </wsdl:message>
+  <wsdl:message name="GetAddress1SoapOut">
+    <wsdl:part name="parameters" element="tns:GetAddress1Response" />
+  </wsdl:message>
+  <wsdl:message name="GetAddress2SoapIn">
+    <wsdl:part name="parameters" element="tns:GetAddress2" />
+  </wsdl:message>
+  <wsdl:message name="GetAddress2SoapOut">
+    <wsdl:part name="parameters" element="tns:GetAddress2Response" />
+  </wsdl:message>
+  <wsdl:message name="queryTableSoapIn">
+    <wsdl:part name="parameters" element="tns:queryTable" />
+  </wsdl:message>
+  <wsdl:message name="queryTableSoapOut">
+    <wsdl:part name="parameters" element="tns:queryTableResponse" />
+  </wsdl:message>
+  <wsdl:message name="InsertReviewSoapIn">
+    <wsdl:part name="parameters" element="tns:InsertReview" />
+  </wsdl:message>
+  <wsdl:message name="InsertReviewSoapOut">
+    <wsdl:part name="parameters" element="tns:InsertReviewResponse" />
+  </wsdl:message>
+  <wsdl:message name="RemoveReviewSoapIn">
+    <wsdl:part name="parameters" element="tns:RemoveReview" />
+  </wsdl:message>
+  <wsdl:message name="RemoveReviewSoapOut">
+    <wsdl:part name="parameters" element="tns:RemoveReviewResponse" />
+  </wsdl:message>
+  <wsdl:message name="getCityNotesSoapIn">
+    <wsdl:part name="parameters" element="tns:getCityNotes" />
+  </wsdl:message>
+  <wsdl:message name="getCityNotesSoapOut">
+    <wsdl:part name="parameters" element="tns:getCityNotesResponse" />
+  </wsdl:message>
+  <wsdl:message name="StoreRouteSoapIn">
+    <wsdl:part name="parameters" element="tns:StoreRoute" />
+  </wsdl:message>
+  <wsdl:message name="StoreRouteSoapOut">
+    <wsdl:part name="parameters" element="tns:StoreRouteResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetRoutesSoapIn">
+    <wsdl:part name="parameters" element="tns:GetRoutes" />
+  </wsdl:message>
+  <wsdl:message name="GetRoutesSoapOut">
+    <wsdl:part name="parameters" element="tns:GetRoutesResponse" />
+  </wsdl:message>
+  <wsdl:message name="SearchRoutesSoapIn">
+    <wsdl:part name="parameters" element="tns:SearchRoutes" />
+  </wsdl:message>
+  <wsdl:message name="SearchRoutesSoapOut">
+    <wsdl:part name="parameters" element="tns:SearchRoutesResponse" />
+  </wsdl:message>
+  <wsdl:portType name="WebService1Soap">
+    <wsdl:operation name="getLocation">
+      <wsdl:input message="tns:getLocationSoapIn" />
+      <wsdl:output message="tns:getLocationSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAddress1">
+      <wsdl:input message="tns:GetAddress1SoapIn" />
+      <wsdl:output message="tns:GetAddress1SoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAddress2">
+      <wsdl:input message="tns:GetAddress2SoapIn" />
+      <wsdl:output message="tns:GetAddress2SoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="queryTable">
+      <wsdl:input message="tns:queryTableSoapIn" />
+      <wsdl:output message="tns:queryTableSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="InsertReview">
+      <wsdl:input message="tns:InsertReviewSoapIn" />
+      <wsdl:output message="tns:InsertReviewSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RemoveReview">
+      <wsdl:input message="tns:RemoveReviewSoapIn" />
+      <wsdl:output message="tns:RemoveReviewSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getCityNotes">
+      <wsdl:input message="tns:getCityNotesSoapIn" />
+      <wsdl:output message="tns:getCityNotesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="StoreRoute">
+      <wsdl:input message="tns:StoreRouteSoapIn" />
+      <wsdl:output message="tns:StoreRouteSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetRoutes">
+      <wsdl:input message="tns:GetRoutesSoapIn" />
+      <wsdl:output message="tns:GetRoutesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SearchRoutes">
+      <wsdl:input message="tns:SearchRoutesSoapIn" />
+      <wsdl:output message="tns:SearchRoutesSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="WebService1Soap" type="tns:WebService1Soap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="getLocation">
+      <soap:operation soapAction="http://tempuri.org/getLocation" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAddress1">
+      <soap:operation soapAction="http://tempuri.org/GetAddress1" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAddress2">
+      <soap:operation soapAction="http://tempuri.org/GetAddress2" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="queryTable">
+      <soap:operation soapAction="http://tempuri.org/queryTable" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InsertReview">
+      <soap:operation soapAction="http://tempuri.org/InsertReview" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RemoveReview">
+      <soap:operation soapAction="http://tempuri.org/RemoveReview" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getCityNotes">
+      <soap:operation soapAction="http://tempuri.org/getCityNotes" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="StoreRoute">
+      <soap:operation soapAction="http://tempuri.org/StoreRoute" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetRoutes">
+      <soap:operation soapAction="http://tempuri.org/GetRoutes" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SearchRoutes">
+      <soap:operation soapAction="http://tempuri.org/SearchRoutes" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="WebService1Soap12" type="tns:WebService1Soap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="getLocation">
+      <soap12:operation soapAction="http://tempuri.org/getLocation" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAddress1">
+      <soap12:operation soapAction="http://tempuri.org/GetAddress1" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAddress2">
+      <soap12:operation soapAction="http://tempuri.org/GetAddress2" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="queryTable">
+      <soap12:operation soapAction="http://tempuri.org/queryTable" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InsertReview">
+      <soap12:operation soapAction="http://tempuri.org/InsertReview" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RemoveReview">
+      <soap12:operation soapAction="http://tempuri.org/RemoveReview" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getCityNotes">
+      <soap12:operation soapAction="http://tempuri.org/getCityNotes" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="StoreRoute">
+      <soap12:operation soapAction="http://tempuri.org/StoreRoute" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetRoutes">
+      <soap12:operation soapAction="http://tempuri.org/GetRoutes" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SearchRoutes">
+      <soap12:operation soapAction="http://tempuri.org/SearchRoutes" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="WebService1">
+    <wsdl:port name="WebService1Soap" binding="tns:WebService1Soap">
+      <soap:address location="http://localhost/aspnet_client/SoapService/WebService1.asmx" />
+    </wsdl:port>
+    <wsdl:port name="WebService1Soap12" binding="tns:WebService1Soap12">
+      <soap12:address location="http://localhost/aspnet_client/SoapService/WebService1.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

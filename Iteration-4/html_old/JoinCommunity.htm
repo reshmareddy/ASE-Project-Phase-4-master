@@ -1,0 +1,208 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	
+    <script type="text/javascript" src="../js/soap.js"></script>
+	<script type="text/javascript" src="../js/soapclient.js"></script>
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
+	<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+
+	<!-- Bootstrap core CSS -->
+    <link href="../NewStyling/css/bootstrap.css" rel="stylesheet">
+	
+    <!-- Add custom CSS here -->
+    <link href="../NewStyling/css/business-casual.css" rel="stylesheet">
+
+	<script type="text/javascript">
+	
+	$(document).ready(function() {
+	//window.document.forms[0].submit();
+	
+	var userName1 =	localStorage.getItem("userNameMain");
+	document.getElementById("Welcome").innerHTML = "Welcome";
+	document.getElementById("userNameCommunity").value = userName1;
+	document.getElementById("userNameCommunity").innerHTML = userName1;
+	});
+	
+	</script>
+
+</head>
+<body>
+
+<div class="brand">E-Smart</div>
+     <div class="address-bar">University of Missouri Kansas City | 5100 Rockhill Road | Kansas City,MO 64110| (816) 235-1000</div>
+<div class="overrideNavigation">
+	<nav class="navbar navbar-default" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html">E-Smart</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse navbar-ex1-collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="index.html">Home</a>
+                    </li>
+                    <li><a href="about.html">About</a>
+                    </li>
+                    <li><a href="blog.html">Blog</a>
+                    </li>
+                    <li><a href="contact.html">Contact</a>
+                    </li>
+                </ul>
+            </div>
+			
+            <!-- /.navbar-collapse -->
+
+        </div>
+        <!-- /.container -->
+    </nav>
+</div>
+
+<div class="container">
+				
+<div class="row">
+<div class="box">
+<div class="col-lg-12 text-left">
+	
+			
+    <h1 style="clear:both;margin-left:0px;font:35px Arial;">Join My Community</h1>
+	<div style="clear:both;margin-left:0px;">
+    <p style="font:18px Arial;">Join My Community to know where your Energy savings stand. You can also see your neighbors reward points. Also check on how the other communities are doing.</p>
+	</div>
+	<div></div>
+    
+</div>
+</div>
+</div>
+ 
+<div class="row">
+<div class="box">
+<div class="col-lg-12 text-left"> 
+
+	<div id="container_demo" >
+    <a class="hiddenanchor" id="mycommunity"></a>
+    <div id="wrapper">
+	<div id="register" class="animate form">
+            <form autocomplete="on"> 
+                
+				<div style="float:right;width:300px;">
+				<div style="float:left;margin:5px;font:12px Arial bold;" id="Welcome"></div>
+				<div style="float:left;margin:5px;font:12px Arial bold;" id="userNameCommunity"></div>
+				</div>
+				</br>
+				</br>
+		
+		<div data-role="page" id='pageSoap3'>
+		<div data-role="content">
+	
+		<table style="font:15px Arial;">
+ 
+            <tr>
+			<td width = "250px" align="right"><span for="householdsize">Household Size: </span></td>
+			<td><input id="householdsize" name="householdsize" required="required" type="householdsize" placeholder="900" ></td>
+			<td>Sq ft.</td>
+			</tr>
+
+			<tr><td></td><td><div><br></div></td><td></td></tr>
+			
+            <tr>
+			<td width = "250px" align="right"><span for="householdmembers">No. of members living in the Household: </span></td>
+			<td><input id="householdmembers" name="householdmembers" required="required" type="householdmembers" placeholder="2"></td>
+			<td>Sq ft.</td>
+			</tr>
+            
+			<tr><td></td><td><div><br></div></td><td></td></tr>
+			
+			<tr>
+			<td width = "250px" align="right"><span for="housetype">House Type: </span></td>
+			<td><select id="housetype" name="housetype">
+				<option>Apartment</option>
+				<option>Single Family Home</option>
+				<option>Condo</option>
+				<option>Townhome</option>
+			</select></td>
+			<td></td>
+			</tr>
+			
+			<tr><td></td><td><div><br></div></td><td></td></tr>
+			
+			<tr>
+			<td width = "250px" align="right"><span for="community">Community Name: </span></td>
+			<td><input id="community" name="community" required="required" type="text" placeholder="RODROCK"></td>
+			<td></td>
+			</tr>
+			
+			<tr><td></td><td><div><br></div></td><td></td></tr>
+			
+			<tr style="color:black">
+			<td width = "250px" align="right" style="font:15px Arial bold;"><span id="commAddr">Community Office Address</span></td>
+			<td></td>
+			<td></td>
+			</tr>
+			
+			<tr><td></td><td><div><br></div></td><td></td></tr>
+
+			<tr>
+			<td width = "250px" align="right"><span for="StreetAddress">Street Address: </span></td>
+			<td><input id="streetaddress" name="StreetAddress" required="required" type="text" placeholder="6520 W 155th St"></td>
+			<td></td>
+			</tr>
+
+			<tr><td></td><td><div><br></div></td><td></td></tr>
+			
+			<tr>
+			<td width = "250px" align="right"><span for="city">City: </span></td>
+			<td><input id="city" name="city" required="required" type="text" placeholder="Overland Park"></td>
+			<td></td>
+			</tr>
+
+			<tr><td></td><td><div><br></div></td><td></td></tr>
+			
+			<tr>
+			<td width = "250px" align="right"><span for="state">State: </span></td>
+			<td><input id="state" name="state" required="required" type="text" placeholder="MO"></td>
+			<td></td>
+			</tr>
+
+			<tr><td></td><td><div><br></div></td><td></td></tr>
+			
+			<tr>
+			<td width = "250px" align="right"><span for="zipcode">Zip Code: </span></td>
+			<td><input id="zipcode" name="zipcode" required="required" type="text" placeholder="66100"></td>
+			<td></td>
+			</tr>
+
+			<tr><td><div id="latitude"></div></td><td></td></tr>
+			<tr><td><div id="longitude"></div></td><td></td></tr>
+
+			<tr><td></td><td><div><br></div></td><td></td></tr>
+			
+			<tr><td></td>
+
+			<td class="signin button" > 
+				<input type="button" data-inline="true" id="soapJoin"  class="btn btn-large btn-success" style="color:white"  value="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Join &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" onclick ="myMap.soapJoinMyCommunity('xml','InsertMyCommunity','userNameCommunity','householdsize', 'householdmembers', 'housetype', 'community','streetaddress','city','state','zipcode','latitude','longitude');"/>
+			</td>
+			<td></td>
+			</tr>
+			
+			
+		</table>
+    </div>
+	</div>
+	</div>
+		</form>
+	</div>
+	</div>
+	</div>
+</div>
+</div>
+</div>
+</body>
+</html>

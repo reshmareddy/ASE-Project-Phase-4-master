@@ -1,0 +1,505 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>jQuery UI Slider - Multiple sliders</title>
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+    <script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+    <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?libraries=places,weather&sensor=true"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+    <script type="text/javascript" src="../js/webServices.js"></script>
+
+
+    <style>
+        .bar {
+            height: 220px;
+            float: left;
+            width: 100px
+        }
+        .bar-container {
+            width: 150px;
+            float: left;
+            padding-top: 70px;
+            color: brown;
+            font: 17px Arial bold;
+            margin-left: 20px;
+        }
+        .emoticon-container {
+            float: left;
+            padding-top: 70px;
+            color: brown;
+            font: 17px Arial bold;
+            margin-left: 20px;
+        }
+        .smile-container {
+            float: left;
+            padding-top: 50px;
+            color: white;
+            font: 17px Arial bold;
+            margin-left: 300px;
+        }
+        .outside-container {
+            float: left;
+            color: white;
+            font: 25px Arial bold;
+            margin-left: 20px;
+        }
+        .gauge {
+            float: left;
+            width: 100px
+        }
+        .bigger-container {
+            float: left;
+            padding-top: 80px;
+            margin-left: 130px;
+        }
+        .left {
+            float: left
+        }
+        .bar-label {
+            margin-bottom: 15px;
+            display: inline-block;
+            color: white
+        }
+        .backg {
+            background-color: green;
+            clear: both
+        }
+        .ui-slider-range.ui-widget-header {
+            background: brown;
+        }
+        .backb {
+            background-image: url("best.png")
+        }
+        h1 {
+            float: left;
+            margin-left: 500px;
+            font: 50px Arial bold;
+            color: white
+        }
+        h1:hover {
+            cursor: pointer;
+            color: #f00;
+        }
+        h1:active {
+            color: #555;
+        }
+        .clear {
+            clear: both
+        }
+    </style>
+    <script>
+        $(function () {
+            // setup master volume
+
+
+        });
+
+        function getClothingLabel(c) {
+            var label = "";
+            switch (c) {
+
+            case 33:
+                label = "Summer";
+                break;
+
+            case 66:
+                label = "Business";
+                break;
+
+            case 100:
+                label = "Winter";
+                break;
+
+            }
+
+            return label;
+
+        }
+
+        function setComforIndex(t, h, c) {
+            var ci = 0;
+            var comfortTemperature = data.simulation.temperature < 66 && data.simulation.temperature > 59;
+            var comfortHumidity = data.simulation.humidity < 46 && data.simulation.humidity > 34;
+            var comfortClothing = data.simulation.clothingIndex > 32 && data.simulation.clothingIndex < 67;
+
+
+
+            var comfortIndex = (comfortTemperature && comfortHumidity && comfortClothing);
+
+            if (comfortIndex == true)
+                ci = 0.45;
+            else
+                ci = 1.5;
+
+
+            myMap.drawGauge('gaugeContainer', ci);
+
+            var sadSmile = document.getElementById("sadSmile");
+            sadSmile.style.display = "none";
+            var happySmile = document.getElementById("happySmile"); 
+            happySmile.style.display = "none";
+            if (ci > 0.5 || ci < -0.5) {
+
+                sadSmile.style.display = "block";
+
+            } else {
+                happySmile.style.display = "block";
+            }
+
+            var emoticon = document.getElementById("sweating");
+            var emoticonShivering = document.getElementById("shivering");
+            emoticon.style.display = "none";
+            emoticonShivering.style.display = "none";
+
+            if (data.simulation.temperature > 80) {
+                emoticon.style.display = "block";
+            } else if (data.simulation.temperature < 50) {
+                emoticonShivering.style.display = "block";
+            }
+
+        }
+
+        function recommendations() {
+            var recommendation = document.getElementById("recommendation");
+            recommendation.style.display = "block";
+
+
+        }
+
+        var data = new Object();
+        data.internal = new Object();
+        data.external = new Object();
+        data.simulation = new Object();
+
+        function updateInternalData(internalData) {
+            data.internal.temperature = internalData.temperature;
+            data.internal.humidity = internalData.humidity;
+            $("#temperature").slider("value", internalData.temperature);
+            $("#humidity").slider("value", internalData.humidity);
+            document.getElementById('temperature_internal').innerHTML = "  Inside Temperature: " + internalData.temperature + " F";
+            document.getElementById('humidity_internal').innerHTML = "  Inside Humidity: " + internalData.humidity + "%";
+
+        }
+
+        function updateExternalData(externalData) {
+            data.external.temperature = externalData.temperature;
+            data.external.humidity = externalData.humidity;
+
+
+
+
+            document.getElementById('temperature_id').innerHTML = "  Outside Temperature: " + externalData.temperature + " F";
+            document.getElementById('humidity_id').innerHTML = "  Outside Humidity: " + externalData.humidity;
+        }
+
+        function updateSimulationData() {
+
+            $("#temperatureLabel").text(data.simulation.temperature);
+            $("#humidityLabel").text(data.simulation.humidity);
+            $("#clothingLabel").text(getClothingLabel(data.simulation.clothingIndex));
+            var simulationTemp = document.getElementById("simulationTemp");
+            simulationTemp.innerHTML = "Simulation Temperature: " + data.simulation.temperature+" F";
+
+            var simulationHum = document.getElementById("simulationHum");
+            simulationHum.innerHTML = "Simulation Humidity: " + data.simulation.humidity+"%";
+            setComforIndex();
+            generateRecommendations(true);
+        }
+
+        $(document).ready(function () {
+
+            $("#temperature").each(function () {
+                // read initial values from markup and remove that
+                data.simulation.temperature = parseInt($(this).text(), 10);
+
+
+
+                $(this).empty().slider({
+                    value: data.simulation.temperature,
+                    range: "min",
+                    animate: true,
+
+                    orientation: "vertical",
+                    change: function (event, ui) {
+                        data.simulation.temperature = ui.value;
+                        updateSimulationData();
+
+                    }
+                });
+            });
+            $("#humidity").each(function () {
+                // read initial values from markup and remove that
+                data.simulation.humidity = parseInt($(this).text(), 10);
+                $(this).empty().slider({
+                    value: data.simulation.humidity,
+                    range: "min",
+                    animate: true,
+                    orientation: "vertical",
+                    change: function (event, ui) {
+
+                        data.simulation.humidity = ui.value;
+
+                        updateSimulationData();
+
+                    }
+                });
+            });
+            $("#clothing").each(function () {
+                // read initial values from markup and remove that
+                data.simulation.clothingIndex = parseInt($(this).text(), 10);
+                $(this).empty().slider({
+                    value: data.simulation.clothingIndex,
+                    range: "min",
+                    animate: true,
+                    step: 33,
+                    orientation: "vertical",
+                    change: function (event, ui) {
+                        data.simulation.clothingIndex = ui.value;
+
+
+                        updateSimulationData();
+                    }
+                });
+            });
+
+            updateSimulationData();
+
+            myMap.drawGauge('gaugeContainer', 1.5);
+
+           myMap.currentTemperature(updateExternalData); 
+            myMap.internalTemperature(updateInternalData);
+
+        });
+
+        function generateRecommendations(speech) {
+            //myMap.internalTemperature(updateInternalData); 
+           myMap.currentTemperature(updateExternalData); 
+
+
+            /*
+	var summer=data.external.temperature > 70;
+	var winter=data.external.temperature < 55;
+	var rain = data.external.humidity > 50;
+	
+	var spring = data.external.temperature < 70 && data.external.temperature > 55;
+	var targetTemp = 65;
+	var increase = data.internal.temperature < targetTemp;
+	var verb = increase?'Increase ': 'Reduce ';;
+	var recommendation='';
+	
+	if(data.internal.temperature == targetTemp){ 
+	recommendation+= 'Temperature Setting is perfect. ';
+	}
+	else if(rain || !spring){
+		recommendation+=verb + 'Temperture to 65 F. ';
+				}
+				else if(!rain){
+				recommendation+='Open your windows and ';
+				}
+		if(data.internal.humidity<40 ){
+		
+		recommendation+='Increase your humidity to 40'
+			if(data.external.humidity>40 && data.external.humidity<50 && spring)
+			recommendation+='Open the windows';
+			
+		}
+		else if(data.internal.humidity>40){
+		recommendation+='Reduce your humidity to 40';
+			if(data.external.humidity>40 && data.external.humidity<50 && spring)
+			recommendation+='Open the windows';
+		}
+		else{
+		recommendation+= 'Humidity Setting is perfect. ';
+		}
+		
+		*/
+
+            var recommendation = '';
+			var recommendation_speak = '';
+            
+
+            if (data.simulation.temperature <= 65 && data.simulation.temperature >= 60) {
+                recommendation += 'Temperature Setting is perfect'+"<br/>";
+				recommendation_speak += 'Temperature Setting is perfect';
+				
+            } else if (data.simulation.temperature < 60) {
+                recommendation += "Looks like your thermostat temperature is too low. " +"<br/>"+"Please maintain your thermostat temperature between 60 and 65."+'\r\n';
+				recommendation_speak += "Looks like your thermostat temperature is too low. "+"Please maintain your thermostat temperature between 60 and 65."+'\r\n';
+				
+            } else if (data.simulation.temperature > 65) {
+
+                if (data.external.humidity >= 35 && data.external.humidity <= 45 && data.external.temperature >= 60 && data.external.humidity <= 65){
+                    recommendation += "Please turn off your heating system if on. "+"<>br/"+"Open your windows to maintain your home temperature between 60 and 65. ";
+					recommendation_speak += "Please turn off your heating system if on. "+"Open your windows to maintain your home temperature between 60 and 65. ";
+					}
+				else
+				{
+				   recommendation += "Please lower your thermostat setting for temperature to 65. "+"<br/>";
+				   recommendation_speak += "Please lower your thermostat setting for temperature to 65. ";
+				}
+
+            } 
+			
+			if (data.simulation.humidity >= 35 && data.external.humidity <= 45) 
+					{recommendation += 'Humidity Setting is perfect. '+"<br/>";	
+					recommendation_speak += 'Humidity Setting is perfect. ';	
+					}
+             else if (data.simulation.humidity >45){
+			   
+			   if(data.external.humidity >= 35 && data.external.humidity <= 45 && data.external.temperature >= 60 && data.external.humidity <= 65)
+                  {  recommendation +='Maintain your humidity between 35 and 45. '+"<br/>"+"Please open your windows to reduce humidity. "+"<br/>";
+					recommendation_speak +='Maintain your humidity between 35 and 45. '+"Please open your windows to reduce humidity. ";
+					}
+                else
+                   { recommendation += "Please turn on the dehumidifier. "+"<br/>";
+					recommendation_speak += "Please turn on the dehumidifier. ";
+					}
+            }
+            else if (data.simulation.humidity < 35) {
+				
+                recommendation += 'Maintain your humidity between 35 and 45. '+"<br/>";
+				recommendation_speak += 'Maintain your humidity between 35 and 45. ';
+                if (data.external.humidity >=35 && data.external.humidity <=45 && data.external.temperature >= 60 && data.external.humidity <= 65)
+                  {  recommendation += 'Open the windows to increase the humidity. '+"<br/>";
+					recommendation_speak += 'Open the windows to increase the humidity. ';
+				}	
+				else
+					{recommendation += 'Turn on the Humidifier. '+"<br/>";
+					recommendation_speak += 'Turn on the Humidifier. ';
+					}
+            }
+            			
+            var recommendations = document.getElementById('recommendation');
+            recommendations.innerHTML = "Recommendations: " +"<br/>"+recommendation;
+            recommendations.style.display = 'block';
+            if (speech == true)
+                this.tts(recommendation_speak);      
+
+        }  
+ 
+        function tts(input) {
+            var voiceRssKey = '026492b19f8244c0936e6450afd5ce07';
+			var voiceUrl = 'http://api.voicerss.org?key=' + voiceRssKey + '&src='+input+'&hl=en-us';
+			$("#recommendationVoice").attr("src", voiceUrl).appendTo($("#recommendationVoice").parent());
+			var v = $("#audioPlayer")[0];  
+            v.play();
+        }    
+    </script>
+</head>
+
+<body class="backb">
+    	
+<div id='2'>
+
+</div>
+	
+	<audio id="audioPlayer">
+        <source id="recommendationVoice" type="audio/mpeg" src="http://tts-api.com/tts.mp3?q=hi" />
+
+    </audio>
+
+
+    <h1 class="clear">
+    <br/> Home Comfort</h1>
+
+
+
+    <div id="eq">
+
+        <div class="bar-container clear">
+            <span class="bar-label"> Temperature: </span>
+            <span id="temperatureLabel"></span>
+            <span id="temperature" class="bar ui-slider-range.ui-widget-header">60</span>
+        </div>
+
+
+
+        <div class="bar-container">
+            <span class="bar-label"> Humidity: </span> 
+            <span id="humidityLabel"></span>
+            <span id="humidity" class="bar">30</span>
+        </div>
+
+        <div class="bar-container">
+
+            <span class="bar-label"> Clothing: </span>
+            <span id="clothingLabel"></span>
+            <span id="clothing" class="bar">33</span>
+        </div>
+        <div id="sweating" style="display:none" class="emoticon-container">
+            <img style="height:200px; width:250px;float:left" src="http://i717.photobucket.com/albums/ww173/prestonjjrtr/Smileys%20Summer/SummerHotFan.gif" alt="Smiley face">
+            <img style="height:150px; width:150px" src="../images/callout-hot.png">
+        </div>
+        <div id="shivering" style="display:none" class="emoticon-container">
+            <img style="height:200px; width:200px;float:left" src="http://www.sherv.net/cm/emo/christmas/winter-cold-smiley-emoticon.gif" border="0" alt="Shiver" />
+            <img style="height:150px; width:200px" src="../images/callout.png">
+        </div>
+
+
+       
+    </div>
+	
+	 <span id="recommendation" style="display:none;float:left;margin-left:20px;color:white;font:20px Arial bold;" class="bigger-container">
+	  1.
+           
+     </span>
+
+
+    <div style="clear:both;padding:30px"></div>
+
+    <div id='gaugeContainer' class="gauge"></div>
+
+    <div id="sadSmile" style="display:none" class="smile-container">
+        <img alt="Shaking No" width=70 height=70 src="http://www.sherv.net/cm/emo/sad/sad-crying-smiley-face.gif">
+        </a>
+        <span> Comfort level is too low </span>
+        <span>
+
+
+<span>
+</div>
+<div id="happySmile" style="display:none" class="smile-container">
+<img alt="Thumbs up" width=70 height=70 src="http://www.sherv.net/cm/emo/happy/big-grin-smiley-emoticon.gif"></a>
+<span> Comfort level is good </span>
+    </div>
+
+    <div style="float:left;padding-top:80px;margin-left:20px;">
+        <span id="temperature_id" style="float:left;color:white;font:20px Arial bold;margin-left:20px"></span>
+        <br/>
+        <br/>
+
+        <span id="humidity_id" style="float:left;color:white;font:20px Arial bold;margin-left:20px"></span>
+    </div>
+
+    <div style="float:left;padding-top:80px;margin-left:20px;">
+        <span id="temperature_internal" style="float:left;color:white;font:20px Arial bold;margin-left:20px"></span>
+        <br/>
+        <br/>
+
+        <span id="humidity_internal" style="float:left;color:white;font:20px Arial bold;margin-left:20px"></span>
+    </div>
+
+    <div style="float:left;padding-top:80px;margin-left:20px;">
+        <span id="simulationTemp" style="float:left;color:white;font:20px Arial bold;margin-left:20px"></span>
+        <br/>
+        <br/>
+        <span id="simulationHum" style="float:left;color:white;font:20px Arial bold;margin-left:20px"></span>
+    </div>
+	
+	
+	<span id="tweet1"></span>
+	
+	
+
+
+
+
+
+</body>
+
+</html>

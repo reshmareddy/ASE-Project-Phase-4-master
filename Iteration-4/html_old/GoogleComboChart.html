@@ -1,0 +1,221 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+  <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
+  <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+  
+
+  <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+	 <style type='text/css'>
+		#header{	
+			background: none;
+			padding-left: 120px;
+		}
+
+		#header2
+		{
+			float: center;
+			text-align:center;
+		}
+		
+		#button1
+		{
+			cursor:pointer; 
+			padding:5px 25px; 
+			background:#b87333; 
+			border:1px solid #33842a; 
+			/*style the text*/
+			color:#000000;
+			font-size:1.1em;
+		}
+		#font1
+		{
+		color:#FFFFFF;
+		}
+	</style>
+	<script> 
+		// load google chart api
+		google.load('visualization', '1', {packages: ['corechart']});
+		var data;
+		var data2;
+		
+		window.onload = function() {
+
+			//Check File API support
+			if (window.File && window.FileList && window.FileReader) {
+			}
+			else {
+				alert("Your browser does not support File API");
+			}
+		}
+		
+        function getFiles() {
+            // Get input element
+            myFileList = document.getElementById("myfiles");
+            // loop through files property, using length to get number of files chosen
+            /*for (var i = 0; i < myFileList.files.length; i++) {
+                // display them in the div
+                document.getElementById("display").innerHTML += "<br/>" + myFileList.files[i].name ;
+            }*/
+        }
+
+        function getFileContent() {
+            // Get input element
+            myFileList = document.getElementById("myfiles");
+			var xmlFile = myFileList.files[0];
+			data = new google.visualization.DataTable();
+			data.addColumn('date', 'Month');
+			//data.addColumn('number', 'Cost');
+			data.addColumn('number','Kilowatts');
+			data.addColumn('number', 'Temperature');
+
+			data2 = new google.visualization.DataTable();
+			data2.addColumn('date', 'Month');
+			data2.addColumn('number', 'Cost');
+		//	data2.addColumn({type:'string', role:'annotationText'});
+          //  data2.addColumn({type:'string', role:'tooltip'});
+			 if (xmlFile) {
+				  var r = new FileReader();
+				  
+				  r.onload = function(e) { 
+					var contents = e.target.result;
+					xmlDoc = $.parseXML( contents );
+					$xml = $( xmlDoc );
+					
+					$xml.find("IntervalBlock").each(function(){
+					
+					 var kiloVal = $(this).find("IntervalReading>value").text();
+						kiloString = kiloVal.substr(0,2);
+						kiloString += '.';
+						kiloString += kiloVal.substr(1,2);
+						var kilowatt = Number(kiloString);
+						
+				        var costVal = $(this).find("IntervalReading>cost").text();
+						costString = costVal.substr(0,1);
+						costString += '.';
+						costString += costVal.substr(1,2);
+						var cost = Number(costString);
+						
+						var timePeriodStart = $(this).find("IntervalReading>timePeriod>start").text();
+						var timePeriodStart = new Date(timePeriodStart*1000).toISOString();
+						var timePeriodStartDate = new Date(timePeriodStart);
+						var temperatureData = getTemperature(timePeriodStartDate);
+						
+						console.log("Cost string: " + costString + " - Cost: " + cost);
+						//console.log("timePeriodStart: " + timePeriodStartDate);
+						//console.log("temperature:" + temperatureData + " " + timePeriodStartDate );						
+						
+						data.addRow([timePeriodStartDate, kilowatt, temperatureData]);//for chart1
+						data2.addRow([timePeriodStartDate, cost]);//for chart2
+					});					
+					
+					//alert(data.getNumberOfRows());
+					drawGoogleCharts();
+				  }
+				  
+					r.readAsText(xmlFile);
+				} else { 
+				  alert("Failed to load data file.");
+				}
+        }
+		function getTemperature(timePeriod) {
+			var month = timePeriod.getMonth();
+			var t;
+			
+			  /*$.ajax({
+					  url : "http://api.wunderground.com/api/ef305cf8b574a3b9/history_20120319/q/KS/Olathe.json",
+					  dataType : "jsonp",
+					  success : function(parsed_json) {
+					  var location = parsed_json['location']['city'];
+					  var temp_f = parsed_json['current_observation']['temp_f'];
+					  alert("Current temperature in " + location + " is: " + temp_f);
+					  }
+				  });*/
+
+			if (month == 0 || month == 1 || month == 11) 
+			{
+				t = Math.floor((Math.random()*35)+0);
+			}
+			if (month == 2|| month == 3 || month == 4)
+			{
+				t = Math.floor((Math.random()*35)+40); 
+			}
+			
+		   if (month == 5|| month == 6 || month == 7)
+			{
+				t = Math.floor((Math.random()*25)+75);
+			}
+			if (month == 8|| month == 9 || month == 10)
+			{
+				t = Math.floor((Math.random()*25)+50);
+			}
+			
+			return t;
+		}
+		
+		function drawGoogleCharts() {
+			//alert(data);
+			//alert(fileContent);
+			drawVisualization();
+			drawVisualization2();
+			google.setOnLoadCallback(drawVisualization);
+			google.setOnLoadCallback(drawVisualization2);
+		}
+		
+       function drawVisualization() {
+       
+		var options = {
+		 title : 'Energy Utilization chart',
+        vAxis: {0:  {format: '#,###', color: 'red'}, 1: {format: '#%'} },
+        hAxis: { title: " Energy Consumption time period "},
+		
+        series: {
+				0:{  type: "bars", targetAxisIndex: 0, color: '#76A7FA' },
+				1: { type: "scatter", targetAxisIndex: 1, color: '#b87333'}
+			}
+		}
+		
+		var formatter = new google.visualization.NumberFormat({fractionDigits:2});
+		formatter.format(data, 1);
+
+        var chart = new google.visualization.ComboChart(document.getElementById('chart_div'));
+        chart.draw(data, options);	
+        is3D: true;		
+      }
+	  
+       function drawVisualization2() {
+      
+       var options2 = {
+		 title : 'Monthly Cost Difference',
+		 isStacked: true,
+   
+		vAxis: {title: "Cost in Dollars"},
+		hAxis: {title: "Energy Consumption time period"},
+		   
+		series: {
+				0:{ targetAxisIndex: 0, color: '#e0440e' }
+            }
+        };
+		
+        var chart2 = new google.visualization.ScatterChart(document.getElementById('chart2_div'));
+        chart2.draw(data2, options2);
+		is3D: true;
+      }
+	   
+		
+	</script>
+  </head>
+  <body background ="best.png">
+	<!--<label>Use <strong>shift</strong> or <strong>ctrl</strong> click to pick a few files: -->
+	<label id="font1"> Please select your bill and click upload
+	<input type="file" id="myfiles" onchange="getFiles();" /></label>
+	<input type="submit" id="upload" value="Upload" onclick="getFileContent();" /></label>
+	<button type="submit"><img src = "xqngiin83hsao32gjw7_hom.png"> Text</button>
+
+	<div id="chart_div" style="padding-top:90px; padding-bottom:70px; width: 1300px; height: 600px;"></div>
+	<div id="chart2_div" style="padding-top:90px; padding-bottom:70px; width: 1300px; height: 600px;"></div>
+	
+  </body>
+</html>

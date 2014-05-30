@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+	 <style type='text/css'>
+			#header{	
+				background: none;
+				padding-left: 120px;
+			}
+
+			#header2
+			{
+				float: center;
+				text-align:center;
+			}
+
+			#button1
+			{
+				cursor:pointer; 
+				padding:5px 25px; 
+				background:#b87333; 
+				border:1px solid #33842a; 
+				color:#000000;
+				font-size:1.1em;
+			}
+	</style>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+      google.load("visualization", "1", {packages:['corechart']});
+	 
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+           ['Energy Consumption time period', 'Cost in Dollars'],
+          ['Sep/11',  481],
+          ['Oct/11',  450],
+          ['Nov/11',  470],
+          ['Dec/11',  290],
+          ['Jan/12',  444],
+          ['Feb/12',  488],
+          ['Mar/12',  264],
+          ['Apr/12',  486],
+          ['May/12',  476],
+          ['June/12', 325],
+          ['July/12', 407],
+          ['Aug/12',  454],
+          ['Sep/12',  335]
+        ]);
+
+        var options = {
+		 title : 'Monthly Cost Analaysis',
+		 isStacked: true,
+   
+		vAxis: {title: "Cost in Dollars"},
+		hAxis: {title: "Energy Consumption time period"},
+		   //   title: 'Monthly Cost Difference',
+			 //hAxis: {title: 'Energy Consumption time period',  titleTextStyle: {color: '#333'}},
+			// vAxis: {minValue: 0}
+		series: {
+				0:{ targetAxisIndex: 0, color: '#76A7FA' }
+            }
+        };
+
+        var chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
+		
+        chart.draw(data, options);
+      }
+
+		google.setOnLoadCallback(drawChart);
+	  </script>
+  </head>
+  <body background ="best.png">
+	<h1 id="header">Cost Difference</h1>
+    <div id="chart_div" style="padding-left: 120px; width: 800px; height: 400px;"></div>
+   
+	<h2 id="header2">Monthly Cost Analaysis</h2>
+	
+	<button id="button1" onclick="window.location.href='GoogleComboChart.html'">Energy Consumption</button>
+	<button id="button1" onclick="window.location.href='graph2.html'">Detailed View</button>
+	<button id="button1" onclick="window.location.href='homepage.html'">Home</button>
+  </body>
+</html>

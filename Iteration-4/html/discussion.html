@@ -1,0 +1,682 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+	<link rel='stylesheet' href='../css/bootstrap.css'/>
+    <title>Discussion Board</title>
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+	
+	<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+    <script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+	<script type="text/javascript" src="../js/webServices.js"></script>
+    <script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+	<script type="text/javascript" src="../js/bootstrap.js"></script>
+	<script type="text/javascript" src="../js/soapclient.js"></script>
+	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
+    
+    <script type="text/javascript" src="../js/soap.js"></script>
+	<script type="text/javascript" src="../js/soapclient.js"></script>
+
+	<!-- Bootstrap core CSS -->
+    <link href="../NewStyling/css/bootstrap.css" rel="stylesheet">
+
+    <!-- Add custom CSS here -->
+    <link href="../NewStyling/css/business-casual.css" rel="stylesheet">
+
+
+<style>
+
+.ask-title-field{
+width:610px;
+}
+
+.edit-field-overlayed{
+color:#888;
+}
+
+.wmd-button-bar{
+height:25px;
+width:660px;
+clear:both;
+background-color:#fff;
+margin-top:10px;
+margin-right:0px;
+margin-bottom:1px;
+margin-left:0px;}
+
+.wmd-button-row{
+position:relative;
+padding:0px;
+height:20px;
+margin:0px;
+}
+.wmd-button{
+width:20px;
+height:20px;
+padding-left:2px;
+padding-right:3px;
+position:absolute;
+display:inline-block;
+list-style:none;
+cursor:pointer;
+}
+
+.discussion .col-lg-4 {
+	text-align:right;
+	
+	}
+	
+		
+.navbar-brand {
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-weight: 900;
+}
+
+.overrideNavigation .navbar-nav {
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  font-weight: 400;
+}
+
+.overrideNavigation .navbar {
+  border-radius: 0;
+}
+
+.overrideNavigation .navbar-header {
+  display: none;
+}
+
+.overrideNavigation .navbar {
+  min-height: 0;
+}
+
+.overrideNavigation .navbar-default {
+  background: #fff;
+  background: rgba(255,255,255,0.9);
+  border: none;
+}
+
+.overrideNavigation .nav>li>a {
+  padding: 35px;
+}
+
+.overrideNavigation .navbar-nav>li>a {
+  line-height: normal;
+}
+
+.overrideNavigation .navbar-nav {
+  float: none;
+  margin: 0 auto;
+  display: table;
+  table-layout: fixed;
+  font-size: 1.25em;
+}
+
+
+</style>
+	
+	
+<script>
+var forum=new Object();
+forum.threads=[];
+var thread = new Object();
+thread.id='1';
+var message="test message";
+thread.message=message;
+forum.threads.push(thread);
+
+
+
+
+function loadMessage(){
+
+$('#emailId').html(emailId);
+$('#handle').html(handle);
+$('#message').html(message);
+
+}
+function makeVisibleCreateThread(){
+var forumLinks = document.getElementById("forumLinks");
+forumLinks.style.display="none";
+var createThread=document.getElementById("createThread");
+
+createThread.style.display="block";
+
+}
+
+
+
+
+function makeVisibleRegister(){
+var register=document.getElementById("register");
+register.style.display="block";
+
+}
+
+var Soap = function () {
+        this.url = 'http://localhost:7286/WebService.asmx';
+        this.soapClientParameters = new SOAPClientParameters();
+    }
+
+Soap.prototype = {
+    invoke: function (functionName, callbackFunction, objectOfCallbackFunction) {
+        var that = this;
+        var url = this.url;
+        SOAPClient.invoke(url, functionName, that.soapClientParameters, true, function (response) {
+            callbackFunction.call(objectOfCallbackFunction, response);
+        });
+
+    }
+}
+var soap = new Soap();
+
+var Message = function () {
+        this.id = '';
+        this.text = '';
+        this.user = '';
+        this.date = '';
+       }
+
+Message.prototype = {
+    init: function (id, text, user, date) {
+        this.id = id;
+        this.text = text;
+        this.user = user;
+        this.date = date;
+       }
+}
+
+var message = new Message();
+
+var Forum = function () {
+        this.id = '';
+        this.title = '';
+        this.messages = [];
+		this.allForums = [];
+		this.callback='';
+		this.published=false;
+		
+    }
+
+Forum.prototype = {
+    addMessage: function (message) {
+        this.messages.push(message);
+       },
+    publish: function () {
+       this.published=false;
+	   for (var i = 0; i < this.messages.length; i++) {
+            var message = this.messages[i];
+            var soap = new Soap();
+            
+            soap.soapClientParameters.add("title", this.title);
+            soap.soapClientParameters.add("user", message.user);
+            soap.soapClientParameters.add("text", message.text);
+            soap.invoke('insertMessages', this.getPublishResponse,this);
+			if(i==this.messages.length-1){this.published=true;}
+        }
+
+    },
+	
+	
+
+    getPublishResponse: function (response) {
+	if(this.callback){
+	this.callback.call(this,response);}
+    },
+    Trace: function (routeName){
+	 var soap = new Soap();
+            soap.soapClientParameters.add("", '' );
+            soap.invoke('insertMessages', publishSuccess, place);
+	
+	},
+	
+	getForum: function (title){
+	 var soap = new Soap();
+     soap.soapClientParameters.add("title", title );
+            
+	 soap.invoke('GetForum', this.getForumResponse, this);
+	
+	},
+	getForumResponse: function(response){
+	this.messages=[];
+	var forumJson = jQuery.parseJSON(response)[0];
+	this.id=forumJson.Id;
+	this.title=forumJson.Title;
+	var messages = routeJson.Messages;
+	for(var i=0;i<messages.length;i++){
+	this.addMessage(messages[i].Id,messages[i].Text, messages[i].User, messages[i].Date);
+	
+	}
+	
+	this.callback.call(this);
+	
+	
+	},
+	
+	getAllForums: function (){
+	var soap = new Soap();
+    soap.invoke('GetForums', this.getAllForumsResponse, this);
+	
+	},
+	getAllForumsResponse: function(response){
+	var json = jQuery.parseJSON(response);
+	this.allForums=[];	
+	for(var j=0;j<json.length;j++){
+	var forum = new Forum();
+	forum.id=json[j].Id;
+	forum.Title=json[j].Title;
+	
+	
+	var messages = json[j].Messages;
+	for(var i=0;i<messages.length;i++){
+	var message =  new Message();
+	message.init(messages[i].Id,messages[i].Text, messages[i].User, messages[i].Date);
+	forum.addMessage(message);
+	}
+	this.allForums.push(forum);
+	}
+	
+	
+	this.callback.call(this);
+	
+	}
+
+
+
+}
+
+
+var forum = new Forum();
+
+
+function viewForums() {
+			
+			var createThread=document.getElementById("createThread");
+			createThread.style.display="none";
+			var addMessage=document.getElementById("addMessage");
+			addMessage.style.display="none";
+          
+            forum.callback = viewForumsNames;
+            forum.getAllForums();
+
+        }
+
+
+function viewForumsNames() {
+
+            var forumLinks = document.getElementById("forumLinks");
+			forumLinks.style.display="block";
+            forumLinks.innerHTML = '';
+            var forums = this.allForums;
+			
+			var filteredForums=[];
+			
+			for (var i = 0; i < forums.length; i++) {
+								
+				filteredForums.push(forums[i]);
+				}
+			
+			var tableForums ="<table style='width:100%'>";
+			for (var i = 0; i < filteredForums.length; i++) {
+                var title = filteredForums[i].Title;
+				var id=filteredForums[i].Id;
+				var messages = filteredForums[i].messages;
+				
+			   tableForums +="<tr>";
+               tableForums +="<td colspan=4>";
+			   tableForums +="<a href='#'> " + title + "</a>";
+			   tableForums +="</td>";
+			   tableForums +="</tr>";
+			    tableForums +="<tr>";
+				
+				for( var j=0; j<messages.length;j++){
+					
+					var message = messages[j];
+					var user=message.user;
+					var text=message.text;
+					var date=message.date;
+				
+			 
+			   tableForums +="<td>";
+			   tableForums += user;
+			   tableForums +="</td>";
+			   
+			   tableForums +="<td>";
+			   tableForums += text;
+			   tableForums +="</td>";
+			   
+			   tableForums +="<td>";
+			   tableForums += date;
+			   tableForums +="</td>";
+			   tableForums +="</tr>";
+			   
+			   
+			   
+			}
+			
+			   tableForums +="<tr>";
+               tableForums +="<td colspan=4>";
+			   tableForums +="<a href ='#' data-role = 'button' class='btn btn-large btn-success' onclick='makeVisibleAddMessage(&quot;"+title+"&quot;);'> Reply </a>";
+			   tableForums +="</td>";
+			   tableForums +="</tr>";
+			}
+			tableForums +="</table>";
+			forumLinks.innerHTML +=tableForums;			  				
+        }
+		
+		 
+		
+		function makeVisibleAddMessage(title){
+		var forumLinks = document.getElementById("forumLinks");
+		forumLinks.style.display="none";
+		var message =document.getElementById("addMessage");
+		message.style.display="block";
+				
+		var messageTable='';
+		messageTable+="<table>";
+		messageTable+="<tr>";
+		messageTable+="<td>";
+		messageTable+="<label for='messageUser' style='font-size:115%;font-weight:bold;padding-bottom:3px;'>User</label>";
+		messageTable+="</td>";
+		messageTable+="<td class='ask-title-cell-value'>";
+		messageTable+="<input id='messageUser' name='messageUser' type='text' maxlength='100' tabindex='100' class='ask-title-field edit-field-overlayed' data-min-length='15' data-max-length='150' style='opacity:0.666;z-index:1;position:relative;float:left;margin-left:10px;'>";
+		messageTable+="</td>";
+		messageTable+="</tr>";
+		messageTable+="<tr><td style='vertical-align:top'> ";
+		messageTable+="<span><label for='messageText' style='font-size:115%;font-weight:bold;padding-bottom:3px;'>Reply</label></span></td> ";
+		messageTable+="<td><div id='post-editor' class='post-editor'><div style='position:relative'><textarea id='messageText' name='messageText'  maxlength='300' tabindex='100' class='ask-title-field edit-field-overlayed' data-min-length='15' data-max-length='150' style='opacity:0.666;z-index:1;position:relative;float:left;margin-left:10px;height:200px;' multiple='multiple'></textarea></div></div></td></tr><tr><td colspan='2'>";                   
+	    messageTable+="<a href = '#' id='submitMessage' data-role = 'button' class='btn btn-large btn-success' onclick='saveMessage(&quot;"+title+"&quot;);'>Submit</a></td></tr></table>";
+		addMessage.innerHTML+=messageTable;
+		}
+		
+		function saveMessage(title){
+			
+			var addMessage = document.getElementById('addMessage');
+			addMessage.style.display="none";
+			var message = new Message();
+			var text = document.getElementById('messageText');
+			message.text = text.value;
+			var user = document.getElementById('messageUser');
+			message.user = user.value;
+			var forum=new Forum();
+			forum.title=title;
+            forum.addMessage(message);
+			forum.publish();
+		}
+	
+		function saveThread(){
+			var addMessage = document.getElementById('addMessage');
+			addMessage.style.display="none";
+			var message = new Message();
+            var title = document.getElementById('threadTitle');
+            var text = document.getElementById('threadText');
+			message.text = text.value;
+			var user = document.getElementById('threadUser');
+			message.user = user.value;
+			var forum=new Forum();
+            forum.title = title.value;
+			forum.addMessage(message);
+			forum.publish();
+		}
+
+	$(document).ready(function() 
+	{
+		var userName1 =	localStorage.getItem("userNameMain");
+		
+		document.getElementById("Welcome").innerHTML = "Welcome";
+		document.getElementById("userNameCommunity").value = myMap.Initcap(userName1);
+		document.getElementById("userNameCommunity").innerHTML = myMap.Initcap(userName1);
+	});
+	
+</script>
+    
+   	
+</head>
+<!--<body onload='twitter.createTweets();'>-->
+<body onload='loadMessage(); '>
+	
+	
+<div class="brand">E-Smart</div>
+     <div class="address-bar">University of Missouri Kansas City | 5100 Rockhill Road | Kansas City,MO 64110| (816) 235-1000</div>
+<div class="overrideNavigation">
+<nav class="navbar navbar-default" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html">E-Smart</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse navbar-ex1-collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="index.html">Home</a>
+                    </li>
+                    <li><a href="about.html">About</a>
+                    </li>
+                    <li><a href="blog.html">Blog</a>
+                    </li>
+                    <li><a href="contact.html">Contact</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+</div>
+
+
+
+	<div class="container">
+
+		
+<div class="row" id="discussion">
+			<div style="float:right;width:300px;">
+			<div style="float:left;margin:5px;font:12px Arial bold;" id="Welcome"></div>
+			<div style="float:left;margin:5px;font:12px Arial bold;" id="userNameCommunity"></div>
+			</div>		   
+
+         <div class="box">
+           <div class="col-lg-12 text-left">
+			<div class="collapse navbar-collapse navbar-ex1-collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="#" onclick="makeVisibleCreateThread();">Create Thread</a>
+                    </li>
+                    <li><a href="#" onclick="viewForums();">View Threads</a>
+                    </li>
+                    <li><a href="#">Post on Thread</a>
+                    </li>
+                    
+                </ul>
+            </div>
+
+		   
+
+    <h1 style="clear:both;margin-left:0px;font:40px Arial bold">Need advice on your high utility bill?</h1>
+	<div style="clear:both;margin-left:0px">
+    <p>This discussion forum is dedicated to helping users save money on their utility bills. 
+	You can post your questions, help others with tips and recommendations.</p>
+	</div>
+    <a href="#" class="btn btn-large btn-success" onclick="makeVisibleCreateThread();">Get Started</a>
+</div>
+</div>
+</div>
+
+
+	
+	<div id="addMessage" class="box" style="display:none"></div>
+	
+	<div id="forumLinks" class="box" style="display:none">
+	
+	
+	
+	</div>
+	
+	<div id="createThread" class="row" style="display:none">
+	<div class="box">
+	<div class="col-lg-12 text-left">
+	
+	<div style="font-size:115%;font-weight:bold;padding-bottom:3px;float:left;left-margin:80px"> Please Post your question below </div>
+	<br/>
+	<br/>
+	<table id="thread">
+		<tr>
+		
+			<td> 
+				<label for="threadTitle" style="font-size:115%;font-weight:bold;padding-bottom:3px;">Title</label>
+			</td>
+			<td class="ask-title-cell-value">
+               <input id="threadTitle" name="threadTitle" type="text" maxlength="300" tabindex="100" class="ask-title-field edit-field-overlayed" data-min-length="15" data-max-length="150" style="opacity:0.666;z-index:1;position:relative;float:left;margin-left:10px;">                        
+               
+			   
+            </td>
+		</tr>
+		
+		<tr>
+		
+			<td> 
+				<label for="threadUser" style="font-size:115%;font-weight:bold;padding-bottom:3px;">User</label>
+			</td>
+			<td class="ask-title-cell-value">
+               <input id="threadUser" name="threadUser" type="text" maxlength="100" tabindex="100" class="ask-title-field edit-field-overlayed" data-min-length="15" data-max-length="150" style="opacity:0.666;z-index:1;position:relative;float:left;margin-left:10px;">                        
+               
+			   
+            </td>
+		</tr>
+		
+		<tr>
+		<td style="vertical-align:top"> 
+			<span>
+				<label for="threadText" style="font-size:115%;font-weight:bold;padding-bottom:3px;">Question</label>
+			</span>
+		</td>
+		<td>
+		<div id="post-editor" class="post-editor">
+		<div style="position:relative">
+		
+			<textarea id="threadText" name="threadText"  maxlength="300" tabindex="100" class="ask-title-field edit-field-overlayed" data-min-length="15" data-max-length="150" style="opacity:0.666;z-index:1;position:relative;float:left;margin-left:10px;height:200px;" multiple="multiple"></textarea>                      
+			
+			
+		</div>
+		</div>
+		</td>
+		</tr>
+		
+		<tr>
+		<td colspan="2">
+		
+		<a href = "#" data-role = "button" class="btn btn-large btn-success" onclick="saveThread();">Submit</a>
+		
+		</td>
+		</tr>
+		
+		</table>
+	
+
+	</div>
+	</div>
+	</div>
+	
+	<div id="register" class="hero-unit" style="display:none;">
+	
+	<table id="form">
+		<tr>
+		
+			<td> 
+				<label for="UserName" style="font-size:115%;font-weight:bold;padding-bottom:3px;">User Name</label>
+			</td>
+			<td class="ask-title-cell-value">
+               <input id="UserName" name="UserName" type="text" maxlength="300" tabindex="100" class="ask-title-field edit-field-overlayed" data-min-length="15" data-max-length="150" style="opacity:0.666;z-index:1;position:relative;float:left;margin-left:10px;width:150px">                        
+              		   
+            </td>
+		</tr>
+		
+		<tr>
+		
+			<td> 
+				<label for="householdSize" style="font-size:115%;font-weight:bold;padding-bottom:3px;">Household Size</label>
+			</td>
+			<td class="ask-title-cell-value">
+               <input id="householdSize" name="householdSize" type="text" maxlength="100" tabindex="100" class="ask-title-field edit-field-overlayed" data-min-length="15" data-max-length="150" style="opacity:0.666;z-index:1;position:relative;float:left;margin-left:10px;width:150px">                          
+            </td>
+		</tr>
+		
+		<tr>
+		<td> 
+			<label for="houseType" style="font-size:115%;font-weight:bold;padding-bottom:3px;">House Type</label>
+		</td>
+		<td class="ask-title-cell-value">
+               <select id="houseType" name="houseType" type="text" maxlength="100" tabindex="100" class="ask-title-field edit-field-overlayed" data-min-length="15" data-max-length="150" style="opacity:0.666;z-index:1;position:relative;float:left;margin-left:10px;width:165px">                          
+				<option value="">----Select----</option>
+				<option value="oneBedRoom">Single Bed Room</option>
+				<option value="doubleBedRoom">Double Bed Room</option>
+				<option value="threeBedRoom">Three Bed Room</option>
+				<option value="condomanium">Condomanium</option>
+	   </td>
+		</tr>
+		
+		
+		<tr>
+		
+			<td> 
+				<label for="zipcode" style="font-size:115%;font-weight:bold;padding-bottom:3px;">Zipcode</label>
+			</td>
+			<td class="ask-title-cell-value">
+               <input id="zipcode" name="zipcode" type="text" maxlength="100" tabindex="100" class="ask-title-field edit-field-overlayed" data-min-length="15" data-max-length="150" style="opacity:0.666;z-index:1;position:relative;float:left;margin-left:10px;width:150px">                          
+            </td>
+		</tr>
+		<tr>
+		
+			<td> 
+				<label for="community" style="font-size:115%;font-weight:bold;padding-bottom:3px;">Community</label>
+			</td>
+			<td class="ask-title-cell-value">
+               <input id="community" name="community" type="text" maxlength="100" tabindex="100" class="ask-title-field edit-field-overlayed" data-min-length="15" data-max-length="150" style="opacity:0.666;z-index:1;position:relative;float:left;margin-left:10px;width:150px">                          
+            </td>
+		</tr>
+		
+		<tr>
+		
+			<td> 
+				<label for="utilityBill" style="font-size:115%;font-weight:bold;padding-bottom:3px;">Utility Bill</label>
+			</td>
+			<td class="ask-title-cell-value">
+               <input id="utilityBill" name="utilityBill" type="text" maxlength="100" tabindex="100" class="ask-title-field edit-field-overlayed" data-min-length="15" data-max-length="150" style="opacity:0.666;z-index:1;position:relative;float:left;margin-left:10px;width:150px">                          
+            </td>
+		</tr>
+		
+		<tr>
+		<td colspan="2">
+		
+		<a href = "#" data-role = "button" class="btn btn-large btn-success" onclick=";">Generate Reward Points</a>
+		
+		</td>
+		</tr>
+		
+		</table>
+	
+	</div>
+
+		<span id="emailId"></span>
+		<span id="handle"></span>
+		<span id="message"></span>
+		
+	
+		
+	
+	
+	
+
+	
+	</body>
+	
+	

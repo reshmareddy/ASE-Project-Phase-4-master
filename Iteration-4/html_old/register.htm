@@ -1,0 +1,155 @@
+<html>
+<head>
+    <meta charset="utf-8">
+	
+	<title>Signup</title>
+
+    <script type="text/javascript" src="../js/soap.js"></script>
+	<script type="text/javascript" src="../js/soapclient.js"></script>
+
+    <script type="text/javascript" src="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.js"></script>
+  	<!-- Bootstrap core CSS -->
+    <link href="../NewStyling/css/bootstrap.css" rel="stylesheet">
+
+    <!-- Add custom CSS here -->
+    <link href="../NewStyling/css/business-casual.css" rel="stylesheet">
+  
+</head>
+<body>
+<div class="brand">E-Smart</div>
+    <div class="address-bar">The Plaza | 5483 Start Bootstrap Ave. | Beverly Hills, California 26892 | 555.519.2013</div>
+<div class="overrideNavigation">
+	<nav class="navbar navbar-default" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html">E-Smart</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+  <!--          <div class="collapse navbar-collapse navbar-ex1-collapse">
+                <h4 align="right" style="font:12px Arial bold;"><a href="about.html"><button>ABOUT</button></a></h4>
+            </div>-->
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+</div>
+
+<div class="container">
+				
+<div class="row">
+<div class="box">
+<div class="col-lg-12 text-left">
+	
+			
+    <h1 style="clear:both;margin-left:0px;font:35px Arial;">Signup for E-smart</h1>
+	<div style="clear:both;margin-left:0px;">
+    <p style="font:18px Arial;">Register on E-smart App to find ways to save energy and money.</p>
+	</div>
+    <div></div>
+</div>
+</div>
+</div>
+ 
+<div class="row">
+<div class="box">
+<div class="col-lg-12 text-left"> 
+
+<div id="container_demo" >
+    <a class="hiddenanchor" id="tologin"></a>
+	<div id="wrapper">
+	<div class="animate form">
+        <form autocomplete="on"> 
+            
+
+	<div data-role="page" id='pageSoap2'>
+		<div data-role="content">
+		<table style="font:15px Arial;">
+            <tr>
+			<td width = "250px" align="right"><span for="username" data-icon="u" align='right'>Username: </span></td>
+			<td><input id="username" name="username" required="required" type="text" placeholder="username565" width = "250px"></td>
+			<td></td>
+			</tr>
+
+            <tr><td></td><td><div><br></div></td><td></td></tr>
+			
+			<tr>
+			<td width = "250px" align="right"><span for="email" data-icon="e">Email: </span></td>
+			<td><input id="email" name="email" required="required" type="email" placeholder="email@mail.com" ></td>
+			<td></td>
+			</tr>
+            
+			<tr><td></td><td><div><br></div></td><td></td></tr>
+			
+			<tr>
+			<td width = "250px" align="right"><span for="password" data-icon="p">Password: </span></td>
+			<td><input id="password" name="password" required="required" type="password" placeholder="eg. J8df!90E5"  onblur="myMap.pwdvalidation()"></td> 
+			<td><div id="valPassword" style="color:red"></div></td>
+			</tr>
+			
+			<tr><td></td><td><div><br></div></td><td></td></tr>
+			
+			<tr>
+			<td width = "250px" align="right"><span for="password_confirm" data-icon="p">Confirm Password: </span></td>
+			<td><input id="password_confirm" name="password_confirm" required="required" type="password" placeholder="eg. J8df!90E5" onblur="myMap.confirmpwd()"></td>
+			<td><div id="conPassword" style="color:red"></div></td>
+			</tr>
+
+			<tr><td></td><td><div><br></div></td><td></td></tr>
+			
+			<tr>
+			<td width = "250px" align="right"><span for="address" data-icon="u">Address: </span></td>
+			<td><input id="address" name="address" required="required" type="address" placeholder="address67thStreet" ></td>
+			<td></td>
+			</tr>
+			
+			<tr><td></td><td><div><br></div></td><td></td></tr>
+			
+			<tr>
+			<td width = "250px" align="right"><span for="phonenumber" data-icon="u">Phonenumber: </span></td>
+			<td><input id="phonenumber" name="phonenumber" required="required" type="text" placeholder="landline or mobile number"></td>
+			<td></td>
+			</tr>
+
+			<tr>
+			<td></td>            
+			</tr>
+			
+			<tr><td></td><td><div><br></div></td><td></td></tr>
+			
+			<tr>
+			<td></td>
+						
+			<td class="signin button" > 				
+			<input type="button" data-inline="true" id="soapInsert" class="btn btn-large btn-success" style="color:white"  value="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Login &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" onclick ="myMap.soapRegister('xml','InsertUserData','username','email','password','password_confirm','address','phonenumber');"/>
+			</td>
+			<td></td>
+			</tr>
+			
+			<tr><td></td><td><div><br></div></td><td></td></tr>
+			
+			<tr>
+			<td width = "250px" align="right" >Already a member ?</td>            
+            <td><a href="login.htm" data-role="button" data-inline="true" data-icon="arrow-l" data-rel="back">Go and Login</a></td>
+			<td></td>
+			</tr>
+			
+		</table>
+		</div>
+	</div>
+	</div>
+	</form>
+	</div>
+	</div>
+    </div>
+</div>
+</div>
+</div>
+</body>
+</html>

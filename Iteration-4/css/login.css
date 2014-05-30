@@ -1,0 +1,21 @@
+#register, 
+#login{
+    position: fixed;
+    top: 0px;
+	bottom: 0px;
+	left:0px;
+    width: 88%; 
+    --height: 82%;
+	padding: 18px 6% 60px 6%;
+    margin: 0 0 35px 0;
+    background: rgb(247, 247, 247);
+    border: 0px solid rgba(147, 184, 189,0.8);
+    box-shadow: 
+        0pt 2px 5px rgba(105, 108, 109,  0.7),  
+        0px 0px 8px 5px rgba(208, 223, 226, 0.4) inset; 
+    background-image:url('../images/green-spring-background.jpg');min-width:80%;min-height:90%;
+	color:white;font-weight:bold;font-family:Courier new;
+}
+#textdec{
+color:white;font-weight:bold;font-family:Courier new;
+}

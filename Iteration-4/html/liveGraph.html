@@ -1,0 +1,236 @@
+<!DOCTYPE html> 
+<html> 
+	<head> 
+	<title>My Page2</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1"> 
+	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.css">
+	
+	<style type='text/css'>
+	#container {
+    background: url(http://www.imageurlhost.com/images/zrrxkx0fok8zzuppci5d_best.png) 
+
+        repeat;
+		</style>
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
+	<script type="text/javascript" src="http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.js"></script>
+	<script src="http://code.highcharts.com/stock/highstock.js"></script>
+<script src="http://code.highcharts.com/stock/modules/exporting.js"></script>
+	
+	
+	<script type="text/javascript">
+	 $(function() {
+    
+    Highcharts.setOptions({
+        global : {
+            useUTC : false
+        }
+    });
+    
+    // Create the chart
+    window.chart = new Highcharts.StockChart({
+        chart : {
+             
+            renderTo : 'container',
+            backgroundColor: 'transparent',
+            events : {
+                load : function() {
+
+                    // set up the updating of the chart each second
+                    var series = this.series[0];
+                    var series1 = this.series[1];
+                    var series2 = this.series[2];
+                    var series3 = this.series[3];
+                    var chart = this;
+                    setInterval(function() {
+                        
+                        var x = (new Date()).getTime(),
+                         // current time
+                            
+                        y = Math.round(Math.random() * 100);
+                        y1 = Math.round(Math.random() * 100);
+                        y2 = Math.round(Math.random() * 100);
+                        y3 = Math.round(Math.random() * 100);
+                        series.addPoint([x, y], false, true);
+                        series1.addPoint([x, y1], false, true);
+                        series2.addPoint([x, y2], false, true);
+                        series3.addPoint([x, y3], false, true);
+                        chart.redraw();
+                    }, 1000);
+                }
+            }
+        },
+		lang: {
+            graph1: 'go to graph1',
+			home_page: 'Home Page'
+        },
+        
+        rangeSelector: {
+            buttons: [{
+                count: 1,
+                type: 'minute',
+                text: '1M'
+            }, {
+                count: 5,
+                type: 'minute',
+                text: '5M'
+            }, {
+                type: 'all',
+                text: 'All'
+            }],
+            inputEnabled: false,
+            selected: 0
+        },
+        
+        title : {
+            text : 'Live Energy Data',
+            style: {
+                        color: '#FFFFFF'
+                    }
+        },
+        xAxis: {
+                labels:{
+                    
+                    style:{
+                        color:'#FFFFFF'
+                    }
+                },
+                
+                type: 'datetime',
+                
+
+            },
+            yAxis: {
+                labels: {
+                    format: '{value}W',
+                    style: {
+                        color: '#FFFFFF'
+                    }
+                },
+                title: {
+                    text: 'Value',
+                    style: {
+                        color: '#FFFFFF'
+                    }
+                }
+            },
+        legend: {
+                align: 'right',
+                layout: 'vertical',
+                verticalAlign: 'top',
+                y: 25,
+            
+                enabled: 'true'
+            },
+        
+        exporting: {
+        buttons: {
+            testButton: {
+                symbol: 'url(http://cdn1.iconfinder.com/data/icons/fatcow/16/chart_bar.png)',
+                x: -42,
+                symbolFill: '#B5C9DF',
+                hoverSymbolFill: '#779ABF',
+				
+               _titleKey: 'graph1',
+                onclick: function() {
+                   window.location.href='GoogleComboChart.html'
+                }
+            },
+			customButton: {
+                symbol: 'url(http://www.imageurlhost.com/images/xqngiin83hsao32gjw7_hom.png)',
+                x: -80,
+                symbolFill: '#B5C9DF',
+                hoverSymbolFill: '#779ABF',
+                _titleKey: 'home_page',
+                onclick: function() {
+                   window.location.href='homepage.html'
+                }
+            },
+			
+			 printButton: {
+            enabled: false
+        },
+        exportButton: {
+            enabled: false
+        }
+        }
+    },
+        
+        series : [{
+
+            name : 'Television',
+            style: {
+                        color: '#FFFFFF'
+                    },
+            data : (function() {
+                // generate an array of random data
+                var data = [], time = (new Date()).getTime(), i;
+
+                for( i = -999; i <= 0; i++) {
+                    data.push([
+                        time + i * 1000,
+                        Math.round(Math.random() * 100)
+                    ]);
+                }
+                
+                return data;
+            })()
+        },{
+            name : 'Heater',
+			color:'#999966',
+
+            data : (function() {
+                // generate an array of random data
+                var data = [], time = (new Date()).getTime(), i;
+
+                for( i = -999; i <= 0; i++) {
+                    data.push([
+                        time + i * 1000,
+                        Math.round(Math.random() * 100)
+                    ]);
+                }
+                return data;
+            })()
+        },{
+            name : 'Fridge',
+			color:'#993333',
+            data : (function() {
+                // generate an array of random data
+                var data = [], time = (new Date()).getTime(), i;
+
+                for( i = -999; i <= 0; i++) {
+                    data.push([
+                        time + i * 1000,
+                        Math.round(Math.random() * 100)
+                    ]);
+                }
+                return data;
+            })()
+        },
+                  {
+            name : 'Microwave',
+                      color:'#000000',
+            data : (function() {
+                // generate an array of random data
+                var data = [], time = (new Date()).getTime(), i;
+
+                for( i = -999; i <= 0; i++) {
+                    data.push([
+                        time + i * 1000,
+                        Math.round(Math.random() * 100)
+                    ]);
+                }
+                return data;
+            })()
+        }
+                 ]
+    });
+
+});
+</script>
+</head> 
+ <body >
+	<div>
+		<div id="container"  style="width:50%;margin: 0 auto"></div>
+		</body>
+</html>
+	

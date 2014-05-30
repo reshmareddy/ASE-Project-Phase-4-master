@@ -1,0 +1,37 @@
+.image-container{width:150px;height:150px;float:left;margin-left:20px;}
+.map-container{width:300px;height:200px;margin-left:0px;}
+.destination-info{width:300px;float:left;margin-left:0px;font:15px Arial bold;color:blue}
+.chart{width:300px;float:left;margin-left:20px;font:15px Arial bold;color:blue}
+.pie{width:300px;height:200px;}
+
+.twitter{margin-bottom:30px;margin-left:20px;padding-top:20px}
+.twitter span{display:inline-block;padding-right:50px;}
+.left{float:left}
+.clear{clear:both}
+.images-container{width:550px;float:left}
+
+body {
+    margin:20px;
+}
+h1 {
+    font:60px Arial bold;
+	color:white
+	
+}
+
+h1:hover {
+    cursor: pointer;
+    color: #f00;
+}
+
+h1:active {
+    color:#555;
+}
+
+#write {
+    font-size: 2em;
+    color: #ff8800;
+}
+input {
+    outline: none;
+}

@@ -1,0 +1,147 @@
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>google maps</title>
+    <style>
+      html, body, #map-canvas {
+        height: 100%;
+        margin: 0px;
+        padding: 0px
+      }
+    </style>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+    	<!-- Bootstrap core CSS -->
+    <link href="../NewStyling/css/bootstrap.css" rel="stylesheet">
+	
+    <!-- Add custom CSS here -->
+    <link href="../NewStyling/css/business-casual.css" rel="stylesheet">
+
+	<script>
+
+	var communityDetails = new Array();
+	communityDetails = JSON.parse(localStorage.getItem("communityDetails"));
+
+function initialize() {
+  var centerLL = new google.maps.LatLng(38.9741689, -94.59603099999998);
+  var mapOptions = {
+    zoom: 15,
+    center: centerLL
+  };
+  
+  //var t  = '[{"community":"test1","latitude":38.972668,"longitude":-94.596652,"RewardPoints":"5"},{"community":"lions","latitude":38.9741689,"longitude":-94.59603099999998,"RewardPoints":"1"}]';
+//communityDetails = JSON.parse(t);
+  var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+
+  for (var i=0; i < communityDetails.length;i++) {
+  
+    
+  var community1 = communityDetails[i].community;
+  var latitude = communityDetails[i].latitude;
+  var longitude = communityDetails[i].longitude;
+  var rewardPoints = communityDetails[i].RewardPoints;
+  
+  var myLatlng = new google.maps.LatLng(latitude, longitude);
+  var starsScript = '<div style="color:#FFD700; font-size:18pt">';
+  for(var j = 1; j < 6; j++){
+  if(j <= rewardPoints){
+  starsScript = starsScript + '<span>&#9733</span>';
+  }else{
+  starsScript = starsScript + '<span>&#9734</span>';
+  }
+  }
+  starsScript = starsScript + '</div>';
+    //<font size="6"></font>
+  var contentString = '<h6>'+ community1 +'</h6>' + starsScript;// <div style="color:#FFD700; font-size: 18pt"><span> &#9733</span><span> &#9734</span><span> &#9734</span><span> &#9734</span><span> &#9734</span></div>';
+  
+  var infowindow = new google.maps.InfoWindow({
+		map: map,
+		position: myLatlng,
+      content: contentString
+  });
+  
+  var CircleOptions = {
+      strokeColor: 'red',
+      strokeOpacity: 0.8,
+      strokeWeight: 2,
+      fillColor: 'red',
+      fillOpacity: 0.35,
+      map: map,
+      center: myLatlng,
+      radius: 100
+    };
+    // Add the circle for this city to the map.
+    cityCircle = new google.maps.Circle(CircleOptions);
+  }
+
+}
+
+google.maps.event.addDomListener(window, 'load', initialize);
+
+    </script>
+  </head>
+  <body>
+  
+<div class="brand">E-Smart</div>
+     <div class="address-bar">University of Missouri Kansas City | 5100 Rockhill Road | Kansas City,MO 64110| (816) 235-1000</div>
+<div class="overrideNavigation">
+	<nav class="navbar navbar-default" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html">E-Smart</a>
+            </div>
+
+			            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse navbar-ex1-collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="index.html">Home</a>
+                    </li>
+                    <li><a href="about.html">About</a>
+                    </li>
+                    <li><a href="blog.html">Blog</a>
+                    </li>
+                    <li><a href="contact.html">Contact</a>
+                    </li>
+                </ul>
+            </div>
+			
+            <!-- /.navbar-collapse -->
+
+        </div>
+        <!-- /.container -->
+    </nav>
+</div>
+
+<div class="container">
+				
+<div class="row">
+<div class="box">
+<div class="col-lg-12 text-left">
+	
+			
+    <h1 style="clear:both;margin-left:0px;font:35px Arial;">Communities - Rewards</h1>
+	<div style="clear:both;margin-left:0px">
+    <p style="font:18px Arial;">The list of near by communities and their reward points</p>
+	</div>
+    <div></div>
+</div>
+</div>
+</div>
+ 
+<div class="row">
+<div class="box">
+<div class="col-lg-12"> 
+<div>
+<h2 align="left" style="font:12px Arial bold;">Communities Reward Points</h2></div>
+    <div id="map-canvas" style="float:center;width:500px;height:500px"></div>
+	</div>
+</div>
+</div>
+  </body>
+</html>

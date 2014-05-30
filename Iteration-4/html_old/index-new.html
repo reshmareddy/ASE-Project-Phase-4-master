@@ -1,0 +1,134 @@
+<!doctype html>
+<html>
+<head>
+    <title></title>
+    <link rel='stylesheet' href='myStyleSheet.css' />
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.css" />
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
+	
+    <script type="text/javascript" src="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.js"></script>
+    <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?libraries=places,weather&sensor=true"></script>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript" src="myJavaScript-lab3.js"></script>
+	
+		<script type="text/javascript" src="//platform.twitter.com/widgets.js"></script>
+</head>
+<body onload='myMap.charts()'>
+    <div data-role="page" id='pageone'>
+        <div data-role="header">
+		
+            <h1>
+			<br/> 
+                Holiday Destinations !!!</h1>
+        </div>
+		<div class='images-container'>
+		<div>
+		<p>
+		<img src = "paris.jpg"
+		alt = "1. Paris, France" onclick ="myMap.init('r','','','','Paris');myMap.init('w','','','','')" class='image-container' Title='Paris'/>
+		</p>
+		
+		<p>
+		<img src = "honolulu.jpg"
+		alt = "2. honolulu" onclick ="myMap.init('r','','','','honolulu');myMap.init('w','','','','')" class='image-container' Title='Honolulu'/>
+		</p>
+		
+		<p>
+		<img src = "chicago.jpg"
+		alt = "3. chicago" onclick ="myMap.init('r','','','','chicago');myMap.init('w','','','','')" class='image-container' Title='Chicago'/>
+		</p>
+		<div style='clear:both;'></div>
+		
+		</div>
+		
+		<div>
+		
+		<p>
+		<img src = "new-orleans.jpg"
+		alt = "2. new-orleans" onclick ="myMap.init('r','','','','new-orleans');myMap.init('w','','','','')" class='image-container' Title='New Orleans'/>
+		</p>
+		
+		<p>
+		<img src = "new-york-city.jpg"
+		alt = "2. new-york-city" onclick ="myMap.init('r','','','','new-york-city');myMap.init('w','','','','')" class='image-container' Title='Newyork'/>
+		</p>
+		
+		<p>
+		<img src = "san-francisco.jpg" 
+		alt = "2. san-francisco" onclick ="myMap.init('r','','','','san-francisco');myMap.init('w','','','','')" class='image-container' Title ='San Francisco'/>
+		</p>
+		<div style='clear:both;'></div>
+		</div>
+		
+		<div>
+		<p>
+		<img src = "seattle.jpg"
+		alt = "2. seattle" onclick ="myMap.init('r','','','','seattle');myMap.init('w','','','','')" class='image-container' Title='Seattle'/>
+		</p>
+		
+		<p>
+		<img src = "washington-dc.jpg"
+		alt = "2. washington-dc" onclick ="myMap.init('r','','','','washington-dc');myMap.init('w','','','','');" class='image-container' Title='Washington'/>
+		</p>
+		
+		<p>
+		<img src = "a-view-from-the-getty.jpg"
+		alt = "2. a-view-from-the-getty" onclick ="myMap.init('r','','','','Los Angeles');myMap.init('w','','','','');" class='image-container' Title='Los Angeles'/>
+		</p>
+		<div style='clear:both;'></div>
+		</div>
+		<div class='clear:both'></div>
+		</div>
+		
+		<div class='destination-info'>
+		
+		
+		<br/>
+		<span>Locate the destination on Map </span>
+		<br/>
+		<br/>
+		 <div id= 'mapRegular' class='map-container'></div> 
+		 <br/>
+		<span>Weather Information of destination </span>
+		 <br/>
+		 <br/>
+		 <div id= 'mapWeather' class='map-container'></div> 
+		 <br/>
+		 <div class='clear:both'></div>
+		 </div>
+		 
+		 <div class='chart'>
+		 
+		<br/> 
+		<span> Most Sought After Destinations</span>
+		<br/>	
+		<br/>
+		
+		<div id='piechart1' class='pie'>  </div>
+		<br/>	
+		<br/>
+		<br/>
+		<div id='piechart2'class='pie'>  </div>
+		
+		
+		</div>
+		
+		<div class='twitter clear'>
+		
+			
+		
+		<span>
+		<a href="https://twitter.com/intent/tweet?in_reply_to=51113028241989632">Reply</a>
+		</span>
+		<span>
+		<a href="https://twitter.com/intent/retweet?tweet_id=51113028241989632">Retweet</a>
+		</span>
+		<span>
+		<a href="https://twitter.com/intent/favorite?tweet_id=51113028241989632">Favorite</a>
+		</span>
+		<span>
+		<a href="https://twitter.com/share" class="twitter-share-button" data-lang="en">Tweet</a>
+		</span>
+		</div>
+		</body>
+		</html>

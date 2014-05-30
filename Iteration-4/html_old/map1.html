@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <h1 id="hed"> Energy efficient houses on sale </h1>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    
+    <style>
+	#hed {
+	color:#FFFFFF;
+	}
+      html, body, #map-canvas {
+        height: 470px;
+		width:80%;
+        margin: 0px;
+        padding: 0px
+      }
+      #panel {
+        position: Left;
+        top: 0px;
+        left: 0%;
+        margin-left: 0px;
+        z-index: 5;
+        background-color: #b87333;
+        padding: 5px;
+		width:79%;
+		height:60px;
+		}
+		#button1
+		{
+			cursor:pointer; 
+			padding:5px 25px; 
+			background:#b87333; 
+			border:1px solid #33842a; 
+			/*style the text*/
+			color:#000000;
+			font-size:1.1em;
+		}
+		#directions-panel
+		{
+			background-color: #B87333;
+			float: right;
+			height: 300px;
+			left: 400px;
+			overflow: auto;
+			position: relative;
+			top: -533px;
+			width: 550px;
+		}
+		#citynotescontent
+		{
+			background-color: #B87333;
+			color: #FFFFFF;
+			float: right;
+			height: 50%;
+			left: 400px;
+			position: relative;
+			top: -540px;
+			width: 550px;
+			display: none;
+		}
+		#citynotes
+		{
+			background-color: #B87333;
+			color: #FFFFFF;
+			overflow: auto;
+			height: 50%;
+			position: relative;
+		}
+		#noteheader
+		{
+		color:#FFFFFF
+		}
+		
+		#notecontent
+		{
+		color:#FFFFFF
+		}
+				
+       
+      
+    </style>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+	<script type="text/javascript" src="soapclient.js"></script>
+    <script>
+		var panorama;
+		var map;
+		var directionsDisplay;
+		var directionsService = new google.maps.DirectionsService();
+
+		function initialize() {
+		  directionsDisplay = new google.maps.DirectionsRenderer();
+		  var currentLocation = new google.maps.LatLng(39.033669, -94.576278);
+		  var mapOptions = {
+			zoom:9,
+			center: currentLocation
+		  }
+		  
+		  map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+		  //directionsDisplay.setMap(map);
+		  //directionsDisplay.setPanel(document.getElementById('directions-panel'));
+
+		  var image = {
+			url: 'green-home-icon-hi.png',
+			// This marker is 20 pixels wide by 32 pixels tall.
+			scaledSize: new google.maps.Size(50, 60)
+		  };
+		  
+		  var markerPos = new google.maps.LatLng(39.033669, -94.576278);
+		  var marker = new google.maps.Marker({ 
+			  position: markerPos,
+			  icon:{
+				  path: google.maps.SymbolPath.CIRCLE,
+				  scale: 4
+				},
+			  map: map,
+			  title: "I am here"
+			});
+
+		  /*
+		 var markerPos1 = new google.maps.LatLng(39.245999, -94.575199);
+		 var marker = new google.maps.Marker({ position: markerPos1, map: map, title: "Neighbourhood 1" });
+
+		 var markerPos2 = new google.maps.LatLng(39.054374, -94.594523);
+		 var marker = new google.maps.Marker({ position: markerPos2, map: map, title: "Neighbourhood 2" });
+
+		 var markerPos3 = new google.maps.LatLng(39.099727, -94.578567);
+		 var marker = new google.maps.Marker({ position: markerPos3, map: map, title: "Neighbourhood 3" });
+		 */
+		}
+
+		function calcRoute() {
+		  var start = document.getElementById('start').value;
+		  var end = document.getElementById('end').value;
+		  var request = {
+			  origin:start,
+			  destination:end,
+			  travelMode: google.maps.TravelMode.DRIVING
+		  };
+		  directionsService.route(request, function(response, status) {
+			if (status == google.maps.DirectionsStatus.OK) {
+			  directionsDisplay.setDirections(response);
+			  //alert(response.routes[0].legs[0].end_location);
+			  setMapPanorama(response.routes[0].legs[0].end_location);
+			  document.getElementById("btnStreetView").style.visibility="visible";
+			  document.getElementById('directions-panel').style.display = 'block';
+			}
+		  });
+		}
+
+		google.maps.event.addDomListener(window, 'load', initialize);
+		
+		function showCityLocations() {
+		  var selCity = document.getElementById('cityOption').value;
+		  var start = document.getElementById('start');
+		  var end = document.getElementById('end');
+		  
+		  // Remove all items from start and end dropdown list
+		  start.options.length = 0;
+		  end.options.length = 0;
+		  
+		//  hide Street View button
+		// var streetBtn = document.getElementById("btnStreetView");
+		//streetBtn.style.visibility="hidden";
+		//streetBtn.value = "Show Street View";
+
+		  var currentLocation = new google.maps.LatLng(38.997456, -94.656781);
+		  var mapOptions = {
+			zoom: 10,
+			center: currentLocation
+		  }
+		  
+		  map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+		  directionsDisplay = new google.maps.DirectionsRenderer();
+		  directionsDisplay.setMap(map);
+		  document.getElementById('directions-panel').innerHTML = '';
+		  document.getElementById('directions-panel').style.display = 'none';
+		  directionsDisplay.setPanel(document.getElementById('directions-panel'));
+		  
+		  var image = {
+			url: 'green-home-icon-hi.png',
+			// This marker is 20 pixels wide by 32 pixels tall.
+			scaledSize: new google.maps.Size(50, 60)
+		  };
+
+			switch (selCity)
+			{
+			case "Overland Park":
+			  //alert ("Overland Park");
+			  
+			  start.options[0] = new Option("My Location", "UMKC Kansas City", true, false);
+			  start.options[1] = new Option("7227 Horton St", "7227 Horton St, Overland Park, KS 66204", false, false);
+			  start.options[2] = new Option("4401 W 95th Street", "4401 W 95th Street Overland Park KS, 66207", false, false);
+			  start.options[3] = new Option("11107 W. 157th Terr", "11107 W. 157th Terr. Overland Park, KS 66221", false, false);
+			  start.options[4] = new Option("11400 W. 158th St", "11400 W. 158th St Overland Park, KS 66221", false, false);
+			  
+			  end.options[0] = new Option("My Location", "UMKC Kansas City", true, false);
+			  end.options[1] = new Option("7227 Horton St", "7227 Horton St, Overland Park, KS 66204", false, false);
+			  end.options[2] = new Option("4401 W 95th Street", "4401 W 95th Street Overland Park KS, 66207", false, false);
+			  end.options[3] = new Option("11107 W. 157th Terr", "11107 W. 157th Terr. Overland Park, KS 66221", false, false);
+			  end.options[4] = new Option("11400 W. 158th St", "11400 W. 158th St Overland Park, KS 66221", false, false);
+			  
+			  var markerPos = new google.maps.LatLng(39.033669, -94.576278);
+			  var marker = new google.maps.Marker({ 
+					position: markerPos,
+					scale: 10,
+					map: map,
+					title: "I am here"
+			});
+
+			  var markerPos1 = new google.maps.LatLng(38.997456, -94.656781);
+			  var marker = new google.maps.Marker({ position: markerPos1, icon: image, map: map, title: "7227 Horton St, Overland Park, KS 66204" });
+
+			  var markerPos2 = new google.maps.LatLng(38.956543, -94.636489);
+			  var marker = new google.maps.Marker({ position: markerPos2, icon: image, map: map, title: "4401 W 95th Street Overland Park KS, 66207" });
+			  
+			  var markerPos3 = new google.maps.LatLng(38.844020, -94.694446);
+			  var marker = new google.maps.Marker({ position: markerPos3, icon: image, map: map, title: "11107 W. 157th Terr. Overland Park, KS 66221" });
+			  
+			  var markerPos4 = new google.maps.LatLng(38.840950, -94.697083);
+			  var marker = new google.maps.Marker({ position: markerPos4, icon: image, map: map, title: "11400 W. 158th St Overland Park, KS 66221" });
+			  
+			  map.panTo(markerPos1);
+			  break;
+			  
+			case "Wichita":
+			  start.options[0] = new Option("My Location", "UMKC Kansas City", true, false);
+			  start.options[1] = new Option("1414 S Alden St", "1414 S Alden St Wichita, KS 67230", false, false);
+			  start.options[2] = new Option("1415 S Sierra Hills St", "1415 S Sierra Hills St Wichita, KS 67230", false, false);
+			  
+			  end.options[0] = new Option("My Location", "UMKC Kansas City", true, false);
+			  end.options[1] = new Option("1414 S Alden St", "1414 S Alden St Wichita, KS 67230", false, false);
+			  end.options[2] = new Option("1415 S Sierra Hills St", "1415 S Sierra Hills St Wichita, KS 67230", false, false);
+			  
+			  
+			  var markerPos = new google.maps.LatLng(39.033669, -94.576278);
+			  var marker = new google.maps.Marker({ position: markerPos,icon: {
+				  path: google.maps.SymbolPath.CIRCLE,
+				  scale: 4
+				}, map: map, title: "I am here" });
+
+			  var markerPos1 = new google.maps.LatLng(37.667317, -97.183618);
+			  var marker = new google.maps.Marker({ position: markerPos1, icon: image, map: map, title: "1414 S. Alden" });
+
+			  var markerPos2 = new google.maps.LatLng(37.657067, -97.184687);
+			  var marker = new google.maps.Marker({ position: markerPos2, icon: image, map: map, title: "1415 S. Sierra Hills" });
+			  
+			  map.panTo(markerPos1);
+			  break;
+			  
+			case "Olathe":
+			  start.options[0] = new Option("My Location", "UMKC Kansas City", true, false);
+			  start.options[1] = new Option("11143 W 146 St.", "11143 W 146 St Olathe, KS 66062", false, false);
+			  start.options[2] = new Option("14672 S. Bond", "14672 S. Bond Olathe, KS 66062", false, false);
+			  start.options[3] = new Option("11292 W 146 St", "11292 W 146 St Olathe, KS 66062", false, false);
+			  start.options[4] = new Option("11807 W. 146th St", "11807 W. 146th St Olathe, KS 66062", false, false);
+			  
+			  end.options[0] = new Option("My Location", "UMKC Kansas City", true, false);
+			  end.options[1] = new Option("11143 W 146 St.", "11143 W 146 St Olathe, KS 66062", false, false);
+			  end.options[2] = new Option("14672 S. Bond", "14672 S. Bond Olathe, KS 66062", false, false);
+			  end.options[3] = new Option("11292 W 146 St", "11292 W 146 St Olathe, KS 66062", false, false);
+			  end.options[4] = new Option("11807 W. 146th St", "11807 W. 146th St Olathe, KS 66062", false, false);
+			  
+			  var markerPos = new google.maps.LatLng(39.033669, -94.576278);
+			  var marker = new google.maps.Marker({ position: markerPos,icon: {
+				  path: google.maps.SymbolPath.CIRCLE,
+				  scale: 4
+				}, map: map, title: "I am here" });
+
+			  var markerPos1 = new google.maps.LatLng(38.864249, -94.714848);
+			  var marker = new google.maps.Marker({ position: markerPos1, icon: image, map: map, title: "11143 W 146 St Olathe, KS 66062" });
+
+			  var markerPos2 = new google.maps.LatLng(38.862799, -94.718340);
+			  var marker = new google.maps.Marker({ position: markerPos2, icon: image, map: map, title: "14672 S. Bond Olathe, KS 66062" });
+			  
+			  var markerPos3 = new google.maps.LatLng(38.864887, -94.716600);
+			  var marker = new google.maps.Marker({ position: markerPos3, icon: image, map: map, title: "11292 W 146 St.Olathe, KS 66062" });
+			  
+			  var markerPos4 = new google.maps.LatLng(38.864065, -94.722705);
+			  var marker = new google.maps.Marker({ position: markerPos4, icon: image, map: map, title: "11807 W. 146th St Olathe, KS 66062" });
+			  
+			  map.panTo(markerPos1);
+			  break;
+			  
+			case "Lenexa":
+			
+			  start.options[0] = new Option("My Location", "UMKC Kansas City", true, false);
+			  start.options[1] = new Option("21706 W. 82nd Terr", "21706 W. 82nd Terr Lenexa, KS 66220", false, false);
+			  start.options[2] = new Option("21713 W. 82nd Terr", "21713 W. 82nd Terr Lenexa, KS 66220", false, false);
+			  start.options[3] = new Option("9400 Pinnacle ", "9400 Pinnacle Lenexa, Ks 66220", false, false);
+			  start.options[4] = new Option("9408 Pinnacle", "9408 Pinnacle Lenexa, KS 66220", false, false);
+			 
+			  
+			  end.options[0] = new Option("My Location", "UMKC Kansas City", true, false);
+			  end.options[1] = new Option("21706 W. 82nd Terr", "21706 W. 82nd Terr Lenexa, KS 66220", false, false);
+			  end.options[2] = new Option("21713 W. 82nd Terr", "21713 W. 82nd Terr Lenexa, KS 66220", false, false);
+			  end.options[3] = new Option("9400 Pinnacle ", "9400 Pinnacle Lenexa, Ks 66220", false, false);
+			  end.options[4] = new Option("9408 Pinnacle", "9408 Pinnacle Lenexa, KS 66220", false, false);
+			  
+			  
+			  var markerPos = new google.maps.LatLng(39.033669, -94.576278);
+			  var marker = new google.maps.Marker({ position: markerPos,icon: {
+				  path: google.maps.SymbolPath.CIRCLE,
+				  scale: 4
+				}, map: map, title: "I am here" });
+
+			  var markerPos1 = new google.maps.LatLng(38.979573, -94.836962);
+			  var marker = new google.maps.Marker({ position: markerPos1, icon: image, map: map, title: "21706 W. 82nd Terr Lenexa, KS 66220" });
+
+			  var markerPos2 = new google.maps.LatLng(38.978895, -94.836303);
+			  var marker = new google.maps.Marker({ position: markerPos2, icon: image, map: map, title: "21713 W. 82nd Terr Lenexa, KS 66220" });
+			  
+			  var markerPos3 = new google.maps.LatLng(38.957959, -94.814215);
+			  var marker = new google.maps.Marker({ position: markerPos3, icon: image, map: map, title: "9400 Pinnacle Lenexa, Ks 66220" });
+			  
+			  var markerPos4 = new google.maps.LatLng(38.957718, -94.814082);
+			  var marker = new google.maps.Marker({ position: markerPos4, icon: image, map: map, title: "9408 Pinnacle Lenexa, KS 66220" });
+			  
+			  map.panTo(markerPos1);
+			  break;
+			  
+			case "Leawood":
+			
+			  start.options[0] = new Option("My Location", "UMKC Kansas City", true, false);
+			  start.options[1] = new Option("10524 Mohawk Ln", "10524 Mohawk Ln, Leawood, KS 66206", false, false);
+			  
+			  end.options[0] = new Option("My Location", "UMKC Kansas City", true, false);
+			  end.options[1] = new Option("10524 Mohawk Ln", "10524 Mohawk Ln, Leawood, KS 66206", false, false);
+			  
+			  var markerPos = new google.maps.LatLng(39.033669, -94.576278);
+			  var marker = new google.maps.Marker({ position: markerPos,icon: {
+				  path: google.maps.SymbolPath.CIRCLE,
+				  scale: 4
+				}, map: map, title: "I am here" });
+
+			  var markerPos1 = new google.maps.LatLng(38.933630, -94.625418);
+			  var marker = new google.maps.Marker({ position: markerPos1, map: map, title: "10524 Mohawk Ln, Leawood, KS 66206" });
+			  
+			  map.panTo(markerPos1);
+			  break;
+			  
+			case "Lawrence":
+			
+			  start.options[0] = new Option("My Location", "UMKC Kansas City", true, false);
+			  start.options[1] = new Option("603 N Wild Plum Ct", "603 N Wild Plum Ct, Lawrence, KS 66049", false, false);
+			  start.options[2] = new Option("6208 Palisades Dr", "6208 Palisades Dr, Lawrence, KS 66049", false, false);
+			  start.options[3] = new Option("1511 Powers St ", "1511 Powers St, Lawrence, KS 66044", false, false);
+			  start.options[4] = new Option("200 Woodgate Pl", "200 Woodgate Pl, Lawrence, KS 66049", false, false);
+			 start.options[5] = new Option("519 N Wild Plum Ct ", "519 N Wild Plum Ct, Lawrence, KS 66049", false, false);
+			  
+			  
+			  end.options[0] = new Option("My Location", "UMKC Kansas City", true, false);
+			  end.options[1] = new Option("603 N Wild Plum Ct", "603 N Wild Plum Ct, Lawrence, KS 66049", false, false);
+			  end.options[2] = new Option("6208 Palisades Dr", "6208 Palisades Dr, Lawrence, KS 66049", false, false);
+			  end.options[3] = new Option("1511 Powers St ", "1511 Powers St, Lawrence, KS 66044", false, false);
+			  end.options[4] = new Option("200 Woodgate Pl", "200 Woodgate Pl, Lawrence, KS 66049", false, false);
+			  end.options[5] = new Option("519 N Wild Plum Ct ", "519 N Wild Plum Ct, Lawrence, KS 66049", false, false);
+			  
+			  var markerPos = new google.maps.LatLng(39.033669, -94.576278);
+			  var marker = new google.maps.Marker({ position: markerPos,icon: {
+				  path: google.maps.SymbolPath.CIRCLE,
+				  scale: 4
+				}, map: map, title: "I am here" });
+
+			  var markerPos1 = new google.maps.LatLng(38.991155, -95.286960);
+			  var marker = new google.maps.Marker({ position: markerPos1, map: map, title: "603 N Wild Plum Ct, Lawrence, KS 66049" });
+
+			  var markerPos2 = new google.maps.LatLng(38.964893, -95.329733);
+			  var marker = new google.maps.Marker({ position: markerPos2, map: map, title: "6208 Palisades Dr, Lawrence, KS 66049" });
+			  
+			  var markerPos3 = new google.maps.LatLng(38.956383, -95.213138);
+			  var marker = new google.maps.Marker({ position: markerPos3, map: map, title: "1511 Powers St, Lawrence, KS 66044" });
+			  
+			  var markerPos4 = new google.maps.LatLng(38.983522, -95.275741);
+			  var marker = new google.maps.Marker({ position: markerPos4, map: map, title: "200 Woodgate Pl, Lawrence, KS 66049" });
+			  
+			  var markerPos5 = new google.maps.LatLng(38.991035, -95.287299);
+			  var marker = new google.maps.Marker({ position: markerPos4, map: map, title: "519 N Wild Plum Ct, Lawrence, KS 66049" });
+			  
+			  map.panTo(markerPos1);
+			  break;
+			  
+		case "Manhattan":
+			
+			  start.options[0] = new Option("My Location", "UMKC Kansas City", true, false);
+			  start.options[1] = new Option("4607 S Dwight Dr", "4607 S Dwight Dr, Manhattan, KS 66502", false, false);
+			   start.options[2] = new Option("2800 Brookville Dr", "2800 Brookville Dr, Manhattan, KS 66502", false, false);
+			  
+			  end.options[0] = new Option("My Location", "UMKC Kansas City", true, false);
+			  end.options[1] = new Option("4607 S Dwight Dr", "4607 S Dwight Dr, Manhattan, KS 66502", false, false);
+			  end.options[2] = new Option("2800 Brookville Dr", "2800 Brookville Dr, Manhattan, KS 66502", false, false);
+			  
+			  var markerPos = new google.maps.LatLng(39.033669, -94.576278);
+			  var marker = new google.maps.Marker({ position: markerPos,icon: {
+				  path: google.maps.SymbolPath.CIRCLE,
+				  scale: 4
+				}, map: map, title: "I am here" });
+
+			  var markerPos1 = new google.maps.LatLng(38.991155, -95.286960);
+			  var marker = new google.maps.Marker({ position: markerPos1, map: map, title: "4607 S Dwight Dr, Manhattan, KS 66502" });
+			  
+			  var markerPos2 = new google.maps.LatLng(39.216239, -96.560479);
+			  var marker = new google.maps.Marker({ position: markerPos1, map: map, title: "2800 Brookville Dr, Manhattan, KS 66502" });
+
+			  map.panTo(markerPos1);
+			  break;
+			  
+			  case "Emporia":
+				start.options[0] = new Option("My Location", "UMKC Kansas City", true, false);
+				start.options[1] = new Option("1214 Sunflower Way", "1214 Sunflower Way, Emporia, KS 66801", false, false);
+
+				end.options[0] = new Option("My Location", "UMKC Kansas City", true, false);
+				end.options[1] = new Option("1214 Sunflower Way", "1214 Sunflower Way, Emporia, KS 66801", false, false);
+			  
+			  var markerPos = new google.maps.LatLng(39.033669, -94.576278);
+			  var marker = new google.maps.Marker({ position: markerPos,icon: {
+				  path: google.maps.SymbolPath.CIRCLE,
+				  scale: 4
+				}, map: map, title: "I am here" });
+
+			  var markerPos1 = new google.maps.LatLng(38.416548, -96.163104);
+			  var marker = new google.maps.Marker({ position: markerPos1, map: map, title: "1214 Sunflower Way, Emporia, KS 66801" });
+			  
+			  map.panTo(markerPos1);
+			  break;
+			  
+			  case "Kansas City":
+			
+			  start.options[0] = new Option("My Location", "UMKC Kansas City", true, false);
+			  start.options[1] = new Option("3340 Coleman Rd", "3340 Coleman Rd, Kansas City, MO 64111", false, false);
+			  start.options[2] = new Option("11506 Stark Ave", "11506 Stark Ave, Kansas City, MO 6413", false, false);
+			
+			  
+			  
+			  end.options[0] = new Option("My Location", "UMKC Kansas City", true, false);
+			  end.options[1] = new Option("3340 Coleman Rd", "3340 Coleman Rd, Kansas City, MO 64111", false, false);
+			   end.options[2] = new Option("11506 Stark Ave", "11506 Stark Ave, Kansas City, MO 6413", false, false);
+			 
+			  
+			  
+			  
+			  var markerPos = new google.maps.LatLng(39.033669, -94.576278);
+			  var marker = new google.maps.Marker({ position: markerPos,icon: {
+				  path: google.maps.SymbolPath.CIRCLE,
+				  scale: 4
+				}, map: map, title: "I am here" });
+
+			  var markerPos1 = new google.maps.LatLng(39.066315, -94.599197);
+			  var marker = new google.maps.Marker({ position: markerPos1, map: map, title: "3340 Coleman Rd, Kansas City, MO 64111" });
+			  
+			   var markerPos2 = new google.maps.LatLng(38.913462, -94.488624);
+			  var marker = new google.maps.Marker({ position: markerPos1, map: map, title: "11506 Stark Ave, Kansas City, MO 6413" });
+			  
+			  map.panTo(markerPos1);
+			  break;
+			  case "Andover":
+			
+			  start.options[0] = new Option("My Location", "UMKC Kansas City", true, false);
+			  start.options[1] = new Option("8150 SW Indianola Rd", "8150 SW Indianola Rd, Andover, KS 67002", false, false);
+			
+			  
+			  
+			  end.options[0] = new Option("My Location", "UMKC Kansas City", true, false);
+			  end.options[1] = new Option("8150 SW Indianola Rd", "8150 SW Indianola Rd, Andover, KS 67002", false, false);
+			 
+			  
+			  
+			  
+			  var markerPos = new google.maps.LatLng(39.033669, -94.576278);
+			  var marker = new google.maps.Marker({ position: markerPos,icon: {
+				  path: google.maps.SymbolPath.CIRCLE,
+				  scale: 4
+				}, map: map, title: "I am here" });
+
+			  var markerPos1 = new google.maps.LatLng(37.706323, -97.077871);
+			  var marker = new google.maps.Marker({ position: markerPos1, map: map, title: "8150 SW Indianola Rd, Andover, KS 67002" });
+			  
+			  map.panTo(markerPos1);
+			  break;
+			  
+			  case "Gardner":
+			
+			  start.options[0] = new Option("My Location", "UMKC Kansas City", true, false);
+			  start.options[1] = new Option("519 E Willow St", "519 E Willow St, Gardner, KS 66030", false, false);
+			
+			  
+			  
+			  end.options[0] = new Option("My Location", "UMKC Kansas City", true, false);
+			  end.options[1] = new Option("519 E Willow St", "519 E Willow St, Gardner, KS 66030", false, false);
+			 
+			  
+			  
+			  
+			  var markerPos = new google.maps.LatLng(39.033669, -94.576278);
+			  var marker = new google.maps.Marker({ position: markerPos,icon: {
+				  path: google.maps.SymbolPath.CIRCLE,
+				  scale: 4
+				}, map: map, title: "I am here" });
+
+			  var markerPos1 = new google.maps.LatLng(38.799393, -94.916443);
+			  var marker = new google.maps.Marker({ position: markerPos1, map: map, title: "519 E Willow St, Gardner, KS 66030" });
+			  
+			  map.panTo(markerPos1);
+			   break;
+			  
+			  case "Lavenworth":
+			
+			  start.options[0] = new Option("My Location", "UMKC Kansas City", true, false);
+			  start.options[1] = new Option("907 Gatewood St", "907 Gatewood St, Leavenworth, KS 66048", false, false);
+			
+			  
+			  
+			  end.options[0] = new Option("My Location", "UMKC Kansas City", true, false);
+			  end.options[1] = new Option("907 Gatewood St", "907 Gatewood St, Leavenworth, KS 66048", false, false);
+			 
+			  
+			  
+			  
+			  var markerPos = new google.maps.LatLng(39.033669, -94.576278);
+			  var marker = new google.maps.Marker({ position: markerPos,icon: {
+				  path: google.maps.SymbolPath.CIRCLE,
+				  scale: 4
+				}, map: map, title: "I am here" });
+
+			  var markerPos1 = new google.maps.LatLng(39.282239, -94.925922);
+			  var marker = new google.maps.Marker({ position: markerPos1, map: map, title: "907 Gatewood St, Leavenworth, KS 66048" });
+			  
+			  map.panTo(markerPos1);
+			  break;
+			  
+			  
+			  
+			}
+			
+			// call soap service to get and display city notes
+			DisplayCityNotes(selCity);
+		}
+
+		function DisplayCityNotes(cityName) { 
+			var url = "http://localhost/aspnet_client/SoapService/WebService1.asmx";
+			var pl = new SOAPClientParameters();
+			pl.add("City", cityName);
+		
+			SOAPClient.invoke(url, "getCityNotes", pl, true, getCityNotes_callBack);
+		}
+
+		function getCityNotes_callBack(r)
+		{
+			document.getElementById('citynotes').innerHTML = r;
+			document.getElementById('citynotescontent').style.display = 'block';
+		}		
+		
+		function setMapPanorama(panLoc) {
+		  // Get the maps panorama
+		  panorama = map.getStreetView();
+		  panorama.setPosition(panLoc);
+		  panorama.setPov(/** @type {google.maps.StreetViewPov} */({
+			heading: 265,
+			pitch: 0
+		  }));
+		}
+		
+		function toggleStreetView() {
+		  var toggle = panorama.getVisible();
+		  if (toggle == false) {
+			panorama.setVisible(true);
+			document.getElementById('btnStreetView').value = "Hide Street View";
+		  } else {
+			panorama.setVisible(false);
+			document.getElementById('btnStreetView').value = "Show Street View";
+		  }
+		}
+    </script>
+  </head>
+  <body body background ="best.png">
+    <div id="panel">
+	<b>Location: </b>
+	  <select id="cityOption" onchange="showCityLocations();">
+		  <option value="none">-- Select --</option>
+		  <option value="Overland Park">Overland Park</option>
+		  <option value="Kansas City">Kansas City,MO</option>
+		  <option value="Olathe">Olathe</option>
+		  <option value="Lenexa">Lenexa</option>
+		  <option value="Leawood">Leawood</option>
+		  <option value="Lavenworth">Lavenworth</option>
+		  <option value="Lawrence">Lawrence</option>
+		  <option value="Manhattan">Manhattan</option>
+		  <option value="Wichita">Wichita</option>
+		  <option value="Gardner">Gardner</option>
+		  <option value="Andover">Andover</option>
+		  <option value="Emporia">Emporia</option>
+		  
+	</select>
+	<p/>
+    <b>Start: </b>
+    <select id="start" onchange="calcRoute();">
+	  <option value="none">-- Select City --</option>
+	  
+    </select>
+    <b>End: </b>
+    <select id="end" onchange="calcRoute();">
+	  <option value="none">-- Select City --</option>
+	  
+    </select>
+	<input id ="btnStreetView" style="visibility:hidden" type="button" value="Toggle Street View" onclick="toggleStreetView();"></input>
+    </div>
+
+    <div id="map-canvas"></div>
+	<div id="citynotescontent">
+		<h2>Homes on Sale</h2>
+		<hr/>
+		<div id="citynotes"></div>
+	</div>
+	<div id="directions-panel" style="display:none;"></div>
+
+	<p style="font-family:arial;color:white;font-size:20px;">
+	</p>
+	<button id="button1" onclick="window.location.href='homepage.html'">Home</button>
+  </body>
+</html>

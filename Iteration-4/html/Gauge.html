@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Gauge</title>
+
+    <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?libraries=places,weather&sensor=true"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+
+    <script type="text/javascript" src="../js/webServices.js"></script>
+    <script>
+  $(document).ready(function(){
+
+   myMap.drawGauge('gaugeContainer');
+});
+  </script>
+</head>
+<body>
+<div id='gaugeContainer'>  </div>
+</body>
+</html>
